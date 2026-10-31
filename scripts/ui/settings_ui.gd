@@ -66,6 +66,7 @@ func _on_logout_pressed() -> void:
 	if get_tree().paused:
 		get_tree().paused = false
 	Global.clear_session()
+	AudioManager.stop_bgm()
 	get_tree().change_scene_to_file.call_deferred("res://scenes/ui/AuthScreen.tscn")
 
 

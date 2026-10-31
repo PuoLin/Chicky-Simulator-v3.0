@@ -11,7 +11,7 @@ const GUEST_ID_FILE := "user://guest_id.save"
 @onready var admin_login_button: Button = $CenterContainer/Panel/VBoxContainer/AdminLoginButton
 
 func _ready() -> void:
-	AudioManager.play_music("menu")
+	AudioManager.stop_bgm()
 	start_game_button.pressed.connect(_on_start_game_pressed)
 	admin_login_button.pressed.connect(_on_admin_login_pressed)
 
@@ -21,6 +21,7 @@ func _on_start_game_pressed() -> void:
 	Global.is_god_mode = false
 	var uid := _get_or_create_guest_id()
 	Global.set_active_user(uid)
+	AudioManager.play_bgm("menu")
 	get_tree().change_scene_to_file.call_deferred("res://scenes/main/MainMenu.tscn")
 
 func _on_admin_login_pressed() -> void:
@@ -28,6 +29,7 @@ func _on_admin_login_pressed() -> void:
 	admin_login_button.disabled = true
 	Global.set_active_user("admin")
 	Global.apply_god_mode()
+	AudioManager.play_bgm("menu")
 	get_tree().change_scene_to_file.call_deferred("res://scenes/main/MainMenu.tscn")
 
 func _get_or_create_guest_id() -> String:

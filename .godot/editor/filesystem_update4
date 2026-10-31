@@ -18,3 +18,4 @@ res://scripts/ui/hud.gd
 res://scripts/autoload/AudioManager.gd
 res://scripts/ui/game_over_dialog.gd
 res://scripts/ui/pause_menu.gd
+res://scripts/ui/settings_ui.gd

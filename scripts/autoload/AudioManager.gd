@@ -118,8 +118,15 @@ func resume_music() -> void:
 		music_player.stream_paused = false
 
 func stop_music() -> void:
+	current_track_name = ""
 	if music_player and is_instance_valid(music_player) and music_player.playing:
 		music_player.stop()
+
+func play_bgm(track_name: String = "menu") -> void:
+	play_music(track_name)
+
+func stop_bgm() -> void:
+	stop_music()
 
 func stop_sfx() -> void:
 	if sfx_player and is_instance_valid(sfx_player) and sfx_player.playing:
