@@ -1,5 +1,5 @@
 78098b89c88a74ebe8c20117b8754620
-::res://::1793427773
+::res://::1793428252
 equipment_details.txt::TextFile::-1::1793420017::0::1::::<><><>0<>0<><>::
 README.md::TextFile::-1::1793417674::0::1::::<><><>0<>0<><>::
 ::res://graphic/::1793427647
@@ -75,7 +75,7 @@ tutosnake.PNG::CompressedTexture2D::8098755876119444172::1791941510::1792214481:
 unknown.png::CompressedTexture2D::6713032045444015910::1791941510::1792214481::1::::<><><>0<>0<>0e439e5c07aef1d7478fceaf6827ef25<>res://.godot/imported/unknown.png-1e660f18047289764d10cd20b0b2c729.ctex::
 win.PNG::CompressedTexture2D::2640923577559483855::1791941510::1792214481::1::::<><><>0<>0<>9454fcb67e2302f2af9a72f0757bef42<>res://.godot/imported/win.PNG-0d86e88e32cad50ca2837c65998b8a26.ctex::
 ::res://graphic/gacha_anim/::1793427647
-::res://graphic/gacha_anim/fivegold/::1793427647
+::res://graphic/gacha_anim/fivegold/::1793427774
 1.png::CompressedTexture2D::1449984027124799828::1793424498::1793427774::1::::<><><>0<>0<>b1f363e0390bf3425d428a9bafe1b273<>res://.godot/imported/1.png-73fb8e3a6909314bf84c7f9ca3c47e1b.ctex::
 2.png::CompressedTexture2D::5547798061266451684::1793424498::1793427774::1::::<><><>0<>0<>801f5762f35d80cd764f471bdcb27bad<>res://.godot/imported/2.png-b61622dbb9196c8ee8d25e812efdd8c3.ctex::
 3.png::CompressedTexture2D::1533758874426868432::1793424498::1793427774::1::::<><><>0<>0<>15364a24edaecda487330a8ff2acefdc<>res://.godot/imported/3.png-7d6193db37b00cdabade71fb85c9b480.ctex::
@@ -92,7 +92,7 @@ win.PNG::CompressedTexture2D::2640923577559483855::1791941510::1792214481::1::::
 14.png::CompressedTexture2D::7703975345226695580::1793424498::1793427774::1::::<><><>0<>0<>b1933d9b5e1c326410a0b9c34cd2ca94<>res://.godot/imported/14.png-bcc6bcb3027aaddfa24ebd0529635c80.ctex::
 15.png::CompressedTexture2D::3827616491774551896::1793424498::1793427774::1::::<><><>0<>0<>dc70422a5fbdef724c7928d31250f37b<>res://.godot/imported/15.png-b2f361e4df741f1347ec7f605b7dddc8.ctex::
 16.png::CompressedTexture2D::8551717378583258641::1793424498::1793427774::1::::<><><>0<>0<>70493d37156716ad612b181a14e20643<>res://.godot/imported/16.png-2ae433f697d21246b4546e4f54f51370.ctex::
-::res://graphic/gacha_anim/fivepurple/::1793427647
+::res://graphic/gacha_anim/fivepurple/::1793427774
 1.png::CompressedTexture2D::7327304383027285659::1793424498::1793427774::1::::<><><>0<>0<>a6fc1f822b23a290f946359d7d598d9e<>res://.godot/imported/1.png-f6cbf5fe1cc32992fa867aa23bccb5d2.ctex::
 2.png::CompressedTexture2D::3504673373460306489::1793424498::1793427774::1::::<><><>0<>0<>9e9aaab5257391d9b264055a1d7445ec<>res://.godot/imported/2.png-f2960ab711d6d95dde7a8c38e8b56ae5.ctex::
 3.png::CompressedTexture2D::572216609249368874::1793424498::1793427774::1::::<><><>0<>0<>ce0db9af078be00b55b1d0f492f300cf<>res://.godot/imported/3.png-e3b2419726fb1b7327f7533028253f51.ctex::
@@ -109,7 +109,7 @@ win.PNG::CompressedTexture2D::2640923577559483855::1791941510::1792214481::1::::
 14.png::CompressedTexture2D::7620505025250881494::1793424498::1793427774::1::::<><><>0<>0<>70b448e3cf9d71ff62bed10eb4338e75<>res://.godot/imported/14.png-6b3f722f30bc8297add041919c41e5fa.ctex::
 15.png::CompressedTexture2D::1147433303640492019::1793424498::1793427774::1::::<><><>0<>0<>94a998c802324cb015763d9c0f17212e<>res://.godot/imported/15.png-dcb17c6e970f55fcca02bb347079296d.ctex::
 16.png::CompressedTexture2D::431329981216536177::1793424498::1793427774::1::::<><><>0<>0<>6a174a08e5fc16aa2b6aac08dd459993<>res://.godot/imported/16.png-f21599091116518e285347897c24d2a2.ctex::
-::res://graphic/gacha_anim/onegold/::1793427647
+::res://graphic/gacha_anim/onegold/::1793427774
 1.png::CompressedTexture2D::7140383349327170178::1793424497::1793427774::1::::<><><>0<>0<>11721040fcba532459dc3e7f017e1049<>res://.godot/imported/1.png-bc3ca1085a6536e0139eb71fd107b72e.ctex::
 2.png::CompressedTexture2D::2430389265952287809::1793424497::1793427774::1::::<><><>0<>0<>d0dc7b769edb1df3353e3a285e03756b<>res://.godot/imported/2.png-3fd9edd9948cd8a903991935c0b164c6.ctex::
 3.png::CompressedTexture2D::961838857237584112::1793424497::1793427774::1::::<><><>0<>0<>ae7e18b28e816bd4417eb220369a46bf<>res://.godot/imported/3.png-2400f033c2e56c4ececa990c8ea26a60.ctex::
@@ -126,7 +126,7 @@ win.PNG::CompressedTexture2D::2640923577559483855::1791941510::1792214481::1::::
 14.png::CompressedTexture2D::6493125396608705467::1793424497::1793427774::1::::<><><>0<>0<>8366fd62f0caf43f697e03a777e49411<>res://.godot/imported/14.png-8f0af636fb4779a08c0bf32b9e5a7d35.ctex::
 15.png::CompressedTexture2D::1418860013317851628::1793424497::1793427774::1::::<><><>0<>0<>2ef1e8995cdded8ff5993396bf2ba5dc<>res://.godot/imported/15.png-39df001eccf598e239491c1ab87863ce.ctex::
 16.png::CompressedTexture2D::956010291847323579::1793424497::1793427774::1::::<><><>0<>0<>03d81e6a661fb7635412cbdb486a44a7<>res://.godot/imported/16.png-2b5e1162744aae330f015070554a72f1.ctex::
-::res://graphic/gacha_anim/onepurple/::1793427647
+::res://graphic/gacha_anim/onepurple/::1793427774
 1.png::CompressedTexture2D::2467311725440006484::1793424497::1793427774::1::::<><><>0<>0<>70f43fd58f2217881b87a6fc663c188a<>res://.godot/imported/1.png-f0839033716c7330775b0a62890ef43b.ctex::
 2.png::CompressedTexture2D::5611186809327509204::1793424497::1793427774::1::::<><><>0<>0<>73bf16832bb751e367c5e1d82f621066<>res://.godot/imported/2.png-ffa0209e938ae0e961a4f54a5bf4af2f.ctex::
 3.png::CompressedTexture2D::7946101106120897132::1793424497::1793427774::1::::<><><>0<>0<>1bd271b9d1eff37afaba39e82e6d4f51<>res://.godot/imported/3.png-bd122cad024ef07e79e5f39d6fd9709d.ctex::
@@ -257,6 +257,10 @@ win.PNG::CompressedTexture2D::2640923577559483855::1791941510::1792214481::1::::
 3.png::CompressedTexture2D::1447420876957372050::1791941511::1792214480::1::::<><><>0<>0<>dbc6510ccef1a964437df882a4cc086d<>res://.godot/imported/3.png-012568c3f2ceab31c7e99f033f952a68.ctex::
 4.png::CompressedTexture2D::5115931011211455648::1791941511::1792214480::1::::<><><>0<>0<>3570c4c8263b09b7f8918d8a37874407<>res://.godot/imported/4.png-86f1443e81fae2049be8e7a8014d6d06.ctex::
 5.png::CompressedTexture2D::806062912030788186::1791941511::1792214480::1::::<><><>0<>0<>525e190df8e0c8a80e3d433e4ae7844a<>res://.godot/imported/5.png-d3fabe788f1a91b612eb20b119385a73.ctex::
+::res://huawei_build/::1793426970
+index.apple-touch-icon.png::CompressedTexture2D::7811644639124095295::1793426970::1793428963::1::::<><><>0<>0<>135961f478b472f075f06a7fba9aed0c<>res://.godot/imported/index.apple-touch-icon.png-5f7c219ec55c5f775ab9979076484bb8.ctex::
+index.icon.png::CompressedTexture2D::9205941059630094323::1793426969::1793428963::1::::<><><>0<>0<>6f1e62d0e70d29a6026cfb2a222284ea<>res://.godot/imported/index.icon.png-13e885455a206c86b46d4bc3096cc8d3.ctex::
+index.png::CompressedTexture2D::7024587715791724316::1793426969::1793428963::1::::<><><>0<>0<>f2fd184cc8fa7e6a34e460b46c661db4<>res://.godot/imported/index.png-14cfce365b57bb95da9a11ea07525d7d.ctex::
 ::res://scenes/::1793417450
 ::res://scenes/environment/::1793417450
 ExitPortal.tscn::PackedScene::-1::1792214572::0::1::::<><><>0<>0<><>::res://scripts/environment/exit_portal.gd<>res://graphic/bananacat.png
