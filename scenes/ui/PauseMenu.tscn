@@ -114,7 +114,7 @@ custom_minimum_size = Vector2(400, 80)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 48
-text = "EXIT TO MAIN MENU"
+text = "MAIN MENU"
 
 [node name="SettingsUI" parent="." instance=ExtResource("3_settings")]
 visible = false

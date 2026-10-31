@@ -42,6 +42,9 @@ class_name MainMenu
 func _ready() -> void:
 	AudioManager.play_music("menu")
 	
+	if OS.has_feature("web") and quit_btn:
+		quit_btn.hide()
+	
 	play_btn.pressed.connect(_on_play_pressed)
 	select_btn.pressed.connect(_on_select_pressed)
 	quit_btn.pressed.connect(_on_quit_pressed)
@@ -99,4 +102,5 @@ func _on_select_pressed() -> void:
 	get_tree().change_scene_to_file("res://scenes/main/LevelSelect.tscn")
 
 func _on_quit_pressed() -> void:
-	get_tree().quit()
+	if not OS.has_feature("web"):
+		get_tree().quit()
