@@ -48,7 +48,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Panel" type="Panel" parent="CenterContainer" unique_id=1538960351]
-custom_minimum_size = Vector2(880, 560)
+custom_minimum_size = Vector2(1200, 660)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
 
@@ -57,25 +57,25 @@ layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
 offset_left = 32.0
-offset_top = 16.0
-offset_right = -80.0
-offset_bottom = 56.0
+offset_top = 20.0
+offset_right = -120.0
+offset_bottom = 80.0
 grow_horizontal = 2
 
 [node name="Title" type="Label" parent="CenterContainer/Panel/TopBar" unique_id=1021195652]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(1, 0.82, 0.25, 1)
-theme_override_font_sizes/font_size = 36
+theme_override_font_sizes/font_size = 52
 text = "SHOP"
 
 [node name="CoinBox" type="HBoxContainer" parent="CenterContainer/Panel/TopBar" unique_id=70509119]
 layout_mode = 2
-theme_override_constants/separation = 6
+theme_override_constants/separation = 8
 alignment = 1
 
 [node name="CoinIcon" type="TextureRect" parent="CenterContainer/Panel/TopBar/CoinBox"]
-custom_minimum_size = Vector2(36, 36)
+custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
 texture = ExtResource("3_coin")
 expand_mode = 1
@@ -84,20 +84,21 @@ stretch_mode = 5
 [node name="CoinLabel" type="Label" parent="CenterContainer/Panel/TopBar/CoinBox"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.9, 0.4, 1)
-theme_override_font_sizes/font_size = 28
+theme_override_font_sizes/font_size = 32
 text = "0"
 
 [node name="CloseButton" type="Button" parent="CenterContainer/Panel" unique_id=765179707]
-custom_minimum_size = Vector2(44, 44)
+custom_minimum_size = Vector2(90, 80)
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -60.0
+offset_left = -105.0
 offset_top = 16.0
-offset_right = -16.0
-offset_bottom = 60.0
+offset_right = -15.0
+offset_bottom = 96.0
 grow_horizontal = 0
+theme_override_font_sizes/font_size = 48
 text = "X"
 
 [node name="CategoryBar" type="HBoxContainer" parent="CenterContainer/Panel" unique_id=1269790913]
@@ -105,52 +106,52 @@ layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
 offset_left = 32.0
-offset_top = 62.0
-offset_right = -80.0
-offset_bottom = 98.0
+offset_top = 85.0
+offset_right = -120.0
+offset_bottom = 135.0
 grow_horizontal = 2
-theme_override_constants/separation = 8
+theme_override_constants/separation = 10
 
 [node name="AllBtn" type="Button" parent="CenterContainer/Panel/CategoryBar" unique_id=1791893232]
-custom_minimum_size = Vector2(64, 34)
+custom_minimum_size = Vector2(80, 44)
 layout_mode = 2
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 24
 text = "All"
 
 [node name="WeaponsBtn" type="Button" parent="CenterContainer/Panel/CategoryBar" unique_id=310976974]
-custom_minimum_size = Vector2(80, 34)
+custom_minimum_size = Vector2(100, 44)
 layout_mode = 2
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 24
 text = "Weapons"
 
 [node name="HelmetsBtn" type="Button" parent="CenterContainer/Panel/CategoryBar" unique_id=1504125304]
-custom_minimum_size = Vector2(80, 34)
+custom_minimum_size = Vector2(100, 44)
 layout_mode = 2
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 24
 text = "Helmets"
 
 [node name="ArmorBtn" type="Button" parent="CenterContainer/Panel/CategoryBar" unique_id=867016213]
-custom_minimum_size = Vector2(70, 34)
+custom_minimum_size = Vector2(90, 44)
 layout_mode = 2
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 24
 text = "Armor"
 
 [node name="ShieldsBtn" type="Button" parent="CenterContainer/Panel/CategoryBar" unique_id=931838542]
-custom_minimum_size = Vector2(76, 34)
+custom_minimum_size = Vector2(95, 44)
 layout_mode = 2
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 24
 text = "Shields"
 
 [node name="BootsBtn" type="Button" parent="CenterContainer/Panel/CategoryBar" unique_id=2020507712]
-custom_minimum_size = Vector2(64, 34)
+custom_minimum_size = Vector2(85, 44)
 layout_mode = 2
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 24
 text = "Boots"
 
 [node name="ToolsBtn" type="Button" parent="CenterContainer/Panel/CategoryBar" unique_id=2119319807]
-custom_minimum_size = Vector2(64, 34)
+custom_minimum_size = Vector2(85, 44)
 layout_mode = 2
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 24
 text = "Tools"
 
 [node name="FeedbackLabel" type="Label" parent="CenterContainer/Panel" unique_id=119178335]
@@ -158,11 +159,11 @@ layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
 offset_left = 32.0
-offset_top = 102.0
-offset_right = -80.0
-offset_bottom = 126.0
+offset_top = 138.0
+offset_right = -120.0
+offset_bottom = 168.0
 grow_horizontal = 2
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 24
 horizontal_alignment = 1
 
 [node name="ScrollContainer" type="ScrollContainer" parent="CenterContainer/Panel" unique_id=1620505421]
@@ -170,9 +171,9 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 28.0
-offset_top = 130.0
-offset_right = -28.0
+offset_left = 32.0
+offset_top = 172.0
+offset_right = -32.0
 offset_bottom = -20.0
 grow_horizontal = 2
 grow_vertical = 2

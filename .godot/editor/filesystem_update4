@@ -10,3 +10,8 @@ res://scripts/ui/missions_ui.gd
 res://scripts/ui/shop_ui.gd
 res://scripts/ui/virtual_joystick.gd
 res://scripts/ui/win_dialog.gd
+res://scripts/environment/level.gd
+res://scripts/player/player.gd
+res://scripts/ui/backpack_ui.gd
+res://scripts/ui/collection_ui.gd
+res://scripts/ui/hud.gd

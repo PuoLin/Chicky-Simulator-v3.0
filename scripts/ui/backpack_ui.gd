@@ -126,7 +126,7 @@ func _update_inventory_grid() -> void:
 			continue
 
 		var slot_btn := Button.new()
-		slot_btn.custom_minimum_size = Vector2(64, 64)
+		slot_btn.custom_minimum_size = Vector2(76, 76)
 		slot_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		slot_btn.expand_icon = true
 		slot_btn.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER

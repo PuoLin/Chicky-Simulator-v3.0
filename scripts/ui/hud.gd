@@ -26,11 +26,26 @@ class_name HUD
 @onready var backpack_btn: Button = $BottomRight/HBoxContainer/BackpackButton
 @onready var pause_btn: Button = $TopRight/HBoxContainer/PauseButton
 
+# Virtual Joystick & Controls
+@onready var virtual_joystick: MobileVirtualJoystick = get_node_or_null("BottomLeft/VirtualJoystick")
+
 # Center Alert
 @onready var alert_label: Label = $CenterAlert/AlertLabel
 
 var elapsed_seconds: float = 0.0
 var portal_alerted: bool = false
+
+func disable_controls() -> void:
+	if virtual_joystick and virtual_joystick.has_method("disable_joystick"):
+		virtual_joystick.disable_joystick()
+	elif virtual_joystick:
+		virtual_joystick.set_process_input(false)
+
+func enable_controls() -> void:
+	if virtual_joystick and virtual_joystick.has_method("enable_joystick"):
+		virtual_joystick.enable_joystick()
+	elif virtual_joystick:
+		virtual_joystick.set_process_input(true)
 
 func _ready() -> void:
 	Global.coins_changed.connect(_on_coins_changed)

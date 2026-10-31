@@ -308,23 +308,23 @@ func _display_results(results: Array) -> void:
 		vbox.add_theme_constant_override("separation", 6)
 		
 		var icon := TextureRect.new()
-		icon.custom_minimum_size = Vector2(64, 64)
+		icon.custom_minimum_size = Vector2(76, 76)
 		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		
 		var name_lbl := Label.new()
-		name_lbl.add_theme_font_size_override("font_size", 18)
+		name_lbl.add_theme_font_size_override("font_size", 22)
 		name_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		
 		var rarity_lbl := Label.new()
 		var rarity_str: String = res.get("rarity", "Common")
 		rarity_lbl.text = rarity_str
-		rarity_lbl.add_theme_font_size_override("font_size", 15)
+		rarity_lbl.add_theme_font_size_override("font_size", 18)
 		rarity_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		_apply_rarity_color(rarity_lbl, rarity_str)
 		
 		var tag_lbl := Label.new()
-		tag_lbl.add_theme_font_size_override("font_size", 16)
+		tag_lbl.add_theme_font_size_override("font_size", 20)
 		tag_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		
 		if res["type"] == "chick":

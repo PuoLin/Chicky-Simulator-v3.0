@@ -27,6 +27,7 @@ var last_attack_time: float = -999.0
 var facing_direction: int = 1 # 1 = right, -1 = left
 var virtual_input_vector: Vector2 = Vector2.ZERO # for mobile virtual joystick
 var damage_taken_this_stage: float = 0.0
+var is_movement_disabled: bool = false
 
 # Torch state
 var is_torch_active: bool = true
@@ -76,6 +77,8 @@ func refresh_stats() -> void:
 	attack_cd = stats["cd"]
 	move_speed = stats["speed"]
 	damage_taken_this_stage = 0.0
+	is_movement_disabled = false
+	virtual_input_vector = Vector2.ZERO
 	
 	_update_pickup_radius()
 	_update_overhead_bars()
@@ -277,7 +280,25 @@ func _physics_process(delta: float) -> void:
 	_handle_torch_fuel(delta)
 	_update_cooldown(delta)
 
+func stop_movement() -> void:
+	is_movement_disabled = true
+	virtual_input_vector = Vector2.ZERO
+	velocity = Vector2.ZERO
+	if not is_attacking:
+		play_anim("idle")
+
+func enable_movement() -> void:
+	is_movement_disabled = false
+
 func _handle_movement(_delta: float) -> void:
+	if is_movement_disabled:
+		virtual_input_vector = Vector2.ZERO
+		velocity = Vector2.ZERO
+		move_and_slide()
+		if not is_attacking:
+			play_anim("idle")
+		return
+
 	var input_vec := Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	if virtual_input_vector != Vector2.ZERO:
 		input_vec = virtual_input_vector

@@ -47,7 +47,7 @@ func refresh_collection() -> void:
 		var is_active: bool = (Global.active_chick == chick_id) and not is_coming_soon
 		
 		var card := Button.new()
-		card.custom_minimum_size = Vector2(120, 140)
+		card.custom_minimum_size = Vector2(130, 150)
 		card.clip_contents = true
 		
 		var vbox := VBoxContainer.new()
@@ -56,12 +56,12 @@ func refresh_collection() -> void:
 		vbox.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		
 		var icon_center := CenterContainer.new()
-		icon_center.custom_minimum_size = Vector2(110, 72)
+		icon_center.custom_minimum_size = Vector2(120, 80)
 		icon_center.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		icon_center.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		
 		var icon := TextureRect.new()
-		icon.custom_minimum_size = Vector2(64, 64)
+		icon.custom_minimum_size = Vector2(72, 72)
 		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -84,12 +84,12 @@ func refresh_collection() -> void:
 			
 		var name_lbl := Label.new()
 		name_lbl.text = info.get("name", chick_id)
-		name_lbl.add_theme_font_size_override("font_size", 18)
+		name_lbl.add_theme_font_size_override("font_size", 22)
 		name_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		name_lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		
 		var sub_lbl := Label.new()
-		sub_lbl.add_theme_font_size_override("font_size", 14)
+		sub_lbl.add_theme_font_size_override("font_size", 18)
 		sub_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		sub_lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		if is_coming_soon:

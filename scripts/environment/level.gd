@@ -216,8 +216,19 @@ func get_stage_clear_reward(stage_num: int) -> int:
 func _on_stage_cleared() -> void:
 	game_over = true
 	Global.stage_active = false
-	if is_instance_valid(player) and player.has_method("hide_exit_portal_arrow"):
-		player.hide_exit_portal_arrow()
+	if is_instance_valid(player):
+		if player.has_method("stop_movement"):
+			player.stop_movement()
+		else:
+			player.velocity = Vector2.ZERO
+			player.virtual_input_vector = Vector2.ZERO
+		if player.has_method("hide_exit_portal_arrow"):
+			player.hide_exit_portal_arrow()
+	if hud and is_instance_valid(hud) and hud.has_method("disable_controls"):
+		hud.disable_controls()
+	for joy in get_tree().get_nodes_in_group("virtual_joystick"):
+		if joy.has_method("disable_joystick"):
+			joy.disable_joystick()
 	if spawner and spawner.has_method("stop_spawning"):
 		spawner.stop_spawning()
 	AudioManager.play_victory_jingle()
@@ -263,8 +274,19 @@ func _on_stage_cleared() -> void:
 func _on_player_died() -> void:
 	game_over = true
 	Global.stage_active = false
-	if is_instance_valid(player) and player.has_method("hide_exit_portal_arrow"):
-		player.hide_exit_portal_arrow()
+	if is_instance_valid(player):
+		if player.has_method("stop_movement"):
+			player.stop_movement()
+		else:
+			player.velocity = Vector2.ZERO
+			player.virtual_input_vector = Vector2.ZERO
+		if player.has_method("hide_exit_portal_arrow"):
+			player.hide_exit_portal_arrow()
+	if hud and is_instance_valid(hud) and hud.has_method("disable_controls"):
+		hud.disable_controls()
+	for joy in get_tree().get_nodes_in_group("virtual_joystick"):
+		if joy.has_method("disable_joystick"):
+			joy.disable_joystick()
 	if spawner and spawner.has_method("stop_spawning"):
 		spawner.stop_spawning()
 	AudioManager.play_defeat_jingle()

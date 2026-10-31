@@ -152,25 +152,25 @@ func refresh_ui() -> void:
 		
 		var title := Label.new()
 		title.text = m["title"]
-		title.add_theme_font_size_override("font_size", 24)
+		title.add_theme_font_size_override("font_size", 28)
 		
 		var desc := Label.new()
 		desc.text = m["desc"]
 		desc.add_theme_color_override("font_color", Color(0.75, 0.75, 0.75, 1.0))
-		desc.add_theme_font_size_override("font_size", 18)
+		desc.add_theme_font_size_override("font_size", 22)
 		
 		var pbar := ProgressBar.new()
-		pbar.custom_minimum_size = Vector2(240, 14)
+		pbar.custom_minimum_size = Vector2(280, 18)
 		pbar.max_value = target_val
 		pbar.value = min(current_val, target_val)
 		pbar.show_percentage = false
 		
 		var count_lbl := Label.new()
 		count_lbl.text = "%d / %d" % [min(current_val, target_val), target_val]
-		count_lbl.add_theme_font_size_override("font_size", 16)
+		count_lbl.add_theme_font_size_override("font_size", 22)
 		
 		var bar_box := HBoxContainer.new()
-		bar_box.add_theme_constant_override("separation", 8)
+		bar_box.add_theme_constant_override("separation", 10)
 		bar_box.add_child(pbar)
 		bar_box.add_child(count_lbl)
 		
@@ -181,6 +181,7 @@ func refresh_ui() -> void:
 		# Right reward / claim button
 		var right_vbox := VBoxContainer.new()
 		right_vbox.alignment = BoxContainer.ALIGNMENT_CENTER
+		right_vbox.custom_minimum_size = Vector2(160, 0)
 		
 		var reward_type: String = m.get("reward_type", "diamonds")
 		var reward_lbl := Label.new()
@@ -190,11 +191,12 @@ func refresh_ui() -> void:
 		else:
 			reward_lbl.text = "+%d Diamonds" % m["reward"]
 			reward_lbl.add_theme_color_override("font_color", Color(0.4, 0.9, 1.0, 1.0))
-		reward_lbl.add_theme_font_size_override("font_size", 20)
+		reward_lbl.add_theme_font_size_override("font_size", 24)
 		reward_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		
 		var claim_btn := Button.new()
-		claim_btn.custom_minimum_size = Vector2(110, 42)
+		claim_btn.custom_minimum_size = Vector2(140, 52)
+		claim_btn.add_theme_font_size_override("font_size", 24)
 		
 		if is_claimed:
 			claim_btn.text = "CLAIMED"

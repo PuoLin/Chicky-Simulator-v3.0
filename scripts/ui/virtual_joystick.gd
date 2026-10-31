@@ -14,8 +14,19 @@ var knob_offset: Vector2 = Vector2.ZERO
 var output_vector: Vector2 = Vector2.ZERO
 
 func _ready() -> void:
+	add_to_group("virtual_joystick")
 	custom_minimum_size = Vector2((base_radius + 20.0) * 2.0, (base_radius + 20.0) * 2.0)
 	queue_redraw()
+
+func disable_joystick() -> void:
+	_reset_knob()
+	set_process_input(false)
+	mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+func enable_joystick() -> void:
+	_reset_knob()
+	set_process_input(true)
+	mouse_filter = Control.MOUSE_FILTER_STOP
 
 func _draw() -> void:
 	var center := size / 2.0

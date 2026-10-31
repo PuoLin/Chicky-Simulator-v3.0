@@ -85,7 +85,7 @@ func refresh_shop() -> void:
 			continue
 
 		var card := PanelContainer.new()
-		card.custom_minimum_size = Vector2(175, 195)
+		card.custom_minimum_size = Vector2(210, 230)
 		card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		card.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 		
@@ -95,7 +95,7 @@ func refresh_shop() -> void:
 		
 		# Icon
 		var tex_rect := TextureRect.new()
-		tex_rect.custom_minimum_size = Vector2(50, 50)
+		tex_rect.custom_minimum_size = Vector2(64, 64)
 		tex_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		tex_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		var icon_path: String = item_data.get("texture_path", "")
@@ -104,18 +104,19 @@ func refresh_shop() -> void:
 			
 		var name_lbl := Label.new()
 		name_lbl.text = item_data.get("name", entry["id"])
-		name_lbl.add_theme_font_size_override("font_size", 20)
+		name_lbl.add_theme_font_size_override("font_size", 24)
 		name_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		
 		var desc_lbl := Label.new()
 		desc_lbl.text = item_data.get("desc", "")
-		desc_lbl.add_theme_font_size_override("font_size", 15)
+		desc_lbl.add_theme_font_size_override("font_size", 18)
 		desc_lbl.add_theme_color_override("font_color", Color(0.7, 0.7, 0.7, 1.0))
 		desc_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		
 		var buy_btn := Button.new()
 		buy_btn.text = "%d Coins" % entry["price"]
-		buy_btn.custom_minimum_size = Vector2(120, 36)
+		buy_btn.custom_minimum_size = Vector2(150, 48)
+		buy_btn.add_theme_font_size_override("font_size", 22)
 		buy_btn.pressed.connect(func(): _buy_item(entry["id"], entry["price"], item_data.get("name", entry["id"])))
 
 		vbox.add_child(tex_rect)

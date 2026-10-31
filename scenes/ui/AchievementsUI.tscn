@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://scripts/ui/achievements_ui.gd" id="1_ach"]
 [ext_resource type="FontFile" path="res://ThaleahFat/ThaleahFat.ttf" id="2_font"]
 [ext_resource type="Texture2D" path="res://graphic/diamond.svg" id="3_dia"]
+[ext_resource type="Texture2D" path="res://graphic/trophy.svg" id="4_trophy"]
 
 [sub_resource type="Theme" id="Theme_ach"]
 default_font = ExtResource("2_font")
@@ -48,7 +49,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Panel" type="Panel" parent="CenterContainer"]
-custom_minimum_size = Vector2(880, 560)
+custom_minimum_size = Vector2(1200, 660)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
 
@@ -57,32 +58,44 @@ layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
 offset_left = 32.0
-offset_top = 18.0
-offset_right = -80.0
-offset_bottom = 58.0
+offset_top = 20.0
+offset_right = -120.0
+offset_bottom = 80.0
 grow_horizontal = 2
-theme_override_constants/separation = 20
+theme_override_constants/separation = 24
 
 [node name="Title" type="Label" parent="CenterContainer/Panel/TopBar"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(1, 0.85, 0.2, 1)
-theme_override_font_sizes/font_size = 36
+theme_override_font_sizes/font_size = 52
 text = "ACHIEVEMENTS"
 
-[node name="CountLabel" type="Label" parent="CenterContainer/Panel/TopBar"]
+[node name="TrophyBox" type="HBoxContainer" parent="CenterContainer/Panel/TopBar"]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="TrophyIcon" type="TextureRect" parent="CenterContainer/Panel/TopBar/TrophyBox"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+texture = ExtResource("4_trophy")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CountLabel" type="Label" parent="CenterContainer/Panel/TopBar/TrophyBox"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9, 0.9, 0.9, 1)
-theme_override_font_sizes/font_size = 24
-text = "Tier Progress: 0 / 17 🏆"
+theme_override_font_sizes/font_size = 32
+text = "Tier Progress: 0 / 17"
 
 [node name="DiamondContainer" type="HBoxContainer" parent="CenterContainer/Panel/TopBar"]
 layout_mode = 2
-theme_override_constants/separation = 6
+theme_override_constants/separation = 8
 alignment = 1
 
 [node name="DiamondIcon" type="TextureRect" parent="CenterContainer/Panel/TopBar/DiamondContainer"]
-custom_minimum_size = Vector2(36, 36)
+custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
 texture = ExtResource("3_dia")
 expand_mode = 1
@@ -91,20 +104,21 @@ stretch_mode = 5
 [node name="DiamondLabel" type="Label" parent="CenterContainer/Panel/TopBar/DiamondContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.4, 0.9, 1, 1)
-theme_override_font_sizes/font_size = 28
+theme_override_font_sizes/font_size = 32
 text = "30"
 
 [node name="CloseButton" type="Button" parent="CenterContainer/Panel"]
-custom_minimum_size = Vector2(44, 44)
+custom_minimum_size = Vector2(90, 80)
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -60.0
+offset_left = -105.0
 offset_top = 16.0
-offset_right = -16.0
-offset_bottom = 60.0
+offset_right = -15.0
+offset_bottom = 96.0
 grow_horizontal = 0
+theme_override_font_sizes/font_size = 48
 text = "X"
 
 [node name="ScrollContainer" type="ScrollContainer" parent="CenterContainer/Panel"]
@@ -112,9 +126,9 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 28.0
-offset_top = 75.0
-offset_right = -28.0
+offset_left = 32.0
+offset_top = 95.0
+offset_right = -32.0
 offset_bottom = -24.0
 grow_horizontal = 2
 grow_vertical = 2

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Trophy Cup Body -->
+  <path d="M25,15 L75,15 C75,45 62,55 50,58 C38,55 25,45 25,15 Z" fill="#FFD700" stroke="#DAA520" stroke-width="3" stroke-linejoin="round"/>
+  <!-- Cup Highlight -->
+  <path d="M30,20 L50,20 C50,48 42,52 35,46 C30,40 30,25 30,20 Z" fill="#FFF275" opacity="0.6"/>
+  <!-- Left Handle -->
+  <path d="M25,22 C12,22 10,42 27,45" fill="none" stroke="#FFD700" stroke-width="4.5" stroke-linecap="round"/>
+  <path d="M25,22 C12,22 10,42 27,45" fill="none" stroke="#DAA520" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Right Handle -->
+  <path d="M75,22 C88,22 90,42 73,45" fill="none" stroke="#FFD700" stroke-width="4.5" stroke-linecap="round"/>
+  <path d="M75,22 C88,22 90,42 73,45" fill="none" stroke="#DAA520" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Stem -->
+  <rect x="45" y="58" width="10" height="18" fill="#DAA520" stroke="#B8860B" stroke-width="2"/>
+  <!-- Base Tier 1 -->
+  <path d="M38,76 L62,76 L65,84 L35,84 Z" fill="#CD853F" stroke="#8B4513" stroke-width="2"/>
+  <!-- Base Tier 2 (Bottom Plinth) -->
+  <rect x="28" y="84" width="44" height="10" rx="2" fill="#8B4513" stroke="#5C2900" stroke-width="2"/>
+  <!-- Star on Cup -->
+  <polygon points="50,28 52.5,34 58,34 53.5,37.5 55,43 50,39.5 45,43 46.5,37.5 42,34 47.5,34" fill="#FFFFFF" opacity="0.9"/>
+</svg>
+

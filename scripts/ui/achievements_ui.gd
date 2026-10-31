@@ -6,7 +6,7 @@ class_name AchievementsUI
 ## automatic tier upgrades, thematic milestones, and warm gold styling.
 
 @onready var close_btn: Button = $CenterContainer/Panel/CloseButton
-@onready var count_lbl: Label = $CenterContainer/Panel/TopBar/CountLabel
+@onready var count_lbl: Label = get_node_or_null("CenterContainer/Panel/TopBar/TrophyBox/CountLabel") if get_node_or_null("CenterContainer/Panel/TopBar/TrophyBox/CountLabel") else get_node_or_null("CenterContainer/Panel/TopBar/CountLabel")
 @onready var diamond_lbl: Label = get_node_or_null("CenterContainer/Panel/TopBar/DiamondContainer/DiamondLabel") if get_node_or_null("CenterContainer/Panel/TopBar/DiamondContainer/DiamondLabel") else get_node_or_null("CenterContainer/Panel/TopBar/DiamondLabel")
 @onready var achievement_list: VBoxContainer = $CenterContainer/Panel/ScrollContainer/AchievementList
 
@@ -126,7 +126,7 @@ func refresh_achievements() -> void:
 		var curr_tier: int = Global.achievement_tiers.get(track["track_id"], 0)
 		claimed_tiers += int(min(curr_tier, tiers_arr.size()))
 
-	count_lbl.text = "Tier Progress: %d / %d 🏆" % [claimed_tiers, total_tiers]
+	count_lbl.text = "Tier Progress: %d / %d" % [claimed_tiers, total_tiers]
 
 	for track in TRACKS:
 		var track_id: String = track["track_id"]
@@ -152,7 +152,7 @@ func refresh_achievements() -> void:
 
 		# Icon
 		var icon := TextureRect.new()
-		icon.custom_minimum_size = Vector2(50, 50)
+		icon.custom_minimum_size = Vector2(64, 64)
 		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		var icon_path: String = track["icon"]
@@ -174,7 +174,7 @@ func refresh_achievements() -> void:
 		var title_lbl := Label.new()
 		var tier_str: String = " (Tier %d/%d)" % [display_idx + 1, tiers_arr.size()]
 		title_lbl.text = tier_data["title"] + tier_str
-		title_lbl.add_theme_font_size_override("font_size", 22)
+		title_lbl.add_theme_font_size_override("font_size", 28)
 		if is_max_claimed or is_completed:
 			title_lbl.add_theme_color_override("font_color", WARM_GOLD)
 		else:
@@ -182,7 +182,7 @@ func refresh_achievements() -> void:
 
 		var desc_lbl := Label.new()
 		desc_lbl.text = tier_data["desc"]
-		desc_lbl.add_theme_font_size_override("font_size", 16)
+		desc_lbl.add_theme_font_size_override("font_size", 22)
 		desc_lbl.add_theme_color_override("font_color", Color(0.75, 0.75, 0.75, 1.0))
 
 		text_vbox.add_child(title_lbl)
@@ -190,22 +190,22 @@ func refresh_achievements() -> void:
 
 		# Progress & Claim Action
 		var action_box := VBoxContainer.new()
-		action_box.custom_minimum_size = Vector2(170, 0)
+		action_box.custom_minimum_size = Vector2(190, 0)
 		action_box.alignment = BoxContainer.ALIGNMENT_CENTER
-		action_box.add_theme_constant_override("separation", 4)
+		action_box.add_theme_constant_override("separation", 6)
 
 		if is_max_claimed:
 			var max_lbl := Label.new()
-			max_lbl.text = "CLAIMED (MAX) 🏆"
+			max_lbl.text = "CLAIMED (MAX)"
 			max_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-			max_lbl.add_theme_font_size_override("font_size", 18)
+			max_lbl.add_theme_font_size_override("font_size", 24)
 			max_lbl.add_theme_color_override("font_color", WARM_GOLD)
 			action_box.add_child(max_lbl)
 		elif is_completed:
 			var claim_btn := Button.new()
-			claim_btn.custom_minimum_size = Vector2(160, 42)
+			claim_btn.custom_minimum_size = Vector2(180, 52)
 			claim_btn.text = "CLAIM (+%d)" % reward_val
-			claim_btn.add_theme_font_size_override("font_size", 20)
+			claim_btn.add_theme_font_size_override("font_size", 24)
 			claim_btn.add_theme_color_override("font_color", WARM_GOLD)
 			var cap_track: String = track_id
 			var cap_tier: int = curr_tier_idx
@@ -216,7 +216,7 @@ func refresh_achievements() -> void:
 			action_box.add_child(claim_btn)
 		else:
 			var prog_bar := ProgressBar.new()
-			prog_bar.custom_minimum_size = Vector2(160, 14)
+			prog_bar.custom_minimum_size = Vector2(180, 18)
 			prog_bar.max_value = target_val
 			prog_bar.value = min(curr_val, target_val)
 			prog_bar.show_percentage = false
@@ -224,7 +224,7 @@ func refresh_achievements() -> void:
 			var prog_lbl := Label.new()
 			prog_lbl.text = "%d / %d (+%d)" % [min(curr_val, target_val), target_val, reward_val]
 			prog_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-			prog_lbl.add_theme_font_size_override("font_size", 16)
+			prog_lbl.add_theme_font_size_override("font_size", 20)
 			prog_lbl.add_theme_color_override("font_color", Color(0.7, 0.7, 0.7, 1.0))
 
 			action_box.add_child(prog_bar)

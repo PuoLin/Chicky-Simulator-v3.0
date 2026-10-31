@@ -99,7 +99,7 @@ func _populate_item_list() -> void:
 		
 		# Row button container
 		var btn := Button.new()
-		btn.custom_minimum_size = Vector2(0, 52)
+		btn.custom_minimum_size = Vector2(0, 64)
 		btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		btn.clip_contents = true
 
@@ -110,12 +110,12 @@ func _populate_item_list() -> void:
 		hbox.offset_top = 4
 		hbox.offset_bottom = -4
 		hbox.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		hbox.add_theme_constant_override("separation", 10)
+		hbox.add_theme_constant_override("separation", 12)
 		hbox.alignment = BoxContainer.ALIGNMENT_CENTER
 
 		# 1. Icon on the left
 		var icon_rect := TextureRect.new()
-		icon_rect.custom_minimum_size = Vector2(36, 36)
+		icon_rect.custom_minimum_size = Vector2(48, 48)
 		icon_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		icon_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		icon_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -131,7 +131,7 @@ func _populate_item_list() -> void:
 		name_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 		name_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		name_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		name_label.add_theme_font_size_override("font_size", 20)
+		name_label.add_theme_font_size_override("font_size", 24)
 		if itm_id == selected_item_id:
 			name_label.add_theme_color_override("font_color", Color(1.0, 0.85, 0.2, 1.0))
 		else:
@@ -143,7 +143,7 @@ func _populate_item_list() -> void:
 		qty_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		qty_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		qty_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-		qty_label.add_theme_font_size_override("font_size", 18)
+		qty_label.add_theme_font_size_override("font_size", 22)
 		if is_eq and inv_count > 0:
 			qty_label.text = "Owned: %d (Eq)" % total_owned
 			qty_label.add_theme_color_override("font_color", Color(0.4, 0.95, 0.5, 1.0))
