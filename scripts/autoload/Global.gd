@@ -32,6 +32,7 @@ var max_survived_stage_30_seconds: float = 0.0
 var speed_demon_cleared: bool = false
 var iron_skin_cleared: bool = false
 var cleared_stages: Array = []
+var is_god_mode: bool = false
 
 var active_chick: String = "normal"
 var unlocked_chicks: Array = ["normal"]
@@ -547,6 +548,7 @@ func clear_session() -> void:
 	target_kills = 0
 	stage_time = 0.0
 	stage_active = false
+	is_god_mode = false
 	emit_signal("coins_changed", coins)
 	emit_signal("diamonds_changed", diamonds)
 	emit_signal("inventory_updated")

@@ -1,2 +1,3 @@
 res://scenes/ui/AuthScreen.tscn
 res://scripts/ui/auth_screen.gd
+res://scripts/autoload/Global.gd
