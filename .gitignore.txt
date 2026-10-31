@@ -1,0 +1,4 @@
+huawei_build/
+dist/
+*.rpk
+*.pck
