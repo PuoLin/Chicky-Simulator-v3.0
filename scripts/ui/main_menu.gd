@@ -16,7 +16,6 @@ class_name MainMenu
 # Center Action Buttons
 @onready var play_btn: Button = $CenterVBox/PlayButton
 @onready var select_btn: Button = $CenterVBox/SelectButton
-@onready var quit_btn: Button = $CenterVBox/QuitButton
 
 # Left Flank Icon Navigation
 @onready var backpack_btn: Button = $LeftNav/BackpackBox/BackpackBtn
@@ -44,7 +43,6 @@ func _ready() -> void:
 	
 	play_btn.pressed.connect(_on_play_pressed)
 	select_btn.pressed.connect(_on_select_pressed)
-	quit_btn.pressed.connect(_on_quit_pressed)
 	
 	backpack_btn.pressed.connect(func(): _open_modal(backpack_ui))
 	collection_btn.pressed.connect(func(): _open_modal(collection_ui))
@@ -97,14 +95,3 @@ func _on_play_pressed() -> void:
 
 func _on_select_pressed() -> void:
 	get_tree().change_scene_to_file("res://scenes/main/LevelSelect.tscn")
-
-func _on_quit_pressed() -> void:
-	if OS.has_feature("web"):
-		# Mute the master bus to prevent the currentTime null error during browser teardown
-		var master_idx = AudioServer.get_bus_index("Master")
-		AudioServer.set_bus_mute(master_idx, true)
-		
-		# Rely entirely on the browser/webview to close the app
-		JavaScriptBridge.eval("window.close(); window.history.back();")
-	else:
-		get_tree().quit()

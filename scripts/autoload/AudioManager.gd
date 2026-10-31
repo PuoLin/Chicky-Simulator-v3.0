@@ -35,6 +35,17 @@ func _ready() -> void:
 
 	set_master_volume(master_volume)
 
+func _notification(what: int) -> void:
+	var master_idx = AudioServer.get_bus_index("Master")
+	
+	# App sent to background
+	if what == NOTIFICATION_WM_WINDOW_FOCUS_OUT or what == NOTIFICATION_APPLICATION_PAUSED:
+		AudioServer.set_bus_mute(master_idx, true)
+		
+	# App brought back to foreground
+	elif what == NOTIFICATION_WM_WINDOW_FOCUS_IN or what == NOTIFICATION_APPLICATION_RESUMED:
+		AudioServer.set_bus_mute(master_idx, false)
+
 func _on_music_finished() -> void:
 	if is_music_enabled and not current_track_name.is_empty():
 		music_player.play()
