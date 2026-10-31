@@ -1,6 +1,6 @@
 axe,graphic/axe.png,Axe,Attack +10,10/0/0,w,250
 hammer,graphic/hammer.png,Hammer,Attack +20,20/0/0,w,800
-sword,graphic/sword.png,Sword,Attack +30,30/0/0,w,2000
+sword,graphic/sword.png,Sword,Attack +40,40/0/0,w,2000
 shield3,graphic/shield5.png,Wood Shield,Defence +5,0/5/0,shi,170
 shield4,graphic/shield3.png,Iron Shield,Defence +7,0/7/0,shi,500
 shield5,graphic/shield4.png,Diamond Shield,Defence +10,0/10/0,shi,1400

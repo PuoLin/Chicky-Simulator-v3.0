@@ -410,7 +410,7 @@ func get_player_stats() -> Dictionary:
 			var itm: Dictionary = ItemDatabase.get_item(eq_id)
 			if not itm.is_empty():
 				var up_lvl: int = get_item_upgrade_level(eq_id)
-				var mult: float = 1.0 + 0.05 * float(up_lvl)
+				var mult: float = 1.0 + 0.12 * float(up_lvl)
 				total_atk += itm.get("atk", 0.0) * mult
 				total_def += itm.get("def", 0.0) * mult
 				total_cd = max(0.5, total_cd - (itm.get("cd", 0.0) * mult))

@@ -60,17 +60,16 @@ func _configure_type() -> void:
 	var stage_step: int = int((stage - 1) / 5)
 	var hp_multiplier: float = 1.0 + float(stage_step) * 0.25
 	
-	# Late-Game Difficulty Spike (Stages 28-30 Gear Checks)
+	# Late-Game Difficulty Balancing (Stages 28-30 Endgame Challenges)
+	# Challenging but mathematically winnable for players with maxed (+15) Tier 3 equipment
 	if stage in [28, 29]:
-		# Stages 28-29: Drastically increase Monster HP (+200%) and Damage (+150%)
-		hp_multiplier *= 3.0
-		damage *= 2.5
+		hp_multiplier *= 1.5
+		damage *= 1.4
 	elif stage >= 30:
-		# Stage 30 (Hardest): Maximum gear check. Boost HP by +400%, Damage by +300%, and Speed by +40%
-		hp_multiplier *= 5.0
-		damage *= 4.0
-		speed *= 1.4
-		attack_cd = max(1.8, attack_cd * 0.75)
+		hp_multiplier *= 1.8
+		damage *= 1.75
+		speed *= 1.15
+		attack_cd = max(2.2, attack_cd * 0.9)
 		
 	max_hp *= hp_multiplier
 	current_hp = max_hp

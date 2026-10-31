@@ -7,15 +7,42 @@ class_name ItemDrop
 @export var item_id: String = "axe"
 var is_picked: bool = false
 var initial_y: float = 0.0
+var player: CharacterBody2D = null
+var magnet_radius: float = 210.0
 
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var light: PointLight2D = $PointLight2D
 
 func _ready() -> void:
 	body_entered.connect(_on_body_entered)
+	area_entered.connect(_on_area_entered)
 	initial_y = position.y
 	_setup_item_display()
 	_start_float_animation()
+	_find_player()
+
+	if Global.active_chick == "magnet":
+		magnet_radius = 420.0 # Double pickup range for Richie Chick
+
+func _find_player() -> void:
+	var players := get_tree().get_nodes_in_group("player")
+	if players.size() > 0:
+		player = players[0]
+
+func _physics_process(delta: float) -> void:
+	if is_picked:
+		return
+
+	if not is_instance_valid(player):
+		_find_player()
+		return
+
+	var dist := global_position.distance_to(player.global_position)
+	if dist <= magnet_radius:
+		# Magnetically fly towards player
+		var dir := (player.global_position - global_position).normalized()
+		var pull_speed := 300.0 * (1.0 - (dist / magnet_radius)) + 150.0
+		global_position += dir * pull_speed * delta
 
 func set_item(id: String) -> void:
 	item_id = id
@@ -34,8 +61,16 @@ func _start_float_animation() -> void:
 	tween.tween_property(sprite, "position:y", -6.0, 0.7).set_trans(Tween.TRANS_SINE)
 	tween.tween_property(sprite, "position:y", 2.0, 0.7).set_trans(Tween.TRANS_SINE)
 
+func _on_area_entered(area: Area2D) -> void:
+	if area and (area.is_in_group("player_pickup") or (area.get_parent() and area.get_parent().is_in_group("player"))):
+		_collect()
+
 func _on_body_entered(body: Node2D) -> void:
-	if is_picked or not body.is_in_group("player"):
+	if body and (body.is_in_group("player") or body.is_in_group("player_pickup") or (body.get_parent() and body.get_parent().is_in_group("player"))):
+		_collect()
+
+func _collect() -> void:
+	if is_picked:
 		return
 
 	is_picked = true

@@ -32,6 +32,53 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
+[sub_resource type="SpriteFrames" id="SpriteFrames_gacha"]
+animations = [{
+"frames": [],
+"loop": false,
+"name": &"fivegold",
+"speed": 8.0
+}, {
+"frames": [],
+"loop": false,
+"name": &"fivepurple",
+"speed": 8.0
+}, {
+"frames": [],
+"loop": false,
+"name": &"onegold",
+"speed": 8.0
+}, {
+"frames": [],
+"loop": false,
+"name": &"onepurple",
+"speed": 8.0
+}]
+
+[sub_resource type="Animation" id="Animation_onegold"]
+resource_name = "onegold"
+length = 2.0
+
+[sub_resource type="Animation" id="Animation_onepurple"]
+resource_name = "onepurple"
+length = 2.0
+
+[sub_resource type="Animation" id="Animation_fivegold"]
+resource_name = "fivegold"
+length = 2.0
+
+[sub_resource type="Animation" id="Animation_fivepurple"]
+resource_name = "fivepurple"
+length = 2.0
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_gacha"]
+_data = {
+"fivegold": SubResource("Animation_fivegold"),
+"fivepurple": SubResource("Animation_fivepurple"),
+"onegold": SubResource("Animation_onegold"),
+"onepurple": SubResource("Animation_onepurple")
+}
+
 [node name="GachaUI" type="Control" unique_id=1184881839]
 layout_mode = 3
 anchors_preset = 15
@@ -181,3 +228,39 @@ layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.9, 0.3, 1)
 theme_override_font_sizes/font_size = 26
 text = "Roll 5x (45 💎)"
+
+[node name="GachaAnimator" type="AnimatedSprite2D" parent="CenterContainer/Panel"]
+visible = false
+z_index = 10
+position = Vector2(440, 288)
+scale = Vector2(1.275, 0.804)
+sprite_frames = SubResource("SpriteFrames_gacha")
+animation = &"onepurple"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CenterContainer/Panel"]
+libraries = {
+"": SubResource("AnimationLibrary_gacha")
+}
+
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="."]
+visible = false
+z_index = 20
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand = true
+bus = &"Master"
+
+[node name="VideoSkipButton" type="Button" parent="."]
+visible = false
+z_index = 21
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+flat = true

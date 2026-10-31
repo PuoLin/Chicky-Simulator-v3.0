@@ -18,8 +18,6 @@ class_name BackpackUI
 @onready var item_desc_label: Label = $CenterContainer/Panel/RootVBox/BottomSection/RightPane/DetailVBox/ItemDesc
 @onready var item_stats_label: Label = $CenterContainer/Panel/RootVBox/BottomSection/RightPane/DetailVBox/ItemStats
 @onready var action_button: Button = $CenterContainer/Panel/RootVBox/BottomSection/RightPane/DetailVBox/ActionButton
-@onready var upgrade_button: Button = $CenterContainer/Panel/RootVBox/BottomSection/RightPane/DetailVBox/UpgradeButton
-@onready var sell_button: Button = $CenterContainer/Panel/RootVBox/BottomSection/RightPane/DetailVBox/SellButton
 @onready var close_button: Button = $CenterContainer/Panel/RootVBox/TopBar/CloseButton
 
 # Category buttons container
@@ -35,8 +33,6 @@ func _ready() -> void:
 	visible = false
 	close_button.pressed.connect(toggle)
 	action_button.pressed.connect(_on_action_button_pressed)
-	upgrade_button.pressed.connect(_on_upgrade_button_pressed)
-	sell_button.pressed.connect(_on_sell_button_pressed)
 	Global.inventory_updated.connect(refresh_ui)
 	
 	_connect_slot(slot_weapon, "w")
@@ -203,36 +199,6 @@ func _select_item(id: String, is_eq: bool, slot_key: String) -> void:
 	else:
 		action_button.text = "EQUIP"
 
-	# Configure Upgrade and Sell action buttons
-	if ItemDatabase.is_upgradeable(id):
-		upgrade_button.visible = true
-		var info := Global.get_upgrade_info(id)
-		if info.get("max_reached", false):
-			upgrade_button.text = "MAX LEVEL (+15)"
-			upgrade_button.disabled = true
-		else:
-			var next_lvl: int = info["next_level"]
-			var cost: int = info["coin_cost"]
-			var has_dup: bool = info["has_duplicate"]
-			if has_dup:
-				upgrade_button.text = "UPGRADE (+%d, Dup+%d🪙)" % [next_lvl, cost]
-				upgrade_button.disabled = not info.get("can_upgrade", false)
-			else:
-				upgrade_button.text = "NEED DUPLICATE"
-				upgrade_button.disabled = true
-	else:
-		upgrade_button.visible = false
-
-	sell_button.visible = true
-	var sell_price := ItemDatabase.get_sell_price(id)
-	var bag_count := Global.count_inventory_item(id)
-	if is_eq and bag_count <= 0:
-		sell_button.text = "CANNOT SELL EQUIPPED"
-		sell_button.disabled = true
-	else:
-		sell_button.text = "SELL (1x for %d 🪙)" % sell_price
-		sell_button.disabled = bag_count <= 0
-
 func _clear_selection() -> void:
 	selected_item_id = ""
 	item_icon.texture = null
@@ -241,8 +207,6 @@ func _clear_selection() -> void:
 	item_desc_label.text = "Choose gear from inventory or equipped slots to inspect."
 	item_stats_label.text = ""
 	action_button.visible = false
-	upgrade_button.visible = false
-	sell_button.visible = false
 
 func _on_action_button_pressed() -> void:
 	if selected_item_id.is_empty():
@@ -258,22 +222,3 @@ func _on_action_button_pressed() -> void:
 		Global.equip_item(selected_item_id)
 
 	refresh_ui()
-
-func _on_upgrade_button_pressed() -> void:
-	if selected_item_id.is_empty():
-		return
-	var res := Global.upgrade_item(selected_item_id)
-	if res.get("success", false):
-		refresh_ui()
-		_select_item(selected_item_id, selected_is_equipped, selected_slot_type)
-
-func _on_sell_button_pressed() -> void:
-	if selected_item_id.is_empty():
-		return
-	var res := Global.sell_item(selected_item_id)
-	if res.get("success", false):
-		refresh_ui()
-		if Global.count_inventory_item(selected_item_id) > 0 or selected_is_equipped:
-			_select_item(selected_item_id, selected_is_equipped, selected_slot_type)
-		else:
-			_clear_selection()

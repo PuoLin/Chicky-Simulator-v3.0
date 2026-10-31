@@ -322,7 +322,8 @@ func get_upgraded_stats(id: String, level: int = -1) -> Dictionary:
 		else:
 			level = 0
 	level = clampi(level, 0, 15)
-	var mult: float = 1.0 + 0.05 * float(level)
+	# High-impact upgrade scaling: +12% per upgrade level (+180% at max +15)
+	var mult: float = 1.0 + 0.12 * float(level)
 	return {
 		"atk": itm.get("atk", 0.0) * mult,
 		"def": itm.get("def", 0.0) * mult,

@@ -170,6 +170,8 @@ func _spawn_random_exit_portal() -> void:
 
 	exit_portal.global_position = chosen_pos
 	exit_portal.open_portal()
+	if is_instance_valid(player) and player.has_method("set_exit_portal_target"):
+		player.set_exit_portal_target(exit_portal)
 	print("[Level] Exit portal opened at random coordinate: ", chosen_pos)
 
 func get_stage_clear_reward(stage_num: int) -> int:
@@ -214,6 +216,8 @@ func get_stage_clear_reward(stage_num: int) -> int:
 func _on_stage_cleared() -> void:
 	game_over = true
 	Global.stage_active = false
+	if is_instance_valid(player) and player.has_method("hide_exit_portal_arrow"):
+		player.hide_exit_portal_arrow()
 	if spawner and spawner.has_method("stop_spawning"):
 		spawner.stop_spawning()
 	AudioManager.play_victory_jingle()
@@ -259,6 +263,8 @@ func _on_stage_cleared() -> void:
 func _on_player_died() -> void:
 	game_over = true
 	Global.stage_active = false
+	if is_instance_valid(player) and player.has_method("hide_exit_portal_arrow"):
+		player.hide_exit_portal_arrow()
 	if spawner and spawner.has_method("stop_spawning"):
 		spawner.stop_spawning()
 	AudioManager.play_defeat_jingle()

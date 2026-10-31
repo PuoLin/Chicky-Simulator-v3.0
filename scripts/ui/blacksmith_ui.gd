@@ -19,10 +19,12 @@ class_name BlacksmithUI
 @onready var sell_btn: Button = $CenterContainer/Panel/RootVBox/ContentHBox/RightPane/DetailVBox/ButtonHBox/SellButton
 
 var selected_item_id: String = ""
+var _status_timer_token: int = 0
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	visible = false
+	status_label.text = ""
 	
 	close_btn.pressed.connect(toggle)
 	upgrade_btn.pressed.connect(_on_upgrade_pressed)
@@ -36,6 +38,7 @@ func _ready() -> void:
 
 func toggle() -> void:
 	visible = not visible
+	status_label.text = ""
 	if visible:
 		_update_coins_display()
 		refresh_ui()
@@ -155,8 +158,12 @@ func _populate_item_list() -> void:
 		btn.add_child(hbox)
 
 		var captured_id := itm_id
-		btn.pressed.connect(func(): _select_item(captured_id))
+		btn.pressed.connect(func(): _on_item_selected(captured_id))
 		item_list_container.add_child(btn)
+
+func _on_item_selected(itm_id: String) -> void:
+	status_label.text = ""
+	_select_item(itm_id)
 
 func _select_item(itm_id: String) -> void:
 	selected_item_id = itm_id
@@ -185,7 +192,7 @@ func _select_item(itm_id: String) -> void:
 	]
 	
 	if current_lvl < 15:
-		stats_next_label.text = "Next (+%d): ATK +%d  |  DEF +%d  |  CD -%.1fs  (+5%%)" % [
+		stats_next_label.text = "Next (+%d): ATK +%d  |  DEF +%d  |  CD -%.1fs  (+12%%)" % [
 			current_lvl + 1,
 			int(next_stats.get("atk", 0.0)),
 			int(next_stats.get("def", 0.0)),
@@ -239,6 +246,11 @@ func _on_upgrade_pressed() -> void:
 		status_label.text = "Success! %s (1 duplicate consumed)" % res.get("reason", "")
 		status_label.add_theme_color_override("font_color", Color(0.4, 1.0, 0.4, 1.0))
 		refresh_ui()
+		_status_timer_token += 1
+		var token := _status_timer_token
+		await get_tree().create_timer(3.0).timeout
+		if is_instance_valid(status_label) and _status_timer_token == token:
+			status_label.text = ""
 	else:
 		status_label.text = "Upgrade Failed: %s" % res.get("reason", "")
 		status_label.add_theme_color_override("font_color", Color(1.0, 0.4, 0.4, 1.0))
@@ -252,6 +264,11 @@ func _on_sell_pressed() -> void:
 		status_label.text = "Item sold! %s" % res.get("reason", "")
 		status_label.add_theme_color_override("font_color", Color(1.0, 0.9, 0.3, 1.0))
 		refresh_ui()
+		_status_timer_token += 1
+		var token := _status_timer_token
+		await get_tree().create_timer(3.0).timeout
+		if is_instance_valid(status_label) and _status_timer_token == token:
+			status_label.text = ""
 	else:
 		status_label.text = "Cannot Sell: %s" % res.get("reason", "")
 		status_label.add_theme_color_override("font_color", Color(1.0, 0.4, 0.4, 1.0))

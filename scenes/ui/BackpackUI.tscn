@@ -236,19 +236,3 @@ size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 20
 text = "EQUIP"
 
-[node name="UpgradeButton" type="Button" parent="CenterContainer/Panel/RootVBox/BottomSection/RightPane/DetailVBox" unique_id=1953032015]
-visible = false
-custom_minimum_size = Vector2(200, 42)
-layout_mode = 2
-size_flags_horizontal = 4
-theme_override_font_sizes/font_size = 18
-text = "UPGRADE"
-
-[node name="SellButton" type="Button" parent="CenterContainer/Panel/RootVBox/BottomSection/RightPane/DetailVBox" unique_id=1953032016]
-visible = false
-custom_minimum_size = Vector2(200, 42)
-layout_mode = 2
-size_flags_horizontal = 4
-theme_override_font_sizes/font_size = 18
-text = "SELL"
-

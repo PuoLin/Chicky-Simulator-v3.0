@@ -20,9 +20,9 @@ func _ready() -> void:
 	spawn_timer = Timer.new()
 	var stage := Global.current_stage
 	if stage >= 30:
-		spawn_timer.wait_time = 0.75 # Ultra-rapid spawn swarm for final gear check
+		spawn_timer.wait_time = 1.2 # Balanced fast spawn for Stage 30
 	elif stage in [28, 29]:
-		spawn_timer.wait_time = 1.0 # High-speed swarm for Stages 28-29
+		spawn_timer.wait_time = 1.4 # Balanced spawn interval for Stages 28-29
 	else:
 		spawn_timer.wait_time = max(1.5, 4.2 - (stage * 0.2))
 	spawn_timer.autostart = true
@@ -51,11 +51,11 @@ func _on_spawn_timeout() -> void:
 
 	# Dynamic stage-based concurrent monster limit
 	var stage := Global.current_stage
-	var max_allowed: int = min(16, 3 + (stage * 2))
+	var max_allowed: int = min(12, 3 + (stage * 2))
 	if stage >= 30:
-		max_allowed = 25 # Maximize spawn concurrency for Stage 30 gear check
+		max_allowed = 16 # Rebalanced concurrency cap for Stage 30
 	elif stage in [28, 29]:
-		max_allowed = 20 # High concurrency for Stages 28-29
+		max_allowed = 14 # Rebalanced concurrency cap for Stages 28-29
 
 	var current_monsters := get_tree().get_nodes_in_group("monsters")
 	if current_monsters.size() >= max_allowed:

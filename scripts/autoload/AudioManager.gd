@@ -5,6 +5,7 @@ extends Node
 ## including victory fanfares and defeat sound effects on level ends.
 
 var music_player: AudioStreamPlayer
+var bgm_player: AudioStreamPlayer
 var sfx_player: AudioStreamPlayer
 
 var tracks: Dictionary = {
@@ -19,6 +20,7 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 
 	music_player = AudioStreamPlayer.new()
+	bgm_player = music_player
 	music_player.process_mode = Node.PROCESS_MODE_ALWAYS
 	music_player.bus = "Master"
 	music_player.volume_db = 0.0

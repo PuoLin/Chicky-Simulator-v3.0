@@ -41,8 +41,14 @@ var base_light_energy: float = 1.0
 @onready var hp_bar: ProgressBar = $OverheadBars/HealthBar
 @onready var def_bar: ProgressBar = $OverheadBars/DefenseBar
 @onready var cd_bar: ProgressBar = $OverheadBars/CooldownBar
+@onready var pickup_area: Area2D = get_node_or_null("PickupArea")
+@onready var pickup_collision: CollisionShape2D = get_node_or_null("PickupArea/CollisionShape2D")
+@onready var arrow_indicator: Node2D = get_node_or_null("ArrowIndicator")
 
 var current_variant_id: String = "normal"
+var exit_portal_target: Node2D = null
+var hurt_tween: Tween = null
+const BASE_PICKUP_RADIUS: float = 60.0 * 1.4 
 
 func _ready() -> void:
 	add_to_group("player")
@@ -50,8 +56,14 @@ func _ready() -> void:
 	refresh_stats()
 	_setup_animations()
 	_setup_light_texture()
+	_setup_pickup_area()
+	_setup_arrow_indicator()
 	current_torch_fuel = max_torch_fuel
 	_update_torch_state()
+
+func _process(_delta: float) -> void:
+	if is_instance_valid(exit_portal_target) and arrow_indicator and arrow_indicator.visible:
+		arrow_indicator.rotation = (exit_portal_target.global_position - global_position).angle()
 
 func refresh_stats() -> void:
 	current_variant_id = Global.active_chick
@@ -65,9 +77,102 @@ func refresh_stats() -> void:
 	move_speed = stats["speed"]
 	damage_taken_this_stage = 0.0
 	
+	_update_pickup_radius()
 	_update_overhead_bars()
 	emit_signal("health_changed", current_hp, max_hp)
 	emit_signal("defense_changed", current_def, max_def)
+
+func _setup_pickup_area() -> void:
+	if not pickup_area:
+		pickup_area = get_node_or_null("PickupArea")
+	if not pickup_area:
+		pickup_area = Area2D.new()
+		pickup_area.name = "PickupArea"
+		pickup_area.collision_layer = 1
+		pickup_area.collision_mask = 4
+		add_child(pickup_area)
+	pickup_area.add_to_group("player_pickup")
+
+	if not pickup_collision:
+		pickup_collision = pickup_area.get_node_or_null("CollisionShape2D")
+	if not pickup_collision:
+		pickup_collision = CollisionShape2D.new()
+		pickup_collision.name = "CollisionShape2D"
+		var shape := CircleShape2D.new()
+		pickup_collision.shape = shape
+		pickup_area.add_child(pickup_collision)
+
+	if not pickup_area.area_entered.is_connected(_on_pickup_area_entered):
+		pickup_area.area_entered.connect(_on_pickup_area_entered)
+	if not pickup_area.body_entered.is_connected(_on_pickup_body_entered):
+		pickup_area.body_entered.connect(_on_pickup_body_entered)
+
+	_update_pickup_radius()
+
+func _update_pickup_radius() -> void:
+	var radius := BASE_PICKUP_RADIUS
+	if Global.active_chick == "magnet":
+		radius *= 2.0 # 210.0 px for magnet chick variant
+	if not pickup_collision and pickup_area:
+		pickup_collision = pickup_area.get_node_or_null("CollisionShape2D")
+	if pickup_collision:
+		if pickup_collision.shape == null:
+			pickup_collision.shape = CircleShape2D.new()
+		elif not pickup_collision.shape.resource_local_to_scene:
+			pickup_collision.shape = pickup_collision.shape.duplicate()
+			pickup_collision.shape.resource_local_to_scene = true
+		if pickup_collision.shape is CircleShape2D:
+			(pickup_collision.shape as CircleShape2D).radius = radius
+
+func _on_pickup_area_entered(area: Area2D) -> void:
+	if is_instance_valid(area) and area.has_method("_on_body_entered"):
+		area._on_body_entered(self)
+
+func _on_pickup_body_entered(body: Node2D) -> void:
+	if is_instance_valid(body) and body.has_method("_on_body_entered"):
+		body._on_body_entered(self)
+
+func _setup_arrow_indicator() -> void:
+	if not arrow_indicator:
+		arrow_indicator = get_node_or_null("ArrowIndicator")
+	if not arrow_indicator:
+		arrow_indicator = Node2D.new()
+		arrow_indicator.name = "ArrowIndicator"
+		arrow_indicator.visible = false
+		arrow_indicator.z_index = 20
+		add_child(arrow_indicator)
+
+	var poly := arrow_indicator.get_node_or_null("ArrowPolygon") as Polygon2D
+	if not poly:
+		poly = Polygon2D.new()
+		poly.name = "ArrowPolygon"
+		var mat := CanvasItemMaterial.new()
+		mat.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
+		poly.material = mat
+		poly.position = Vector2(55, 0)
+		poly.color = Color(1.0, 0.85, 0.1, 1.0)
+		poly.polygon = PackedVector2Array([
+			Vector2(-8, -9),
+			Vector2(14, 0),
+			Vector2(-8, 9),
+			Vector2(-2, 0)
+		])
+		arrow_indicator.add_child(poly)
+	elif not poly.material:
+		var mat := CanvasItemMaterial.new()
+		mat.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
+		poly.material = mat
+
+func set_exit_portal_target(portal: Node2D) -> void:
+	exit_portal_target = portal
+	if arrow_indicator and is_instance_valid(portal):
+		arrow_indicator.visible = true
+		arrow_indicator.rotation = (portal.global_position - global_position).angle()
+
+func hide_exit_portal_arrow() -> void:
+	exit_portal_target = null
+	if arrow_indicator:
+		arrow_indicator.visible = false
 
 func heal(amount: float) -> void:
 	if current_hp <= 0:
@@ -93,8 +198,8 @@ func _setup_animations() -> void:
 		if ResourceLoader.exists(idle_path):
 			frames.add_frame(idle_name, load(idle_path))
 			
-		# Walk, Attack, Hurt
-		for act in ["walk", "attack", "hurt"]:
+		# Walk, Attack
+		for act in ["walk", "attack"]:
 			var act_name: String = v_str + "_" + act
 			frames.add_animation(act_name)
 			frames.set_animation_speed(act_name, 8.0)
@@ -113,11 +218,11 @@ func _setup_animations() -> void:
 			var fallback_tex: Texture2D = load(fallback_path)
 			if fallback_tex:
 				frames.add_frame(idle_name, fallback_tex)
-				for act in ["walk", "attack", "hurt"]:
+				for act in ["walk", "attack"]:
 					frames.add_frame(v_str + "_" + act, fallback_tex)
 
 	# Also register base unprefixed aliases pointing to the current variant frames
-	for act in ["idle", "walk", "attack", "hurt"]:
+	for act in ["idle", "walk", "attack"]:
 		var target_name: String = current_variant_id + "_" + act
 		if frames.has_animation(target_name):
 			frames.add_animation(act)
@@ -228,6 +333,8 @@ func take_damage(amount: float) -> void:
 	if current_hp <= 0:
 		return
 
+	var incoming_dmg := amount
+
 	# Defense absorption first
 	if current_def > 0:
 		if current_def >= amount:
@@ -250,15 +357,13 @@ func take_damage(amount: float) -> void:
 		die()
 		return
 
-	# Play hurt animation without blocking UI updates
-	if amount > 0:
-		play_anim("hurt")
-		await sprite.animation_finished
-		if current_hp > 0 and not is_attacking:
-			if velocity.length() > 0.0:
-				play_anim("walk")
-			else:
-				play_anim("idle")
+	# Hit feedback: Pure red flash Tween (~0.2s) without interrupting current animation
+	if incoming_dmg > 0 and sprite:
+		if is_instance_valid(hurt_tween) and hurt_tween.is_valid():
+			hurt_tween.kill()
+		sprite.modulate = Color(1.0, 0.0, 0.0, 1.0)
+		hurt_tween = create_tween()
+		hurt_tween.tween_property(sprite, "modulate", Color(1.0, 1.0, 1.0, 1.0), 0.2).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 
 func die() -> void:
 	velocity = Vector2.ZERO
@@ -266,7 +371,9 @@ func die() -> void:
 	$CollisionShape2D.set_deferred("disabled", true)
 	if has_node("AttackArea/CollisionShape2D"):
 		$AttackArea/CollisionShape2D.set_deferred("disabled", true)
-	play_anim("hurt")
+	hide_exit_portal_arrow()
+	if is_instance_valid(hurt_tween) and hurt_tween.is_valid():
+		hurt_tween.kill()
 	# Fade out gently instead of calling queue_free
 	var tween := create_tween()
 	tween.tween_property(sprite, "modulate:a", 0.0, 0.5)
