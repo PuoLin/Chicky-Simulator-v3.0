@@ -100,8 +100,11 @@ func _on_select_pressed() -> void:
 
 func _on_quit_pressed() -> void:
 	if OS.has_feature("web"):
-		# Tell the Huawei Quick App webview to close or go back
+		# Mute the master bus to prevent the currentTime null error during browser teardown
+		var master_idx = AudioServer.get_bus_index("Master")
+		AudioServer.set_bus_mute(master_idx, true)
+		
+		# Rely entirely on the browser/webview to close the app
 		JavaScriptBridge.eval("window.close(); window.history.back();")
-	
-	# Fallback: Kill the Godot engine process
-	get_tree().quit()
+	else:
+		get_tree().quit()

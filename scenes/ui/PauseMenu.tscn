@@ -59,49 +59,56 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 40.0
-offset_top = 25.0
+offset_top = 20.0
 offset_right = -40.0
-offset_bottom = -25.0
+offset_bottom = -20.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme_override_constants/separation = 16
+theme_override_constants/separation = 12
 alignment = 1
 
 [node name="Title" type="Label" parent="CenterContainer/Panel/VBoxContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
-theme_override_font_sizes/font_size = 68
+theme_override_font_sizes/font_size = 64
 text = "GAME PAUSED"
 horizontal_alignment = 1
 
 [node name="ResumeBtn" type="Button" parent="CenterContainer/Panel/VBoxContainer"]
-custom_minimum_size = Vector2(400, 80)
+custom_minimum_size = Vector2(400, 76)
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_font_sizes/font_size = 48
+theme_override_font_sizes/font_size = 46
 text = "RESUME"
 
 [node name="RestartBtn" type="Button" parent="CenterContainer/Panel/VBoxContainer"]
-custom_minimum_size = Vector2(400, 80)
+custom_minimum_size = Vector2(400, 76)
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_font_sizes/font_size = 48
+theme_override_font_sizes/font_size = 46
 text = "RESTART"
 
 [node name="SettingsBtn" type="Button" parent="CenterContainer/Panel/VBoxContainer"]
-custom_minimum_size = Vector2(400, 80)
+custom_minimum_size = Vector2(400, 76)
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_font_sizes/font_size = 48
+theme_override_font_sizes/font_size = 46
 text = "SETTINGS"
 
 [node name="MainMenuBtn" type="Button" parent="CenterContainer/Panel/VBoxContainer"]
-custom_minimum_size = Vector2(400, 80)
+custom_minimum_size = Vector2(400, 76)
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_font_sizes/font_size = 48
+theme_override_font_sizes/font_size = 46
 text = "MAIN MENU"
+
+[node name="QuitBtn" type="Button" parent="CenterContainer/Panel/VBoxContainer"]
+custom_minimum_size = Vector2(400, 76)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 46
+text = "QUIT"
 
 [node name="CloseButton" type="Button" parent="CenterContainer/Panel"]
 custom_minimum_size = Vector2(90, 80)

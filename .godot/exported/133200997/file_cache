@@ -5,7 +5,7 @@ res://scenes/items/HealthPickup.tscn::3c7c0991dd70b6d896bdc89e0408e425::17922325
 res://scenes/items/ItemDrop.tscn::7368698e28202954d777314c7935356e::1792218173::res://.godot/exported/133200997/export-965fc495db59d52d39f47cee75c3310e-ItemDrop.scn
 res://scenes/main/Level.tscn::71ceee809c2ef827804bb192c17bc45a::1792229026::res://.godot/exported/133200997/export-5fee1269c1d75d6a2059e48cc2f356ff-Level.scn
 res://scenes/main/LevelSelect.tscn::fa533114364ede52e3af84536e6ba59c::1793451050::res://.godot/exported/133200997/export-9944a48b6e33694ceff8340ec4a65e59-LevelSelect.scn
-res://scenes/main/MainMenu.tscn::ffb05b31b687456787c265c558d30b81::1793458516::res://.godot/exported/133200997/export-7f26e0d15f396623b3824c1cf41e625d-MainMenu.scn
+res://scenes/main/MainMenu.tscn::ffb05b31b687456787c265c558d30b81::1793458802::res://.godot/exported/133200997/export-7f26e0d15f396623b3824c1cf41e625d-MainMenu.scn
 res://scenes/monsters/Monster.tscn::ff2865ab2fedfe50473835f14fee6dab::1792215937::res://.godot/exported/133200997/export-7ba24db929fac493b40134ae1e5b51bc-Monster.scn
 res://scenes/player/Player.tscn::cb3aff012c0f1afefe35d7be1517da75::1793451050::res://.godot/exported/133200997/export-a4e9bb150591131ae307f440fab940ce-Player.scn
 res://scenes/ui/AchievementsUI.tscn::f7d23662d620e22cbfdfc14b7c9d9959::1793452778::res://.godot/exported/133200997/export-8d8be6276c0bf26af0890b699d378cc9-AchievementsUI.scn
@@ -17,7 +17,7 @@ res://scenes/ui/GachaUI.tscn::bc2bd27e173ac1e7f5070b960ff67015::1793452779::res:
 res://scenes/ui/GameOverDialog.tscn::0a12cbaa7ef1d2cebac4d52179062229::1792216227::res://.godot/exported/133200997/export-2aa7b14bcd78a42c19ed4f4b01880560-GameOverDialog.scn
 res://scenes/ui/HUD.tscn::412bd099a017cc64a9dd2789ef6d23e0::1793454774::res://.godot/exported/133200997/export-74b5c9848938f4eb9ebaf6fab3809318-HUD.scn
 res://scenes/ui/MissionsUI.tscn::b1b77bf4b2db829602679de0b7ad2688::1793452779::res://.godot/exported/133200997/export-e72963213c276288ac235adb3b8d7415-MissionsUI.scn
-res://scenes/ui/PauseMenu.tscn::d3888f0f0f994762c03f141bd4f0a46c::1793458545::res://.godot/exported/133200997/export-f3a0254cbdab81d1efc5e42f39e19dcf-PauseMenu.scn
+res://scenes/ui/PauseMenu.tscn::f09f069a9b603949d0f2779ce496d171::1793459061::res://.godot/exported/133200997/export-f3a0254cbdab81d1efc5e42f39e19dcf-PauseMenu.scn
 res://scenes/ui/SettingsUI.tscn::14c2c81c73d409922bcd0f0d19ac771f::1793452779::res://.godot/exported/133200997/export-8f84f61736a53d9a185e5adfd02889d4-SettingsUI.scn
 res://scenes/ui/ShopUI.tscn::b71988a26c111fe2a1060db5b0aa588a::1793452779::res://.godot/exported/133200997/export-3f665daec75b05be85ae1738e3291006-ShopUI.scn
 res://scenes/ui/VirtualJoystick.tscn::e6c58b184455f319bc666079e3661496::1793451050::res://.godot/exported/133200997/export-9be1ba2b03998cddd6277ce677e383d2-VirtualJoystick.scn
