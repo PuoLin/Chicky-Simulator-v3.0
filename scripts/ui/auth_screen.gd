@@ -117,6 +117,7 @@ func _set_status(msg: String, col: Color) -> void:
 
 # --- HTML BRIDGE WORKAROUND FOR HUAWEI QUICK APP KEYBOARD ---
 func spawn_html_input(input_type: String, field_id: String) -> void:
+	# We use %% to escape the CSS percentages so Godot string formatting doesn't break
 	var js_code = """
 		var old_box = document.getElementById('godot_temp_input');
 		if (old_box) old_box.remove();
@@ -127,28 +128,36 @@ func spawn_html_input(input_type: String, field_id: String) -> void:
 		box.placeholder = 'Enter %s...';
 		box.style.position = 'fixed';
 		box.style.top = '10px';
-		box.style.left = '50%';
-		box.style.transform = 'translateX(-50%)';
+		box.style.left = '50%%';
+		box.style.transform = 'translateX(-50%%)';
 		box.style.fontSize = '20px';
 		box.style.padding = '10px';
 		box.style.zIndex = '9999';
 		document.body.appendChild(box);
 		box.focus();
 		
-		box.onblur = function() {
-			window.godotHtmlCallback([box.value, '%s']);
+		var submitted = false;
+		function sendToGodot() {
+			if (submitted) return;
+			submitted = true;
+			if (window.godotHtmlCallback) {
+				window.godotHtmlCallback(box.value, '%s');
+			}
 			box.remove();
-		};
+		}
+		
+		box.onblur = sendToGodot;
 		box.onkeydown = function(e) {
-			if (e.key === 'Enter') box.blur();
+			if (e.key === 'Enter') sendToGodot();
 		};
 	""" % [input_type, field_id, field_id]
 	
 	JavaScriptBridge.eval(js_code)
 
 func _on_html_input(args) -> void:
-	var typed_text = args[0]
-	var field = args[1]
+	# Safely converts the JavaScript arguments back into Godot strings
+	var typed_text = str(args[0])
+	var field = str(args[1])
 	
 	if field == "username":
 		username_input.text = typed_text
