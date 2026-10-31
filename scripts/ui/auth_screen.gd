@@ -118,10 +118,10 @@ func _set_status(msg: String, col: Color) -> void:
 # --- HTML BRIDGE WORKAROUND FOR HUAWEI QUICK APP KEYBOARD ---
 func spawn_html_input(input_type: String, field_id: String) -> void:
 	var js_code = """
-		var old_box = document.getElementById('godot_temp_input');
-		if (old_box) old_box.remove();
+		var box = document.getElementById('godot_temp_input');
+		if (box) box.remove();
 		
-		var box = document.createElement('input');
+		box = document.createElement('input');
 		box.id = 'godot_temp_input';
 		box.type = '%s';
 		box.placeholder = 'Enter %s...';
@@ -135,34 +135,33 @@ func spawn_html_input(input_type: String, field_id: String) -> void:
 		document.body.appendChild(box);
 		box.focus();
 		
-		var submitted = false;
-		function sendToGodot() {
-			if (submitted) return;
-			submitted = true;
+		box.onblur = function() {
 			if (window.godotHtmlCallback) {
-				// Fixed: Brackets removed so Godot reads this correctly
-				window.godotHtmlCallback(box.value, '%s');
+				// Concatenate into one string to prevent webview array corruption
+				window.godotHtmlCallback(box.value + '|||' + '%s');
 			}
 			box.remove();
-		}
-		
-		box.onblur = sendToGodot;
+		};
 		box.onkeydown = function(e) {
-			if (e.key === 'Enter') sendToGodot();
+			if (e.key === 'Enter') box.blur();
 		};
 	""" % [input_type, field_id, field_id]
 	
 	JavaScriptBridge.eval(js_code)
 
 func _on_html_input(args) -> void:
-	# Safely converts the JavaScript arguments back into Godot strings
-	var typed_text = str(args[0])
-	var field = str(args[1])
-	
-	if field == "username":
-		username_input.text = typed_text
-	elif field == "password":
-		password_input.text = typed_text
+	if args.size() > 0:
+		var raw_data = str(args[0])
+		var parts = raw_data.split("|||")
+		
+		if parts.size() == 2:
+			var typed_text = parts[0]
+			var field = parts[1]
+			
+			if field == "username":
+				username_input.text = typed_text
+			elif field == "password":
+				password_input.text = typed_text
 
 func _on_username_button_pressed() -> void:
 	if OS.has_feature("web"):
