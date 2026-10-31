@@ -115,16 +115,11 @@ func _set_status(msg: String, col: Color) -> void:
 	status_label.add_theme_color_override("font_color", col)
 
 
-#func _on_username_input_focus_entered() -> void:
-	## Forces the keyboard to open when the Username box is tapped
-	#DisplayServer.virtual_keyboard_show("")
-#
-#
-#func _on_password_input_focus_entered() -> void:
-## Forces the keyboard to open when the Password box is tapped
-	#DisplayServer.virtual_keyboard_show("")
+func _on_username_input_focus_entered() -> void:
+	# Forces the keyboard to open when the Username box is tapped
+	DisplayServer.virtual_keyboard_show("")
 
 
-func _on_username_row_focus_entered() -> void:
-	## Forces the keyboard to open when the Password box is tapped
+func _on_password_input_focus_entered() -> void:
+# Forces the keyboard to open when the Password box is tapped
 	DisplayServer.virtual_keyboard_show("")
