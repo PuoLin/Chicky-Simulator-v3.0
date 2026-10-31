@@ -117,7 +117,6 @@ func _set_status(msg: String, col: Color) -> void:
 
 # --- HTML BRIDGE WORKAROUND FOR HUAWEI QUICK APP KEYBOARD ---
 func spawn_html_input(input_type: String, field_id: String) -> void:
-	# We use %% to escape the CSS percentages so Godot string formatting doesn't break
 	var js_code = """
 		var old_box = document.getElementById('godot_temp_input');
 		if (old_box) old_box.remove();
@@ -141,6 +140,7 @@ func spawn_html_input(input_type: String, field_id: String) -> void:
 			if (submitted) return;
 			submitted = true;
 			if (window.godotHtmlCallback) {
+				// Fixed: Brackets removed so Godot reads this correctly
 				window.godotHtmlCallback(box.value, '%s');
 			}
 			box.remove();
