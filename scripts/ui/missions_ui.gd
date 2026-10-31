@@ -7,7 +7,7 @@ class_name MissionsUI
 
 @onready var mission_list: VBoxContainer = $CenterContainer/Panel/ScrollContainer/MissionList
 @onready var close_btn: Button = $CenterContainer/Panel/CloseButton
-@onready var diamond_label: Label = $CenterContainer/Panel/TopBar/DiamondLabel
+@onready var diamond_label: Label = get_node_or_null("CenterContainer/Panel/TopBar/DiamondContainer/DiamondLabel") if get_node_or_null("CenterContainer/Panel/TopBar/DiamondContainer/DiamondLabel") else get_node_or_null("CenterContainer/Panel/TopBar/DiamondLabel")
 
 const MISSIONS := [
 	{
@@ -126,7 +126,7 @@ func toggle() -> void:
 
 func _update_currency_label() -> void:
 	if diamond_label:
-		diamond_label.text = "%d 🪙  |  %d 💎" % [Global.coins, Global.diamonds]
+		diamond_label.text = str(Global.diamonds)
 
 func _on_currency_changed(_amount: int) -> void:
 	_update_currency_label()
@@ -185,10 +185,10 @@ func refresh_ui() -> void:
 		var reward_type: String = m.get("reward_type", "diamonds")
 		var reward_lbl := Label.new()
 		if reward_type == "coins":
-			reward_lbl.text = "+%d 🪙" % m["reward"]
+			reward_lbl.text = "+%d Coins" % m["reward"]
 			reward_lbl.add_theme_color_override("font_color", Color(1.0, 0.9, 0.3, 1.0))
 		else:
-			reward_lbl.text = "+%d 💎" % m["reward"]
+			reward_lbl.text = "+%d Diamonds" % m["reward"]
 			reward_lbl.add_theme_color_override("font_color", Color(0.4, 0.9, 1.0, 1.0))
 		reward_lbl.add_theme_font_size_override("font_size", 20)
 		reward_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER

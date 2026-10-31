@@ -41,9 +41,9 @@ func show_victory(stage: int, coins_earned: int, time_spent: float, is_replay: b
 	if diamond_bonus_label:
 		if milestone_diamonds > 0:
 			if stage in [10, 20, 30]:
-				diamond_bonus_label.text = "★ BOSS MILESTONE: +%d 💎 DIAMONDS! ★" % milestone_diamonds
+				diamond_bonus_label.text = "★ BOSS MILESTONE: +%d DIAMONDS! ★" % milestone_diamonds
 			else:
-				diamond_bonus_label.text = "Milestone Bonus: +%d 💎 Diamonds" % milestone_diamonds
+				diamond_bonus_label.text = "Milestone Bonus: +%d Diamonds" % milestone_diamonds
 			diamond_bonus_label.visible = true
 		else:
 			diamond_bonus_label.visible = false

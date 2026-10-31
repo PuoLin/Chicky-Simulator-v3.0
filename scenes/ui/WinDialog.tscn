@@ -68,8 +68,8 @@ horizontal_alignment = 1
 visible = false
 layout_mode = 2
 theme_override_colors/font_color = Color(0.35, 0.9, 1, 1)
-theme_override_font_sizes/font_size = 26
-text = "★ BOSS REWARD: +50 💎 DIAMONDS! ★"
+theme_override_font_sizes/font_size = 28
+text = "★ BOSS REWARD: +50 DIAMONDS! ★"
 horizontal_alignment = 1
 
 [node name="TimeLabel" type="Label" parent="CenterContainer/Panel/VBoxContainer" unique_id=52030689]

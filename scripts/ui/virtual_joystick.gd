@@ -5,8 +5,8 @@ class_name MobileVirtualJoystick
 ## Procedural circular virtual joystick designed for mobile and tablet touch controls.
 ## Renders smooth circular base and thumb knob via _draw() and clamps input within circular radius.
 
-@export var base_radius: float = 60.0
-@export var knob_radius: float = 24.0
+@export var base_radius: float = 100.0
+@export var knob_radius: float = 40.0
 @export var deadzone: float = 0.12
 
 var touch_id: int = -1
@@ -14,7 +14,7 @@ var knob_offset: Vector2 = Vector2.ZERO
 var output_vector: Vector2 = Vector2.ZERO
 
 func _ready() -> void:
-	custom_minimum_size = Vector2((base_radius + 15.0) * 2.0, (base_radius + 15.0) * 2.0)
+	custom_minimum_size = Vector2((base_radius + 20.0) * 2.0, (base_radius + 20.0) * 2.0)
 	queue_redraw()
 
 func _draw() -> void:
@@ -22,12 +22,12 @@ func _draw() -> void:
 	
 	# Outer circular base
 	draw_circle(center, base_radius, Color(0.12, 0.14, 0.20, 0.45))
-	draw_arc(center, base_radius, 0.0, TAU, 36, Color(0.7, 0.75, 0.9, 0.5), 2.5)
+	draw_arc(center, base_radius, 0.0, TAU, 36, Color(0.7, 0.75, 0.9, 0.5), 3.5)
 
 	# Inner circular thumb knob
 	var knob_center := center + knob_offset
 	draw_circle(knob_center, knob_radius, Color(0.85, 0.90, 1.0, 0.75))
-	draw_arc(knob_center, knob_radius, 0.0, TAU, 28, Color(1.0, 1.0, 1.0, 0.95), 2.0)
+	draw_arc(knob_center, knob_radius, 0.0, TAU, 28, Color(1.0, 1.0, 1.0, 0.95), 3.0)
 
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventScreenTouch:

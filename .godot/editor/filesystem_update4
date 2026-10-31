@@ -1,3 +1,12 @@
 res://scenes/ui/AuthScreen.tscn
 res://scripts/ui/auth_screen.gd
 res://scripts/autoload/Global.gd
+res://scripts/ui/achievements_ui.gd
+res://scripts/ui/blacksmith_ui.gd
+res://scripts/ui/gacha_ui.gd
+res://scripts/ui/level_select.gd
+res://scripts/ui/main_menu.gd
+res://scripts/ui/missions_ui.gd
+res://scripts/ui/shop_ui.gd
+res://scripts/ui/virtual_joystick.gd
+res://scripts/ui/win_dialog.gd

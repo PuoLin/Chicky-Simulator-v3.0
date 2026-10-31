@@ -7,7 +7,7 @@ class_name AchievementsUI
 
 @onready var close_btn: Button = $CenterContainer/Panel/CloseButton
 @onready var count_lbl: Label = $CenterContainer/Panel/TopBar/CountLabel
-@onready var diamond_lbl: Label = $CenterContainer/Panel/TopBar/DiamondLabel
+@onready var diamond_lbl: Label = get_node_or_null("CenterContainer/Panel/TopBar/DiamondContainer/DiamondLabel") if get_node_or_null("CenterContainer/Panel/TopBar/DiamondContainer/DiamondLabel") else get_node_or_null("CenterContainer/Panel/TopBar/DiamondLabel")
 @onready var achievement_list: VBoxContainer = $CenterContainer/Panel/ScrollContainer/AchievementList
 
 const WARM_GOLD := Color(1.0, 0.84, 0.0, 1.0) # #FFD700
@@ -111,7 +111,7 @@ func toggle() -> void:
 
 func _on_diamonds_changed(amount: int) -> void:
 	if diamond_lbl:
-		diamond_lbl.text = "Diamonds: %d 💎" % amount
+		diamond_lbl.text = str(amount)
 
 func refresh_achievements() -> void:
 	for child in achievement_list.get_children():
@@ -204,7 +204,7 @@ func refresh_achievements() -> void:
 		elif is_completed:
 			var claim_btn := Button.new()
 			claim_btn.custom_minimum_size = Vector2(160, 42)
-			claim_btn.text = "CLAIM (+%d 💎)" % reward_val
+			claim_btn.text = "CLAIM (+%d)" % reward_val
 			claim_btn.add_theme_font_size_override("font_size", 20)
 			claim_btn.add_theme_color_override("font_color", WARM_GOLD)
 			var cap_track: String = track_id
@@ -222,7 +222,7 @@ func refresh_achievements() -> void:
 			prog_bar.show_percentage = false
 
 			var prog_lbl := Label.new()
-			prog_lbl.text = "%d / %d (+%d 💎)" % [min(curr_val, target_val), target_val, reward_val]
+			prog_lbl.text = "%d / %d (+%d)" % [min(curr_val, target_val), target_val, reward_val]
 			prog_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 			prog_lbl.add_theme_font_size_override("font_size", 16)
 			prog_lbl.add_theme_color_override("font_color", Color(0.7, 0.7, 0.7, 1.0))

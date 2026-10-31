@@ -559,6 +559,21 @@ func set_active_user(user_name: String) -> void:
 	load_player_data()
 	username = user_name.strip_edges()
 
+func apply_god_mode() -> void:
+	is_god_mode = true
+	coins = 99999
+	diamonds = 99999
+	highest_stage = 30
+	cleared_stages = []
+	for s in range(1, 31):
+		cleared_stages.append(s)
+	unlocked_chicks = []
+	for chick_key in CHICK_STATS.keys():
+		unlocked_chicks.append(chick_key)
+	save_player_data()
+	emit_signal("coins_changed", coins)
+	emit_signal("diamonds_changed", diamonds)
+
 
 func sell_item(item_id: String) -> Dictionary:
 	var clean_id: String = item_id.strip_edges()

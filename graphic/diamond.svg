@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Base Diamond Shape -->
+  <polygon points="50,5 95,35 50,95 5,35" fill="#00d2ff" stroke="#0080ff" stroke-width="4" stroke-linejoin="round" />
+  <!-- Inner light reflection -->
+  <polygon points="50,5 75,35 50,95 25,35" fill="#80e5ff" />
+  <!-- Top highlight facet -->
+  <polygon points="50,5 95,35 50,35" fill="#b3f0ff" />
+  <polygon points="50,5 5,35 50,35" fill="#33ccff" />
+</svg>

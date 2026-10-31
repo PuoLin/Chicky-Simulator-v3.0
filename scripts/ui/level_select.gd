@@ -19,7 +19,8 @@ func _populate_stages() -> void:
 
 	for stage in range(1, 31):
 		var btn := Button.new()
-		btn.custom_minimum_size = Vector2(94, 52)
+		btn.custom_minimum_size = Vector2(100, 100)
+		btn.add_theme_font_size_override("font_size", 44)
 		btn.text = str(stage)
 
 		if stage <= Global.highest_stage:

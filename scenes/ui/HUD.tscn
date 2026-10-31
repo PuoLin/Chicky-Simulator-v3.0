@@ -8,7 +8,7 @@
 
 [sub_resource type="Theme" id="Theme_hud"]
 default_font = ExtResource("2_font")
-default_font_size = 28
+default_font_size = 32
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hp_bg"]
 bg_color = Color(0.5, 0.1, 0.1, 0.8)
@@ -30,8 +30,8 @@ layout_mode = 3
 anchors_preset = 0
 offset_left = 20.0
 offset_top = 20.0
-offset_right = 280.0
-offset_bottom = 140.0
+offset_right = 320.0
+offset_bottom = 160.0
 theme = SubResource("Theme_hud")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="TopLeft"]
@@ -44,17 +44,19 @@ grow_vertical = 2
 
 [node name="StageLabel" type="Label" parent="TopLeft/VBoxContainer"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 36
 text = "STAGE 1"
 
 [node name="KillLabel" type="Label" parent="TopLeft/VBoxContainer"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 30
 text = "Kills: 0 / 5"
 
 [node name="Bars" type="VBoxContainer" parent="TopLeft/VBoxContainer"]
 layout_mode = 2
 
 [node name="HealthBar" type="ProgressBar" parent="TopLeft/VBoxContainer/Bars"]
-custom_minimum_size = Vector2(180, 16)
+custom_minimum_size = Vector2(220, 20)
 layout_mode = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_hp_bg")
 theme_override_styles/fill = SubResource("StyleBoxFlat_hp_fg")
@@ -62,7 +64,7 @@ value = 100.0
 show_percentage = false
 
 [node name="DefenseBar" type="ProgressBar" parent="TopLeft/VBoxContainer/Bars"]
-custom_minimum_size = Vector2(180, 12)
+custom_minimum_size = Vector2(220, 16)
 layout_mode = 2
 theme_override_styles/fill = SubResource("StyleBoxFlat_def_fg")
 value = 100.0
@@ -73,10 +75,10 @@ layout_mode = 3
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -120.0
+offset_left = -140.0
 offset_top = 20.0
-offset_right = 120.0
-offset_bottom = 70.0
+offset_right = 140.0
+offset_bottom = 75.0
 grow_horizontal = 2
 theme = SubResource("Theme_hud")
 
@@ -87,7 +89,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_font_sizes/font_size = 40
+theme_override_font_sizes/font_size = 46
 text = "00:00"
 horizontal_alignment = 1
 
@@ -96,10 +98,10 @@ layout_mode = 3
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -320.0
+offset_left = -340.0
 offset_top = 20.0
 offset_right = -20.0
-offset_bottom = 70.0
+offset_bottom = 75.0
 grow_horizontal = 0
 theme = SubResource("Theme_hud")
 
@@ -110,11 +112,11 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 14
 alignment = 2
 
 [node name="CoinIcon" type="TextureRect" parent="TopRight/HBoxContainer"]
-custom_minimum_size = Vector2(40, 40)
+custom_minimum_size = Vector2(44, 44)
 layout_mode = 2
 texture = ExtResource("3_coin")
 expand_mode = 1
@@ -122,13 +124,13 @@ stretch_mode = 5
 
 [node name="CoinLabel" type="Label" parent="TopRight/HBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 32
+theme_override_font_sizes/font_size = 36
 text = "x 500"
 
 [node name="PauseButton" type="Button" parent="TopRight/HBoxContainer"]
-custom_minimum_size = Vector2(48, 44)
+custom_minimum_size = Vector2(56, 50)
 layout_mode = 2
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 28
 text = "||"
 
 [node name="CenterAlert" type="Control" parent="."]
@@ -136,10 +138,10 @@ layout_mode = 3
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -250.0
-offset_top = 90.0
-offset_right = 250.0
-offset_bottom = 140.0
+offset_left = -300.0
+offset_top = 95.0
+offset_right = 300.0
+offset_bottom = 155.0
 grow_horizontal = 2
 theme = SubResource("Theme_hud")
 
@@ -151,7 +153,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.4, 1, 0.4, 1)
-theme_override_font_sizes/font_size = 36
+theme_override_font_sizes/font_size = 40
 text = "EXIT PORTAL OPENED!"
 horizontal_alignment = 1
 
@@ -160,17 +162,17 @@ layout_mode = 3
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_left = 20.0
-offset_top = -240.0
-offset_right = 360.0
-offset_bottom = -20.0
+offset_left = 50.0
+offset_top = -290.0
+offset_right = 520.0
+offset_bottom = -50.0
 grow_vertical = 0
 theme = SubResource("Theme_hud")
 
 [node name="VirtualJoystick" parent="BottomLeft" instance=ExtResource("5_joy")]
 layout_mode = 1
-offset_top = -150.0
-offset_right = 150.0
+offset_top = -240.0
+offset_right = 240.0
 offset_bottom = 0.0
 
 [node name="TorchContainer" type="VBoxContainer" parent="BottomLeft"]
@@ -180,23 +182,24 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -160.0
-offset_top = -90.0
+offset_left = -190.0
+offset_top = -105.0
 grow_horizontal = 0
 grow_vertical = 0
 
 [node name="TorchButton" type="Button" parent="BottomLeft/TorchContainer"]
-custom_minimum_size = Vector2(140, 42)
+custom_minimum_size = Vector2(160, 48)
 layout_mode = 2
+theme_override_font_sizes/font_size = 26
 text = "Torch (T)"
 
 [node name="StatusLabel" type="Label" parent="BottomLeft/TorchContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 24
 text = "Torch: ON"
 
 [node name="FuelBar" type="ProgressBar" parent="BottomLeft/TorchContainer"]
-custom_minimum_size = Vector2(140, 10)
+custom_minimum_size = Vector2(160, 12)
 layout_mode = 2
 theme_override_styles/fill = SubResource("StyleBoxFlat_torch_fuel")
 value = 100.0
@@ -209,10 +212,10 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -280.0
-offset_top = -130.0
-offset_right = -20.0
-offset_bottom = -20.0
+offset_left = -400.0
+offset_top = -190.0
+offset_right = -50.0
+offset_bottom = -50.0
 grow_horizontal = 0
 grow_vertical = 0
 theme = SubResource("Theme_hud")
@@ -224,16 +227,17 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 16
+theme_override_constants/separation = 20
 alignment = 2
 
 [node name="AttackButton" type="Button" parent="BottomRight/HBoxContainer"]
-custom_minimum_size = Vector2(85, 85)
+custom_minimum_size = Vector2(140, 140)
 layout_mode = 2
+theme_override_font_sizes/font_size = 46
 text = "ATK"
 
 [node name="BackpackButton" type="Button" parent="BottomRight/HBoxContainer"]
-custom_minimum_size = Vector2(85, 85)
+custom_minimum_size = Vector2(125, 125)
 layout_mode = 2
 icon = ExtResource("4_bp")
 icon_alignment = 1

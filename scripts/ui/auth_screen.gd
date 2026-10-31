@@ -27,7 +27,7 @@ func _on_admin_login_pressed() -> void:
 	start_game_button.disabled = true
 	admin_login_button.disabled = true
 	Global.set_active_user("admin")
-	Global.is_god_mode = true
+	Global.apply_god_mode()
 	get_tree().change_scene_to_file.call_deferred("res://scenes/main/MainMenu.tscn")
 
 func _get_or_create_guest_id() -> String:

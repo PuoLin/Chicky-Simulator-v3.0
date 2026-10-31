@@ -7,7 +7,7 @@ class_name ShopUI
 
 @onready var grid: GridContainer = $CenterContainer/Panel/ScrollContainer/ItemGrid
 @onready var close_btn: Button = $CenterContainer/Panel/CloseButton
-@onready var coin_label: Label = $CenterContainer/Panel/TopBar/CoinLabel
+@onready var coin_label: Label = get_node_or_null("CenterContainer/Panel/TopBar/CoinBox/CoinLabel") if get_node_or_null("CenterContainer/Panel/TopBar/CoinBox/CoinLabel") else get_node_or_null("CenterContainer/Panel/TopBar/CoinLabel")
 @onready var feedback_label: Label = $CenterContainer/Panel/FeedbackLabel
 @onready var category_bar: HBoxContainer = $CenterContainer/Panel/CategoryBar
 
@@ -68,7 +68,7 @@ func toggle() -> void:
 
 func _on_coins_changed(amount: int) -> void:
 	if coin_label:
-		coin_label.text = "Coins: %d 🪙" % amount
+		coin_label.text = str(amount)
 
 func refresh_shop() -> void:
 	_on_coins_changed(Global.coins)

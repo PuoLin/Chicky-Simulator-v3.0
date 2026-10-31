@@ -18,6 +18,8 @@
 [ext_resource type="Texture2D" uid="uid://b3cmmc760m1q0" path="res://graphic/store5.png" id="16_tex_store"]
 [ext_resource type="PackedScene" path="res://scenes/ui/BlacksmithUI.tscn" id="17_bs"]
 [ext_resource type="Texture2D" path="res://graphic/hammer.png" id="18_tex_hammer"]
+[ext_resource type="Texture2D" path="res://graphic/coin.png" id="19_tex_coin"]
+[ext_resource type="Texture2D" path="res://graphic/diamond.svg" id="20_tex_diamond"]
 
 [sub_resource type="Theme" id="Theme_menu"]
 default_font = ExtResource("3_font")
@@ -63,22 +65,54 @@ size_flags_horizontal = 3
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
 theme_override_constants/shadow_offset_x = 2
 theme_override_constants/shadow_offset_y = 2
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 32
 text = "Hero: Normal Chick | Stage: 1"
 
-[node name="CurrencyLabel" type="Label" parent="TopBar" unique_id=2001383084]
+[node name="CurrencyBox" type="HBoxContainer" parent="TopBar" unique_id=2001383084]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="CoinIcon" type="TextureRect" parent="TopBar/CurrencyBox"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+texture = ExtResource("19_tex_coin")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CoinLabel" type="Label" parent="TopBar/CurrencyBox"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.9, 0.3, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
 theme_override_constants/shadow_offset_x = 2
 theme_override_constants/shadow_offset_y = 2
-theme_override_font_sizes/font_size = 24
-text = "500 🪙  |  30 💎"
+theme_override_font_sizes/font_size = 34
+text = "500"
+
+[node name="Spacer" type="Control" parent="TopBar/CurrencyBox"]
+custom_minimum_size = Vector2(16, 0)
+layout_mode = 2
+
+[node name="DiamondIcon" type="TextureRect" parent="TopBar/CurrencyBox"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+texture = ExtResource("20_tex_diamond")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="DiamondLabel" type="Label" parent="TopBar/CurrencyBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.9, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 34
+text = "30"
 
 [node name="SettingsButton" type="Button" parent="TopBar" unique_id=1898922837]
-custom_minimum_size = Vector2(100, 38)
+custom_minimum_size = Vector2(160, 52)
 layout_mode = 2
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 32
 text = "SETTINGS"
 
 [node name="Title" type="Label" parent="." unique_id=1604179396]
@@ -86,16 +120,16 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -380.0
-offset_top = 70.0
-offset_right = 380.0
-offset_bottom = 145.0
+offset_left = -400.0
+offset_top = 65.0
+offset_right = 400.0
+offset_bottom = 150.0
 grow_horizontal = 2
 theme_override_colors/font_color = Color(1, 0.9, 0.25, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.9)
 theme_override_constants/shadow_offset_x = 3
 theme_override_constants/shadow_offset_y = 3
-theme_override_font_sizes/font_size = 62
+theme_override_font_sizes/font_size = 72
 text = "CHICKY SIMULATOR"
 horizontal_alignment = 1
 
@@ -106,35 +140,35 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -170.0
-offset_top = -100.0
-offset_right = 170.0
-offset_bottom = 200.0
+offset_left = -200.0
+offset_top = -90.0
+offset_right = 200.0
+offset_bottom = 220.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 18
+theme_override_constants/separation = 20
 alignment = 1
 
 [node name="PlayButton" type="Button" parent="CenterVBox" unique_id=582638498]
-custom_minimum_size = Vector2(340, 60)
+custom_minimum_size = Vector2(380, 72)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(1, 0.95, 0.5, 1)
-theme_override_font_sizes/font_size = 32
+theme_override_font_sizes/font_size = 52
 text = "CONTINUE"
 
 [node name="SelectButton" type="Button" parent="CenterVBox" unique_id=943222262]
-custom_minimum_size = Vector2(300, 52)
+custom_minimum_size = Vector2(360, 68)
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_font_sizes/font_size = 26
+theme_override_font_sizes/font_size = 48
 text = "LEVEL SELECT"
 
 [node name="QuitButton" type="Button" parent="CenterVBox" unique_id=946078903]
-custom_minimum_size = Vector2(220, 46)
+custom_minimum_size = Vector2(280, 60)
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 44
 text = "QUIT"
 
 [node name="LeftNav" type="VBoxContainer" parent="." unique_id=2023403121]
@@ -155,7 +189,7 @@ layout_mode = 2
 alignment = 1
 
 [node name="BackpackBtn" type="Button" parent="LeftNav/BackpackBox" unique_id=1135877788]
-custom_minimum_size = Vector2(80, 80)
+custom_minimum_size = Vector2(90, 90)
 layout_mode = 2
 size_flags_horizontal = 4
 flat = true
@@ -173,7 +207,7 @@ layout_mode = 2
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
-theme_override_font_sizes/font_size = 19
+theme_override_font_sizes/font_size = 24
 text = "BACKPACK"
 horizontal_alignment = 1
 
@@ -182,7 +216,7 @@ layout_mode = 2
 alignment = 1
 
 [node name="CollectionBtn" type="Button" parent="LeftNav/CollectionBox" unique_id=423837611]
-custom_minimum_size = Vector2(80, 80)
+custom_minimum_size = Vector2(90, 90)
 layout_mode = 2
 size_flags_horizontal = 4
 flat = true
@@ -200,7 +234,7 @@ layout_mode = 2
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
-theme_override_font_sizes/font_size = 19
+theme_override_font_sizes/font_size = 24
 text = "HEROES"
 horizontal_alignment = 1
 
@@ -209,7 +243,7 @@ layout_mode = 2
 alignment = 1
 
 [node name="MissionsBtn" type="Button" parent="LeftNav/MissionsBox" unique_id=1766959243]
-custom_minimum_size = Vector2(80, 80)
+custom_minimum_size = Vector2(90, 90)
 layout_mode = 2
 size_flags_horizontal = 4
 flat = true
@@ -227,7 +261,7 @@ layout_mode = 2
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
-theme_override_font_sizes/font_size = 19
+theme_override_font_sizes/font_size = 24
 text = "MISSIONS"
 horizontal_alignment = 1
 
@@ -236,7 +270,7 @@ layout_mode = 2
 alignment = 1
 
 [node name="BlacksmithBtn" type="Button" parent="LeftNav/BlacksmithBox" unique_id=1948201843]
-custom_minimum_size = Vector2(80, 80)
+custom_minimum_size = Vector2(90, 90)
 layout_mode = 2
 size_flags_horizontal = 4
 flat = true
@@ -254,7 +288,7 @@ layout_mode = 2
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
-theme_override_font_sizes/font_size = 19
+theme_override_font_sizes/font_size = 24
 text = "BLACKSMITH"
 horizontal_alignment = 1
 
@@ -280,7 +314,7 @@ layout_mode = 2
 alignment = 1
 
 [node name="AchievementsBtn" type="Button" parent="RightNav/AchievementsBox" unique_id=1157395760]
-custom_minimum_size = Vector2(80, 80)
+custom_minimum_size = Vector2(90, 90)
 layout_mode = 2
 size_flags_horizontal = 4
 flat = true
@@ -298,7 +332,7 @@ layout_mode = 2
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
-theme_override_font_sizes/font_size = 19
+theme_override_font_sizes/font_size = 24
 text = "ACHIEVEMENTS"
 horizontal_alignment = 1
 
@@ -307,7 +341,7 @@ layout_mode = 2
 alignment = 1
 
 [node name="GachaBtn" type="Button" parent="RightNav/GachaBox" unique_id=1946898144]
-custom_minimum_size = Vector2(80, 80)
+custom_minimum_size = Vector2(90, 90)
 layout_mode = 2
 size_flags_horizontal = 4
 flat = true
@@ -325,7 +359,7 @@ layout_mode = 2
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
-theme_override_font_sizes/font_size = 19
+theme_override_font_sizes/font_size = 24
 text = "GACHA"
 horizontal_alignment = 1
 
@@ -334,7 +368,7 @@ layout_mode = 2
 alignment = 1
 
 [node name="ShopBtn" type="Button" parent="RightNav/ShopBox" unique_id=684402240]
-custom_minimum_size = Vector2(80, 80)
+custom_minimum_size = Vector2(90, 90)
 layout_mode = 2
 size_flags_horizontal = 4
 flat = true
@@ -352,7 +386,7 @@ layout_mode = 2
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
-theme_override_font_sizes/font_size = 19
+theme_override_font_sizes/font_size = 24
 text = "SHOP"
 horizontal_alignment = 1
 

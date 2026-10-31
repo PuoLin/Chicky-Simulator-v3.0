@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://ddu1nco1vxwgv" path="res://scripts/ui/shop_ui.gd" id="1_shop"]
 [ext_resource type="FontFile" uid="uid://dto4tcyfjwbla" path="res://ThaleahFat/ThaleahFat.ttf" id="2_font"]
+[ext_resource type="Texture2D" path="res://graphic/coin.png" id="3_coin"]
 
 [sub_resource type="Theme" id="Theme_shop"]
 default_font = ExtResource("2_font")
@@ -68,11 +69,23 @@ theme_override_colors/font_color = Color(1, 0.82, 0.25, 1)
 theme_override_font_sizes/font_size = 36
 text = "SHOP"
 
-[node name="CoinLabel" type="Label" parent="CenterContainer/Panel/TopBar" unique_id=70509119]
+[node name="CoinBox" type="HBoxContainer" parent="CenterContainer/Panel/TopBar" unique_id=70509119]
+layout_mode = 2
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="CoinIcon" type="TextureRect" parent="CenterContainer/Panel/TopBar/CoinBox"]
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+texture = ExtResource("3_coin")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CoinLabel" type="Label" parent="CenterContainer/Panel/TopBar/CoinBox"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.9, 0.4, 1)
 theme_override_font_sizes/font_size = 28
-text = "Coins: 0 🪙"
+text = "0"
 
 [node name="CloseButton" type="Button" parent="CenterContainer/Panel" unique_id=765179707]
 custom_minimum_size = Vector2(44, 44)

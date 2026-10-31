@@ -3,12 +3,12 @@
 [ext_resource type="Script" path="res://scripts/ui/virtual_joystick.gd" id="1_joy"]
 
 [node name="VirtualJoystick" type="Control"]
-custom_minimum_size = Vector2(150, 150)
+custom_minimum_size = Vector2(240, 240)
 layout_mode = 3
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -150.0
-offset_right = 150.0
+offset_top = -240.0
+offset_right = 240.0
 grow_vertical = 0
 script = ExtResource("1_joy")

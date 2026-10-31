@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/ui/achievements_ui.gd" id="1_ach"]
 [ext_resource type="FontFile" path="res://ThaleahFat/ThaleahFat.ttf" id="2_font"]
+[ext_resource type="Texture2D" path="res://graphic/diamond.svg" id="3_dia"]
 
 [sub_resource type="Theme" id="Theme_ach"]
 default_font = ExtResource("2_font")
@@ -75,11 +76,23 @@ theme_override_colors/font_color = Color(0.9, 0.9, 0.9, 1)
 theme_override_font_sizes/font_size = 24
 text = "Tier Progress: 0 / 17 🏆"
 
-[node name="DiamondLabel" type="Label" parent="CenterContainer/Panel/TopBar"]
+[node name="DiamondContainer" type="HBoxContainer" parent="CenterContainer/Panel/TopBar"]
+layout_mode = 2
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="DiamondIcon" type="TextureRect" parent="CenterContainer/Panel/TopBar/DiamondContainer"]
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+texture = ExtResource("3_dia")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="DiamondLabel" type="Label" parent="CenterContainer/Panel/TopBar/DiamondContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.4, 0.9, 1, 1)
-theme_override_font_sizes/font_size = 26
-text = "Diamonds: 30 💎"
+theme_override_font_sizes/font_size = 28
+text = "30"
 
 [node name="CloseButton" type="Button" parent="CenterContainer/Panel"]
 custom_minimum_size = Vector2(44, 44)

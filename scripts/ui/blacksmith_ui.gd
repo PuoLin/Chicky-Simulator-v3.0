@@ -7,7 +7,7 @@ class_name BlacksmithUI
 ## and sell surplus gear for Coins.
 
 @onready var close_btn: Button = $CenterContainer/Panel/RootVBox/TopBar/CloseButton
-@onready var coins_label: Label = $CenterContainer/Panel/RootVBox/TopBar/CoinsLabel
+@onready var coins_label: Label = get_node_or_null("CenterContainer/Panel/RootVBox/TopBar/CoinBox/CoinsLabel") if get_node_or_null("CenterContainer/Panel/RootVBox/TopBar/CoinBox/CoinsLabel") else get_node_or_null("CenterContainer/Panel/RootVBox/TopBar/CoinsLabel")
 @onready var item_list_container: VBoxContainer = $CenterContainer/Panel/RootVBox/ContentHBox/LeftPane/ScrollContainer/ItemList
 @onready var item_icon: TextureRect = $CenterContainer/Panel/RootVBox/ContentHBox/RightPane/DetailVBox/IconCenter/ItemIcon
 @onready var item_name_label: Label = $CenterContainer/Panel/RootVBox/ContentHBox/RightPane/DetailVBox/ItemName
@@ -45,7 +45,7 @@ func toggle() -> void:
 
 func _update_coins_display() -> void:
 	if coins_label:
-		coins_label.text = "%d 🪙" % Global.coins
+		coins_label.text = str(Global.coins)
 
 func _get_all_owned_equipment_ids() -> Array[String]:
 	var result: Array[String] = []
@@ -207,7 +207,7 @@ func _select_item(itm_id: String) -> void:
 	
 	var sell_price := ItemDatabase.get_sell_price(itm_id)
 	var bag_count := Global.count_inventory_item(itm_id)
-	sell_btn.text = "SELL (1x for %d 🪙)" % sell_price
+	sell_btn.text = "SELL (1x for %d Coins)" % sell_price
 	sell_btn.disabled = bag_count <= 0
 
 	if info.get("max_reached", false):

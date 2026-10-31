@@ -7,7 +7,7 @@ class_name GachaUI
 ## Features a prominent centered showcase, 1x/5x roll buttons, and real-time Diamond sync.
 
 @onready var close_btn: Button = $CenterContainer/Panel/CloseButton
-@onready var diamond_label: Label = $CenterContainer/Panel/TopBar/DiamondLabel
+@onready var diamond_label: Label = get_node_or_null("CenterContainer/Panel/TopBar/DiamondContainer/DiamondLabel") if get_node_or_null("CenterContainer/Panel/TopBar/DiamondContainer/DiamondLabel") else get_node_or_null("CenterContainer/Panel/TopBar/DiamondLabel")
 @onready var pull_1_btn: Button = $CenterContainer/Panel/MainVBox/RollButtons/Pull1Button
 @onready var pull_5_btn: Button = $CenterContainer/Panel/MainVBox/RollButtons/Pull5Button
 @onready var status_label: Label = $CenterContainer/Panel/MainVBox/StatusLabel
@@ -137,7 +137,7 @@ func toggle() -> void:
 
 func _on_diamonds_changed(amount: int) -> void:
 	if diamond_label:
-		diamond_label.text = "Diamonds: %d 💎" % amount
+		diamond_label.text = str(amount)
 
 func _reset_showcase() -> void:
 	if is_video_playing:
@@ -167,7 +167,7 @@ func _reset_showcase() -> void:
 
 func _do_pull(count: int, cost: int) -> void:
 	if not Global.spend_diamonds(cost):
-		status_label.text = "Not enough Diamonds! Need %d 💎" % cost
+		status_label.text = "Not enough Diamonds! Need %d Diamonds" % cost
 		status_label.add_theme_color_override("font_color", Color(1.0, 0.4, 0.4, 1.0))
 		return
 		
@@ -345,7 +345,7 @@ func _display_results(results: Array) -> void:
 			var coin_icon_path: String = res["icon"]
 			if ResourceLoader.exists(coin_icon_path):
 				icon.texture = load(coin_icon_path)
-			tag_lbl.text = "+%d Coins 🪙" % res["amount"]
+			tag_lbl.text = "+%d Coins" % res["amount"]
 			tag_lbl.add_theme_color_override("font_color", Color(1.0, 0.85, 0.2, 1.0))
 			
 		vbox.add_child(icon)

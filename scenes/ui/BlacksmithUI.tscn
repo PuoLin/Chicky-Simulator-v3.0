@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/ui/blacksmith_ui.gd" id="1_bs"]
 [ext_resource type="FontFile" uid="uid://dto4tcyfjwbla" path="res://ThaleahFat/ThaleahFat.ttf" id="2_font"]
+[ext_resource type="Texture2D" path="res://graphic/coin.png" id="3_coin"]
 
 [sub_resource type="Theme" id="Theme_bs"]
 default_font = ExtResource("2_font")
@@ -82,11 +83,23 @@ theme_override_colors/font_color = Color(1, 0.8, 0.25, 1)
 theme_override_font_sizes/font_size = 32
 text = "BLACKSMITH WORKSHOP"
 
-[node name="CoinsLabel" type="Label" parent="CenterContainer/Panel/RootVBox/TopBar"]
+[node name="CoinBox" type="HBoxContainer" parent="CenterContainer/Panel/RootVBox/TopBar"]
+layout_mode = 2
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="CoinIcon" type="TextureRect" parent="CenterContainer/Panel/RootVBox/TopBar/CoinBox"]
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+texture = ExtResource("3_coin")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CoinsLabel" type="Label" parent="CenterContainer/Panel/RootVBox/TopBar/CoinBox"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.9, 0.3, 1)
-theme_override_font_sizes/font_size = 24
-text = "500 🪙"
+theme_override_font_sizes/font_size = 28
+text = "500"
 
 [node name="CloseButton" type="Button" parent="CenterContainer/Panel/RootVBox/TopBar"]
 custom_minimum_size = Vector2(40, 40)

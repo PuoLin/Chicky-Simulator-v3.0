@@ -7,7 +7,10 @@ class_name MainMenu
 
 @onready var title_label: Label = $Title
 @onready var profile_label: Label = $TopBar/ProfileLabel
-@onready var currency_label: Label = $TopBar/CurrencyLabel
+@onready var currency_box: Control = get_node_or_null("TopBar/CurrencyBox")
+@onready var coin_label: Label = get_node_or_null("TopBar/CurrencyBox/CoinLabel")
+@onready var diamond_label: Label = get_node_or_null("TopBar/CurrencyBox/DiamondLabel")
+@onready var currency_label: Label = get_node_or_null("TopBar/CurrencyLabel")
 @onready var settings_btn: Button = $TopBar/SettingsButton
 
 # Center Action Buttons
@@ -65,8 +68,12 @@ func _update_profile_display() -> void:
 			Global.CHICK_STATS.get(Global.active_chick, {}).get("name", Global.active_chick.capitalize()),
 			Global.highest_stage
 		]
-	if currency_label:
-		currency_label.text = "%d 🪙  |  %d 💎" % [Global.coins, Global.diamonds]
+	if coin_label:
+		coin_label.text = str(Global.coins)
+	if diamond_label:
+		diamond_label.text = str(Global.diamonds)
+	elif currency_label:
+		currency_label.text = "%d  |  %d" % [Global.coins, Global.diamonds]
 
 func _open_modal(target_modal: Control) -> void:
 	if not target_modal:
