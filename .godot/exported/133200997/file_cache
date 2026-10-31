@@ -17,7 +17,7 @@ res://scenes/ui/GachaUI.tscn::bc2bd27e173ac1e7f5070b960ff67015::1793452779::res:
 res://scenes/ui/GameOverDialog.tscn::0a12cbaa7ef1d2cebac4d52179062229::1792216227::res://.godot/exported/133200997/export-2aa7b14bcd78a42c19ed4f4b01880560-GameOverDialog.scn
 res://scenes/ui/HUD.tscn::412bd099a017cc64a9dd2789ef6d23e0::1793454774::res://.godot/exported/133200997/export-74b5c9848938f4eb9ebaf6fab3809318-HUD.scn
 res://scenes/ui/MissionsUI.tscn::b1b77bf4b2db829602679de0b7ad2688::1793452779::res://.godot/exported/133200997/export-e72963213c276288ac235adb3b8d7415-MissionsUI.scn
-res://scenes/ui/PauseMenu.tscn::6bc35685053652552c6b507bd7afbd77::1793456874::res://.godot/exported/133200997/export-f3a0254cbdab81d1efc5e42f39e19dcf-PauseMenu.scn
+res://scenes/ui/PauseMenu.tscn::d3888f0f0f994762c03f141bd4f0a46c::1793458252::res://.godot/exported/133200997/export-f3a0254cbdab81d1efc5e42f39e19dcf-PauseMenu.scn
 res://scenes/ui/SettingsUI.tscn::14c2c81c73d409922bcd0f0d19ac771f::1793452779::res://.godot/exported/133200997/export-8f84f61736a53d9a185e5adfd02889d4-SettingsUI.scn
 res://scenes/ui/ShopUI.tscn::b71988a26c111fe2a1060db5b0aa588a::1793452779::res://.godot/exported/133200997/export-3f665daec75b05be85ae1738e3291006-ShopUI.scn
 res://scenes/ui/VirtualJoystick.tscn::e6c58b184455f319bc666079e3661496::1793451050::res://.godot/exported/133200997/export-9be1ba2b03998cddd6277ce677e383d2-VirtualJoystick.scn
