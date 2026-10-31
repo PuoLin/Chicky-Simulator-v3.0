@@ -119,6 +119,7 @@ text = "Username:"
 custom_minimum_size = Vector2(0, 42)
 layout_mode = 2
 size_flags_horizontal = 3
+focus_mode = 0
 theme_override_font_sizes/font_size = 22
 placeholder_text = "Enter username..."
 clear_button_enabled = true
@@ -136,6 +137,7 @@ text = "Password:"
 custom_minimum_size = Vector2(0, 42)
 layout_mode = 2
 size_flags_horizontal = 3
+focus_mode = 0
 theme_override_font_sizes/font_size = 22
 placeholder_text = "Enter password..."
 clear_button_enabled = true
@@ -167,5 +169,6 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 22
 text = "SIGN UP"
 
+[connection signal="focus_entered" from="CenterContainer/Panel/VBoxContainer/UsernameRow" to="." method="_on_username_row_focus_entered"]
 [connection signal="focus_entered" from="CenterContainer/Panel/VBoxContainer/UsernameRow/UsernameInput" to="." method="_on_username_input_focus_entered"]
 [connection signal="focus_entered" from="CenterContainer/Panel/VBoxContainer/PasswordRow/PasswordInput" to="." method="_on_password_input_focus_entered"]

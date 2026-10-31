@@ -9,7 +9,7 @@ res://scenes/main/MainMenu.tscn::3e35100413dbce7a1c93078b8f55404e::1792239641::r
 res://scenes/monsters/Monster.tscn::ff2865ab2fedfe50473835f14fee6dab::1792215937::res://.godot/exported/133200997/export-7ba24db929fac493b40134ae1e5b51bc-Monster.scn
 res://scenes/player/Player.tscn::8a8834ddbc9cffee76a7282b00dbedf0::1793420066::res://.godot/exported/133200997/export-a4e9bb150591131ae307f440fab940ce-Player.scn
 res://scenes/ui/AchievementsUI.tscn::936432f3d9f7d4b92883523560856d31::1792223624::res://.godot/exported/133200997/export-8d8be6276c0bf26af0890b699d378cc9-AchievementsUI.scn
-res://scenes/ui/AuthScreen.tscn::e42f6f77924e34148ad9db1dc86dbb17::1793431386::res://.godot/exported/133200997/export-ae28786dc7924be08f859aff85d4a38b-AuthScreen.scn
+res://scenes/ui/AuthScreen.tscn::557cedded8637dbe199b83b6441ad4c0::1793432901::res://.godot/exported/133200997/export-ae28786dc7924be08f859aff85d4a38b-AuthScreen.scn
 res://scenes/ui/BackpackUI.tscn::668745403474c1ab5dcf5e7c8a039476::1793418441::res://.godot/exported/133200997/export-85b6cf3eada2419e6faf7573c43ab057-BackpackUI.scn
 res://scenes/ui/BlacksmithUI.tscn::3fd06931a0a8df1371060afe5f05e594::1792248209::res://.godot/exported/133200997/export-00a4f4a3a1828c33c6d9b0fad980d1cd-BlacksmithUI.scn
 res://scenes/ui/CollectionUI.tscn::fe3899a114ad4ceee4412bb3868fc482::1792229345::res://.godot/exported/133200997/export-e110d6577e6a7b62dd27ceceb5094894-CollectionUI.scn
