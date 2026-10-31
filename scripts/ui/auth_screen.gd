@@ -4,10 +4,8 @@ class_name AuthScreen
 ## auth_screen.gd
 ## Local authentication gateway managing account registration and sign-in
 ## persisted in user://accounts.json, with automatic legacy user import.
-## Features a Document Title Hijacking pipeline to bypass Huawei Quick App webview sandbox.
 
 const ACCOUNTS_FILE := "user://accounts.json"
-const DEFAULT_TITLE := "Chicky Simulator 2.0"
 
 @onready var username_input: LineEdit = $CenterContainer/Panel/VBoxContainer/UsernameRow/UsernameInput
 @onready var password_input: LineEdit = $CenterContainer/Panel/VBoxContainer/PasswordRow/PasswordInput
@@ -29,8 +27,8 @@ func _ready() -> void:
 	password_input.text_submitted.connect(func(_text): _on_login_pressed())
 	
 	if OS.has_feature("web"):
-		username_input.gui_input.connect(_on_line_edit_gui_input)
-		password_input.gui_input.connect(_on_line_edit_gui_input)
+		username_input.gui_input.connect(_on_line_edit_gui_input.bind("username"))
+		password_input.gui_input.connect(_on_line_edit_gui_input.bind("password"))
 	else:
 		username_input.grab_focus()
 
@@ -73,20 +71,8 @@ func _save_accounts(data: Dictionary) -> void:
 		file.store_string(JSON.stringify(data, "\t"))
 
 func _on_login_pressed() -> void:
-	if OS.has_feature("web"):
-		spawn_html_auth_form("LOGIN")
-		return
-	_execute_login(username_input.text, password_input.text)
-
-func _on_signup_pressed() -> void:
-	if OS.has_feature("web"):
-		spawn_html_auth_form("SIGNUP")
-		return
-	_execute_signup(username_input.text, password_input.text)
-
-func _execute_login(uname: String, pwd: String) -> void:
-	uname = uname.strip_edges()
-	pwd = pwd.strip_edges()
+	var uname := username_input.text.strip_edges()
+	var pwd := password_input.text.strip_edges()
 	
 	if uname.is_empty() or pwd.is_empty():
 		_set_status("Please enter both username and password.", Color(1.0, 0.4, 0.4, 1.0))
@@ -107,9 +93,9 @@ func _execute_login(uname: String, pwd: String) -> void:
 	Global.set_active_user(uname)
 	get_tree().change_scene_to_file.call_deferred("res://scenes/main/MainMenu.tscn")
 
-func _execute_signup(uname: String, pwd: String) -> void:
-	uname = uname.strip_edges()
-	pwd = pwd.strip_edges()
+func _on_signup_pressed() -> void:
+	var uname := username_input.text.strip_edges()
+	var pwd := password_input.text.strip_edges()
 	
 	if uname.is_empty() or pwd.is_empty():
 		_set_status("Please enter both username and password.", Color(1.0, 0.4, 0.4, 1.0))
@@ -132,11 +118,11 @@ func _execute_signup(uname: String, pwd: String) -> void:
 func _set_status(msg: String, col: Color) -> void:
 	status_label.text = msg
 	status_label.add_theme_color_override("font_color", col)
+	
 
+# --- HTML BRIDGE WORKAROUND FOR HUAWEI QUICK APP KEYBOARD ---
 
-# --- DOCUMENT TITLE HIJACKING HTML BRIDGE FOR HUAWEI QUICK APP ---
-
-func _on_line_edit_gui_input(event: InputEvent) -> void:
+func _on_line_edit_gui_input(event: InputEvent, field_id: String) -> void:
 	if not OS.has_feature("web"):
 		return
 		
@@ -144,145 +130,103 @@ func _on_line_edit_gui_input(event: InputEvent) -> void:
 	var is_click := (event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT)
 	
 	if is_touch or is_click:
-		username_input.release_focus()
-		password_input.release_focus()
-		spawn_html_auth_form("LOGIN")
+		var current_val: String = username_input.text if field_id == "username" else password_input.text
+		var input_type: String = "text" if field_id == "username" else "password"
+		var title_label: String = "Username" if field_id == "username" else "Password"
+		
+		# Release Godot LineEdit focus to prevent internal cursor conflicts
+		if field_id == "username":
+			username_input.release_focus()
+		else:
+			password_input.release_focus()
+			
+		spawn_html_input(input_type, field_id, title_label, current_val)
 
 
-func spawn_html_auth_form(action: String) -> void:
-	var action_title := "LOGIN" if action == "LOGIN" else "SIGN UP"
-	var pwd_autocomplete := "current-password" if action == "LOGIN" else "new-password"
-	
-	var action_json := JSON.stringify(action)
-	var title_json := JSON.stringify(action_title)
-	var pwd_auto_json := JSON.stringify(pwd_autocomplete)
-	var initial_user_json := JSON.stringify(username_input.text)
-	var initial_pass_json := JSON.stringify(password_input.text)
+func spawn_html_input(input_type: String, field_id: String, title_label: String, initial_val: String) -> void:
+	var field_json := JSON.stringify(field_id)
+	var type_json := JSON.stringify(input_type)
+	var title_json := JSON.stringify(title_label)
+	var val_json := JSON.stringify(initial_val)
 	
 	var js_code := """
 	(function() {
-		var action = %s;
-		var actionTitle = %s;
-		var pwdAuto = %s;
-		var initUser = %s;
-		var initPass = %s;
+		var fieldId = %s;
+		var inputType = %s;
+		var titleLabel = %s;
+		var initVal = %s;
 		
-		var existing = document.getElementById('godot_auth_modal');
-		if (existing) existing.remove();
+		// Remove any existing overlay
+		var existingModal = document.getElementById('godot_input_modal');
+		if (existingModal) existingModal.remove();
 		
+		// Reset global bridge state
+		window._godot_input_bridge = {
+			active: true,
+			field: fieldId,
+			status: 'typing',
+			value: initVal
+		};
+		
+		// Create modal container
 		var modal = document.createElement('div');
-		modal.id = 'godot_auth_modal';
+		modal.id = 'godot_input_modal';
 		modal.style.position = 'fixed';
 		modal.style.top = '0';
 		modal.style.left = '0';
 		modal.style.width = '100vw';
 		modal.style.height = '100vh';
-		modal.style.backgroundColor = 'rgba(0, 0, 0, 0.75)';
+		modal.style.backgroundColor = 'rgba(0, 0, 0, 0.72)';
 		modal.style.zIndex = '2147483647';
 		modal.style.display = 'flex';
 		modal.style.flexDirection = 'column';
 		modal.style.alignItems = 'center';
 		modal.style.justifyContent = 'flex-start';
-		modal.style.paddingTop = '35px';
+		modal.style.paddingTop = '40px';
 		modal.style.boxSizing = 'border-box';
 		modal.style.fontFamily = 'Arial, sans-serif';
 		modal.style.touchAction = 'auto';
 		
 		var card = document.createElement('div');
-		card.style.width = '90%%';
+		card.style.width = '88%%';
 		card.style.maxWidth = '420px';
 		card.style.backgroundColor = '#1c1f2b';
 		card.style.border = '2px solid #5a73a3';
 		card.style.borderRadius = '12px';
-		card.style.padding = '20px';
-		card.style.boxShadow = '0 10px 30px rgba(0,0,0,0.8)';
+		card.style.padding = '18px';
+		card.style.boxShadow = '0 10px 28px rgba(0,0,0,0.7)';
 		card.style.display = 'flex';
 		card.style.flexDirection = 'column';
 		card.style.gap = '14px';
 		
-		var title = document.createElement('div');
-		title.style.color = '#ffd74a';
-		title.style.fontSize = '20px';
-		title.style.fontWeight = 'bold';
-		title.style.textAlign = 'center';
-		title.innerText = 'CHICKY - ' + actionTitle;
-		card.appendChild(title);
+		var header = document.createElement('div');
+		header.style.color = '#ffd74a';
+		header.style.fontSize = '18px';
+		header.style.fontWeight = 'bold';
+		header.innerText = 'Enter ' + titleLabel;
 		
-		var form = document.createElement('form');
-		form.id = 'godot_auth_form';
-		form.action = '#';
-		form.method = 'post';
-		form.autocomplete = 'on';
-		form.style.display = 'flex';
-		form.style.flexDirection = 'column';
-		form.style.gap = '12px';
+		var input = document.createElement('input');
+		input.id = 'godot_temp_input';
+		input.type = inputType;
+		input.value = initVal;
+		input.placeholder = 'Type here...';
+		input.autocomplete = 'off';
+		input.autocapitalize = 'off';
+		input.spellcheck = false;
+		input.style.width = '100%%';
+		input.style.boxSizing = 'border-box';
+		input.style.fontSize = '20px';
+		input.style.padding = '12px 14px';
+		input.style.borderRadius = '8px';
+		input.style.border = '2px solid #3c4860';
+		input.style.backgroundColor = '#0c0e14';
+		input.style.color = '#ffffff';
+		input.style.outline = 'none';
 		
-		// Username Group
-		var userGroup = document.createElement('div');
-		userGroup.style.display = 'flex';
-		userGroup.style.flexDirection = 'column';
-		userGroup.style.gap = '4px';
-		var userLabel = document.createElement('label');
-		userLabel.style.color = '#cbd5e1';
-		userLabel.style.fontSize = '14px';
-		userLabel.innerText = 'Username:';
-		var userInput = document.createElement('input');
-		userInput.id = 'godot_user_input';
-		userInput.type = 'text';
-		userInput.name = 'username';
-		userInput.autocomplete = 'username';
-		userInput.placeholder = 'Enter username...';
-		userInput.value = initUser;
-		userInput.required = true;
-		userInput.style.width = '100%%';
-		userInput.style.boxSizing = 'border-box';
-		userInput.style.fontSize = '18px';
-		userInput.style.padding = '10px 12px';
-		userInput.style.borderRadius = '8px';
-		userInput.style.border = '2px solid #3c4860';
-		userInput.style.backgroundColor = '#0c0e14';
-		userInput.style.color = '#ffffff';
-		userInput.style.outline = 'none';
-		userGroup.appendChild(userLabel);
-		userGroup.appendChild(userInput);
-		form.appendChild(userGroup);
-		
-		// Password Group
-		var passGroup = document.createElement('div');
-		passGroup.style.display = 'flex';
-		passGroup.style.flexDirection = 'column';
-		passGroup.style.gap = '4px';
-		var passLabel = document.createElement('label');
-		passLabel.style.color = '#cbd5e1';
-		passLabel.style.fontSize = '14px';
-		passLabel.innerText = 'Password:';
-		var passInput = document.createElement('input');
-		passInput.id = 'godot_pass_input';
-		passInput.type = 'password';
-		passInput.name = 'password';
-		passInput.autocomplete = pwdAuto;
-		passInput.placeholder = 'Enter password...';
-		passInput.value = initPass;
-		passInput.required = true;
-		passInput.style.width = '100%%';
-		passInput.style.boxSizing = 'border-box';
-		passInput.style.fontSize = '18px';
-		passInput.style.padding = '10px 12px';
-		passInput.style.borderRadius = '8px';
-		passInput.style.border = '2px solid #3c4860';
-		passInput.style.backgroundColor = '#0c0e14';
-		passInput.style.color = '#ffffff';
-		passInput.style.outline = 'none';
-		passGroup.appendChild(passLabel);
-		passGroup.appendChild(passInput);
-		form.appendChild(passGroup);
-		
-		// Buttons Row
 		var btnRow = document.createElement('div');
 		btnRow.style.display = 'flex';
 		btnRow.style.gap = '12px';
 		btnRow.style.justifyContent = 'flex-end';
-		btnRow.style.marginTop = '6px';
 		
 		var btnCancel = document.createElement('button');
 		btnCancel.type = 'button';
@@ -296,85 +240,97 @@ func spawn_html_auth_form(action: String) -> void:
 		btnCancel.style.color = '#ffffff';
 		btnCancel.style.cursor = 'pointer';
 		
-		var btnSubmit = document.createElement('button');
-		btnSubmit.type = 'submit';
-		btnSubmit.innerText = actionTitle;
-		btnSubmit.style.padding = '10px 24px';
-		btnSubmit.style.fontSize = '16px';
-		btnSubmit.style.fontWeight = 'bold';
-		btnSubmit.style.borderRadius = '6px';
-		btnSubmit.style.border = 'none';
-		btnSubmit.style.backgroundColor = '#2b78e4';
-		btnSubmit.style.color = '#ffffff';
-		btnSubmit.style.cursor = 'pointer';
+		var btnDone = document.createElement('button');
+		btnDone.type = 'button';
+		btnDone.innerText = 'Done';
+		btnDone.style.padding = '10px 24px';
+		btnDone.style.fontSize = '16px';
+		btnDone.style.fontWeight = 'bold';
+		btnDone.style.borderRadius = '6px';
+		btnDone.style.border = 'none';
+		btnDone.style.backgroundColor = '#2b78e4';
+		btnDone.style.color = '#ffffff';
+		btnDone.style.cursor = 'pointer';
 		
 		btnRow.appendChild(btnCancel);
-		btnRow.appendChild(btnSubmit);
-		form.appendChild(btnRow);
+		btnRow.appendChild(btnDone);
 		
-		card.appendChild(form);
+		card.appendChild(header);
+		card.appendChild(input);
+		card.appendChild(btnRow);
 		modal.appendChild(card);
 		document.body.appendChild(modal);
 		
-		function doSubmit() {
-			var u = (userInput.value || '').trim();
-			var p = (passInput.value || '').trim();
-			// Smuggle credentials via document.title
-			document.title = 'GODOT_DATA|||' + action + '|||' + u + '|||' + p;
-			var m = document.getElementById('godot_auth_modal');
+		function finishSubmit() {
+			window._godot_input_bridge.value = input.value;
+			window._godot_input_bridge.status = 'submitted';
+			var m = document.getElementById('godot_input_modal');
 			if (m) m.remove();
 		}
 		
-		function doCancel() {
-			document.title = 'GODOT_CANCEL';
-			var m = document.getElementById('godot_auth_modal');
+		function finishCancel() {
+			window._godot_input_bridge.status = 'cancelled';
+			var m = document.getElementById('godot_input_modal');
 			if (m) m.remove();
 		}
 		
-		form.onsubmit = function(e) {
-			if (e) e.preventDefault();
-			doSubmit();
-			return false;
+		input.oninput = function() {
+			window._godot_input_bridge.value = input.value;
 		};
 		
-		btnCancel.onclick = doCancel;
+		input.onkeydown = function(e) {
+			if (e.key === 'Enter' || e.keyCode === 13) {
+				e.preventDefault();
+				finishSubmit();
+			}
+		};
+		
+		btnDone.onclick = finishSubmit;
+		btnDone.ontouchend = function(e) {
+			e.preventDefault();
+			finishSubmit();
+		};
+		
+		btnCancel.onclick = finishCancel;
 		btnCancel.ontouchend = function(e) {
 			e.preventDefault();
-			doCancel();
+			finishCancel();
 		};
 		
 		modal.onclick = function(e) {
 			if (e.target === modal) {
-				doCancel();
+				finishCancel();
 			}
 		};
 		
-		// Focus to trigger soft keyboard & autofill prompt
-		userInput.focus();
+		// Force Android / Huawei WebView soft keyboard to open
+		// 1. Immediate synchronous focus in current user-activation event cycle
+		input.focus();
 		try {
-			var len = userInput.value.length;
-			userInput.setSelectionRange(len, len);
+			var len = input.value.length;
+			input.setSelectionRange(len, len);
 		} catch(e) {}
 		
+		// 2. Delayed ticks for WebViews where layout/IME binding needs a frame
 		if (window.requestAnimationFrame) {
 			window.requestAnimationFrame(function() {
-				if (document.getElementById('godot_user_input') === userInput) {
-					userInput.focus();
+				if (document.getElementById('godot_temp_input') === input) {
+					input.focus();
 				}
 			});
 		}
 		setTimeout(function() {
-			if (document.getElementById('godot_user_input') === userInput) {
-				userInput.focus();
+			if (document.getElementById('godot_temp_input') === input) {
+				input.focus();
 			}
 		}, 30);
 		setTimeout(function() {
-			if (document.getElementById('godot_user_input') === userInput) {
-				userInput.focus();
+			if (document.getElementById('godot_temp_input') === input) {
+				input.focus();
 			}
 		}, 100);
 	})();
-	""" % [action_json, title_json, pwd_auto_json, initial_user_json, initial_pass_json]
+	""" % [field_json, type_json, title_json, val_json]
 	
 	JavaScriptBridge.eval(js_code, true)
 	set_process(true)
@@ -385,48 +341,43 @@ func _process(_delta: float) -> void:
 		set_process(false)
 		return
 		
-	var raw_title = JavaScriptBridge.eval("document.title", true)
-	if raw_title == null:
-		return
-		
-	var title_str := str(raw_title)
-	var prefix := "GODOT_DATA|||"
-	var idx := title_str.find(prefix)
+	var raw = JavaScriptBridge.eval("""
+		(function() {
+			var b = window._godot_input_bridge;
+			if (!b || !b.active) return '';
+			if (b.status === 'submitted') {
+				var res = b.field + '|||' + b.value;
+				b.active = false;
+				b.status = 'idle';
+				return res;
+			} else if (b.status === 'cancelled') {
+				b.active = false;
+				b.status = 'idle';
+				return '__CANCELLED__';
+			}
+			return '';
+		})();
+	""", true)
 	
-	if idx != -1:
-		set_process(false)
-		var payload := title_str.substr(idx + prefix.length())
-		# Reset document.title back to default immediately
-		JavaScriptBridge.eval("document.title = " + JSON.stringify(DEFAULT_TITLE), true)
-		
-		var parts := payload.split("|||", true, 2)
-		if parts.size() >= 3:
-			var action := parts[0]
-			var uname := parts[1]
-			var pwd := parts[2]
-			
-			# Key-in values directly into the Godot LineEdit nodes
-			username_input.text = uname
-			password_input.text = pwd
-			username_input.text_changed.emit(uname)
-			password_input.text_changed.emit(pwd)
-			
-			# Immediately execute authentication logic
-			if action == "SIGNUP":
-				_execute_signup(uname, pwd)
-			else:
-				_execute_login(uname, pwd)
-		elif parts.size() == 2:
-			var uname := parts[0]
-			var pwd := parts[1]
-			username_input.text = uname
-			password_input.text = pwd
-			username_input.text_changed.emit(uname)
-			password_input.text_changed.emit(pwd)
-			_execute_login(uname, pwd)
+	if raw == null:
 		return
 		
-	elif title_str.find("GODOT_CANCEL") != -1:
-		set_process(false)
-		JavaScriptBridge.eval("document.title = " + JSON.stringify(DEFAULT_TITLE), true)
+	var result_str := str(raw)
+	if result_str.is_empty():
 		return
+		
+	set_process(false)
+	
+	if result_str == "__CANCELLED__":
+		return
+		
+	var parts = result_str.split("|||", true, 1)
+	if parts.size() >= 2:
+		var field = parts[0]
+		var val = parts[1]
+		if field == "username":
+			username_input.text = val
+			username_input.text_changed.emit(val)
+		elif field == "password":
+			password_input.text = val
+			password_input.text_changed.emit(val)
