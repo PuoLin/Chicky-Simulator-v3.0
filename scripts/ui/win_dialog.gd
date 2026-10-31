@@ -67,9 +67,9 @@ func _on_next_pressed() -> void:
 	if Global.current_stage < 30:
 		Global.init_stage(Global.current_stage + 1)
 		if is_inside_tree() and get_tree():
-			get_tree().reload_current_scene()
+			get_tree().reload_current_scene.call_deferred()
 
 func _on_menu_pressed() -> void:
 	visible = false
 	if is_inside_tree() and get_tree():
-		get_tree().change_scene_to_file("res://scenes/main/MainMenu.tscn")
+		get_tree().change_scene_to_file.call_deferred("res://scenes/main/MainMenu.tscn")

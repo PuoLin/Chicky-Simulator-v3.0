@@ -152,10 +152,8 @@ func _reset_showcase() -> void:
 		gacha_animator.stop()
 	if animation_player:
 		animation_player.stop()
-	if AudioManager and "bgm_player" in AudioManager and AudioManager.bgm_player:
-		AudioManager.bgm_player.stream_paused = false
-	elif AudioManager and "music_player" in AudioManager and AudioManager.music_player:
-		AudioManager.music_player.stream_paused = false
+	if AudioManager:
+		AudioManager.resume_music()
 	pull_1_btn.disabled = false
 	pull_5_btn.disabled = false
 	close_btn.disabled = false
@@ -223,10 +221,8 @@ func _do_pull(count: int, cost: int) -> void:
 		anim_name = "fivegold" if has_hero else "fivepurple"
 
 	# 2. Audio Override Logic: dynamically mute or pause background music before playing video
-	if AudioManager and "bgm_player" in AudioManager and AudioManager.bgm_player:
-		AudioManager.bgm_player.stream_paused = true
-	elif AudioManager and "music_player" in AudioManager and AudioManager.music_player:
-		AudioManager.music_player.stream_paused = true
+	if AudioManager:
+		AudioManager.pause_music()
 
 	# 3. Fullscreen Video Playback & Tap to Skip Handling
 	if video_player:
@@ -257,10 +253,8 @@ func _do_pull(count: int, cost: int) -> void:
 		gacha_animator.visible = false
 
 	# Resume background music
-	if AudioManager and "bgm_player" in AudioManager and AudioManager.bgm_player:
-		AudioManager.bgm_player.stream_paused = false
-	elif AudioManager and "music_player" in AudioManager and AudioManager.music_player:
-		AudioManager.music_player.stream_paused = false
+	if AudioManager:
+		AudioManager.resume_music()
 
 	# Re-enable buttons after animation finishes
 	pull_1_btn.disabled = false

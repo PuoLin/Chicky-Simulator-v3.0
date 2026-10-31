@@ -44,5 +44,5 @@ func _on_settings_pressed() -> void:
 
 func _on_main_menu_pressed() -> void:
 	get_tree().paused = false
-	get_tree().change_scene_to_file("res://scenes/main/MainMenu.tscn")
+	get_tree().change_scene_to_file.call_deferred("res://scenes/main/MainMenu.tscn")
 

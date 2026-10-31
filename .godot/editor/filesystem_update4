@@ -15,3 +15,6 @@ res://scripts/player/player.gd
 res://scripts/ui/backpack_ui.gd
 res://scripts/ui/collection_ui.gd
 res://scripts/ui/hud.gd
+res://scripts/autoload/AudioManager.gd
+res://scripts/ui/game_over_dialog.gd
+res://scripts/ui/pause_menu.gd

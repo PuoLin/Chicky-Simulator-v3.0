@@ -56,8 +56,15 @@ var is_music_enabled: bool = true
 var current_track_name: String = ""
 
 func play_music(track_name: String) -> void:
+	if not is_inside_tree():
+		return
 	if not tracks.has(track_name):
 		return
+	if not music_player or not is_instance_valid(music_player):
+		return
+	if current_track_name == track_name and music_player.playing:
+		return
+	
 	current_track_name = track_name
 	var path: String = tracks[track_name]
 	if not ResourceLoader.exists(path):
@@ -70,6 +77,8 @@ func play_music(track_name: String) -> void:
 			stream.loop = true
 		elif stream is AudioStreamWAV:
 			stream.loop_mode = AudioStreamWAV.LOOP_FORWARD
+		if music_player.playing:
+			music_player.stop()
 		music_player.stream = stream
 		if is_music_enabled:
 			music_player.play()
@@ -81,17 +90,32 @@ func toggle_music() -> bool:
 func set_music_enabled(enabled: bool) -> void:
 	is_music_enabled = enabled
 	if not is_music_enabled:
-		if music_player:
-			music_player.stop()
+		stop_music()
 	else:
 		if music_player and not music_player.playing and music_player.stream != null:
 			music_player.play()
 		elif not current_track_name.is_empty():
 			play_music(current_track_name)
 
+func pause_music() -> void:
+	if music_player and is_instance_valid(music_player) and music_player.playing:
+		music_player.stream_paused = true
+
+func resume_music() -> void:
+	if music_player and is_instance_valid(music_player):
+		music_player.stream_paused = false
+
 func stop_music() -> void:
-	if music_player:
+	if music_player and is_instance_valid(music_player) and music_player.playing:
 		music_player.stop()
+
+func stop_sfx() -> void:
+	if sfx_player and is_instance_valid(sfx_player) and sfx_player.playing:
+		sfx_player.stop()
+
+func stop_all() -> void:
+	stop_music()
+	stop_sfx()
 
 var is_sfx_enabled: bool = true
 
@@ -102,30 +126,46 @@ func toggle_sfx() -> bool:
 func set_sfx_enabled(enabled: bool) -> void:
 	is_sfx_enabled = enabled
 	if not is_sfx_enabled and sfx_player:
-		sfx_player.stop()
+		stop_sfx()
 
 func play_sfx_path(path: String) -> void:
-	if not is_sfx_enabled:
+	if not is_inside_tree() or not is_sfx_enabled:
+		return
+	if not sfx_player or not is_instance_valid(sfx_player):
 		return
 	if ResourceLoader.exists(path):
 		var stream = load(path)
 		if stream:
+			if sfx_player.playing:
+				sfx_player.stop()
 			sfx_player.stream = stream
 			sfx_player.play()
 
 func play_victory_jingle() -> void:
+	if not is_inside_tree():
+		return
 	stop_music()
 	if not is_sfx_enabled:
 		return
+	if not sfx_player or not is_instance_valid(sfx_player):
+		return
+	if sfx_player.playing:
+		sfx_player.stop()
 	# Procedural bright ascending triad victory jingle (C5 -> E5 -> G5 -> C6)
 	var stream := _generate_jingle([523.25, 659.25, 783.99, 1046.5], 0.14)
 	sfx_player.stream = stream
 	sfx_player.play()
 
 func play_defeat_jingle() -> void:
+	if not is_inside_tree():
+		return
 	stop_music()
 	if not is_sfx_enabled:
 		return
+	if not sfx_player or not is_instance_valid(sfx_player):
+		return
+	if sfx_player.playing:
+		sfx_player.stop()
 	# Procedural descending somber defeat tone (F4 -> Eb4 -> Db4 -> C4)
 	var stream := _generate_jingle([349.23, 311.13, 277.18, 220.0], 0.22)
 	sfx_player.stream = stream

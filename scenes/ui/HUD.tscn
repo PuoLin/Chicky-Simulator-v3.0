@@ -98,10 +98,10 @@ layout_mode = 3
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -340.0
+offset_left = -440.0
 offset_top = 20.0
-offset_right = -20.0
-offset_bottom = 75.0
+offset_right = -24.0
+offset_bottom = 116.0
 grow_horizontal = 0
 theme = SubResource("Theme_hud")
 
@@ -112,25 +112,28 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 14
+theme_override_constants/separation = 16
 alignment = 2
 
 [node name="CoinIcon" type="TextureRect" parent="TopRight/HBoxContainer"]
-custom_minimum_size = Vector2(44, 44)
+custom_minimum_size = Vector2(48, 48)
 layout_mode = 2
+size_flags_vertical = 4
 texture = ExtResource("3_coin")
 expand_mode = 1
 stretch_mode = 5
 
 [node name="CoinLabel" type="Label" parent="TopRight/HBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 4
 theme_override_font_sizes/font_size = 36
 text = "x 500"
 
 [node name="PauseButton" type="Button" parent="TopRight/HBoxContainer"]
-custom_minimum_size = Vector2(56, 50)
+custom_minimum_size = Vector2(90, 86)
 layout_mode = 2
-theme_override_font_sizes/font_size = 28
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 44
 text = "||"
 
 [node name="CenterAlert" type="Control" parent="."]
