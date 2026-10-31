@@ -1,0 +1,168 @@
+[gd_scene format=3 uid="uid://c7w802kfl2aay"]
+
+[ext_resource type="Script" path="res://scripts/ui/auth_screen.gd" id="1_auth"]
+[ext_resource type="FontFile" uid="uid://dto4tcyfjwbla" path="res://ThaleahFat/ThaleahFat.ttf" id="2_font"]
+[ext_resource type="Texture2D" uid="uid://gnsl0oht5ubv" path="res://graphic/bgimg.png" id="3_bg"]
+
+[sub_resource type="Theme" id="Theme_auth"]
+default_font = ExtResource("2_font")
+default_font_size = 24
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.12, 0.13, 0.18, 0.96)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.35, 0.45, 0.65, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[node name="AuthScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_auth")
+script = ExtResource("1_auth")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_bg")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="DarkOverlay" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.45)
+
+[node name="Title" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -380.0
+offset_top = 65.0
+offset_right = 380.0
+offset_bottom = 140.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.25, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.9)
+theme_override_constants/shadow_offset_x = 3
+theme_override_constants/shadow_offset_y = 3
+theme_override_font_sizes/font_size = 56
+text = "CHICKY SIMULATOR 2.0"
+horizontal_alignment = 1
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="CenterContainer"]
+custom_minimum_size = Vector2(460, 360)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 32.0
+offset_top = 24.0
+offset_right = -32.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="Subtitle" type="Label" parent="CenterContainer/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 28
+text = "USER AUTHENTICATION"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="CenterContainer/Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="UsernameRow" type="HBoxContainer" parent="CenterContainer/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="UserLabel" type="Label" parent="CenterContainer/Panel/VBoxContainer/UsernameRow"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Username:"
+
+[node name="UsernameInput" type="LineEdit" parent="CenterContainer/Panel/VBoxContainer/UsernameRow"]
+custom_minimum_size = Vector2(0, 42)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 22
+placeholder_text = "Enter username..."
+clear_button_enabled = true
+
+[node name="PasswordRow" type="HBoxContainer" parent="CenterContainer/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="PassLabel" type="Label" parent="CenterContainer/Panel/VBoxContainer/PasswordRow"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Password:"
+
+[node name="PasswordInput" type="LineEdit" parent="CenterContainer/Panel/VBoxContainer/PasswordRow"]
+custom_minimum_size = Vector2(0, 42)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 22
+placeholder_text = "Enter password..."
+secret = true
+clear_button_enabled = true
+
+[node name="StatusLabel" type="Label" parent="CenterContainer/Panel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.4, 0.4, 1)
+theme_override_font_sizes/font_size = 18
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="ButtonsHBox" type="HBoxContainer" parent="CenterContainer/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="LoginButton" type="Button" parent="CenterContainer/Panel/VBoxContainer/ButtonsHBox"]
+custom_minimum_size = Vector2(150, 46)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "LOGIN"
+
+[node name="SignUpButton" type="Button" parent="CenterContainer/Panel/VBoxContainer/ButtonsHBox"]
+custom_minimum_size = Vector2(150, 46)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "SIGN UP"
+

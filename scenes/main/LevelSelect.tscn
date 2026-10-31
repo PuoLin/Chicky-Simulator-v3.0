@@ -1,0 +1,93 @@
+[gd_scene format=3 uid="uid://bvx0lu27nf6k5"]
+
+[ext_resource type="Script" uid="uid://bkem83rfywm20" path="res://scripts/ui/level_select.gd" id="1_sel"]
+[ext_resource type="Texture2D" uid="uid://bh3mnbrhqd487" path="res://graphic/garden.png" id="2_bg"]
+[ext_resource type="FontFile" uid="uid://dto4tcyfjwbla" path="res://ThaleahFat/ThaleahFat.ttf" id="3_font"]
+
+[sub_resource type="Theme" id="Theme_sel"]
+default_font = ExtResource("3_font")
+default_font_size = 28
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.1, 0.12, 0.18, 0.95)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[node name="LevelSelect" type="Control" unique_id=1675833270]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_sel")
+script = ExtResource("1_sel")
+
+[node name="Background" type="TextureRect" parent="." unique_id=192743009]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_bg")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Title" type="Label" parent="." unique_id=1079601134]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -250.0
+offset_top = 40.0
+offset_right = 250.0
+offset_bottom = 100.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.3, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 52
+text = "LEVEL SELECT"
+horizontal_alignment = 1
+
+[node name="BackButton" type="Button" parent="." unique_id=387990268]
+custom_minimum_size = Vector2(140, 48)
+layout_mode = 0
+offset_left = 32.0
+offset_top = 32.0
+offset_right = 172.0
+offset_bottom = 80.0
+text = "<< BACK"
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=1968516175]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 80.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="CenterContainer" unique_id=786144211]
+custom_minimum_size = Vector2(760, 480)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="GridCenter" type="CenterContainer" parent="CenterContainer/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="StageGrid" type="GridContainer" parent="CenterContainer/Panel/GridCenter" unique_id=913951717]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/h_separation = 12
+theme_override_constants/v_separation = 12
+columns = 6

@@ -1,0 +1,9 @@
+res://scripts/autoload/Global.gd
+res://scripts/ui/collection_ui.gd
+res://scripts/ui/gacha_ui.gd
+res://equipment_details.txt
+res://scripts/autoload/ItemDatabase.gd
+res://scripts/autoload/SaveManager.gd
+res://scripts/environment/level.gd
+res://scripts/ui/achievements_ui.gd
+res://scripts/ui/shop_ui.gd

@@ -1,0 +1,16 @@
+axe,graphic/axe.png,Axe,Attack +10,10/0/0,w,250
+hammer,graphic/hammer.png,Hammer,Attack +20,20/0/0,w,800
+sword,graphic/sword.png,Sword,Attack +30,30/0/0,w,2000
+shield3,graphic/shield5.png,Wood Shield,Defence +5,0/5/0,shi,170
+shield4,graphic/shield3.png,Iron Shield,Defence +7,0/7/0,shi,500
+shield5,graphic/shield4.png,Diamond Shield,Defence +10,0/10/0,shi,1400
+helmet3,graphic/helmet3.png,Leather Helmet,Defence +5,0/5/0,h,170
+helmet4,graphic/helmet4.png,Iron Helmet,Defence +7,0/7/0,h,500
+helmet5,graphic/helmet5.png,Diamond Helmet,Defence +10,0/10/0,h,1400
+armor3,graphic/armor5.png,Leather Armor,Defence +5,0/5/0,a,250
+armor4,graphic/armor3.png,Iron Armor,Defence +7,0/7/0,a,750
+armor5,graphic/armor4.png,Diamond Armor,Defence +10,0/10/0,a,1800
+shoe3,graphic/shoe3.png,Leather Boots,Cd -0.5,0/0/0.5,sho,160
+shoe4,graphic/shoe4.png,Iron Boots,Cd -1,0/0/1,sho,450
+shoe5,graphic/shoe5.png,Diamond Boots,Cd -2,0/0/2,sho,1400
+torch,graphic/star.png,Torch,Illuminates dark caves.,0/0/0,tool,50

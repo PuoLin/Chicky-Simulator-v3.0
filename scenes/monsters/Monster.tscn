@@ -1,0 +1,51 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scripts/monsters/monster.gd" id="1_mon"]
+[ext_resource type="Texture2D" path="res://graphic/monster1.png" id="2_tex"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mon"]
+radius = 16.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hp_bg"]
+bg_color = Color(0.6, 0.1, 0.1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hp_fg"]
+bg_color = Color(0.1, 0.8, 0.2, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cd_fg"]
+bg_color = Color(0.9, 0.9, 0.9, 1)
+
+[node name="Monster" type="CharacterBody2D" groups=["monsters"]]
+collision_layer = 2
+collision_mask = 3
+script = ExtResource("1_mon")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.55, 0.55)
+texture = ExtResource("2_tex")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_mon")
+
+[node name="OverheadBars" type="Node2D" parent="."]
+position = Vector2(0, -22)
+
+[node name="HealthBar" type="ProgressBar" parent="OverheadBars"]
+offset_left = -17.0
+offset_top = -6.0
+offset_right = 17.0
+offset_bottom = -1.0
+theme_override_styles/background = SubResource("StyleBoxFlat_hp_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_hp_fg")
+value = 100.0
+show_percentage = false
+
+[node name="CDBar" type="ProgressBar" parent="OverheadBars"]
+offset_left = -17.0
+offset_top = 0.0
+offset_right = 17.0
+offset_bottom = 4.0
+theme_override_styles/fill = SubResource("StyleBoxFlat_cd_fg")
+value = 100.0
+show_percentage = false
+

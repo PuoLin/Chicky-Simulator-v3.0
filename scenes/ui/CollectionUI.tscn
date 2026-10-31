@@ -1,0 +1,165 @@
+[gd_scene format=3 uid="uid://mmer811571ov"]
+
+[ext_resource type="Script" uid="uid://c0t700nup7ldu" path="res://scripts/ui/collection_ui.gd" id="1_col"]
+[ext_resource type="FontFile" uid="uid://dto4tcyfjwbla" path="res://ThaleahFat/ThaleahFat.ttf" id="2_font"]
+[ext_resource type="Texture2D" path="res://graphic/chicky.png" id="3_chick"]
+
+[sub_resource type="Theme" id="Theme_col"]
+default_font = ExtResource("2_font")
+default_font_size = 24
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.1, 0.13, 0.18, 0.96)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.25, 0.5, 0.7, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[node name="CollectionUI" type="Control" unique_id=1637324536]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_col")
+script = ExtResource("1_col")
+
+[node name="BackgroundDarkness" type="ColorRect" parent="." unique_id=1341552417]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.08, 0.08, 0.1, 0.95)
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=425411695]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="CenterContainer" unique_id=43188992]
+custom_minimum_size = Vector2(880, 560)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="TopBar" type="HBoxContainer" parent="CenterContainer/Panel" unique_id=1201190676]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 32.0
+offset_top = 18.0
+offset_right = -80.0
+offset_bottom = 58.0
+grow_horizontal = 2
+
+[node name="Title" type="Label" parent="CenterContainer/Panel/TopBar" unique_id=770185768]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.3, 0.8, 1, 1)
+theme_override_font_sizes/font_size = 36
+text = "HERO COLLECTION"
+
+[node name="CloseButton" type="Button" parent="CenterContainer/Panel" unique_id=573576385]
+custom_minimum_size = Vector2(44, 44)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -60.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = 60.0
+grow_horizontal = 0
+text = "X"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/Panel" unique_id=730742512]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 28.0
+offset_top = 70.0
+offset_right = -28.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="LeftScroll" type="ScrollContainer" parent="CenterContainer/Panel/HBoxContainer" unique_id=960304531]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ChickGrid" type="GridContainer" parent="CenterContainer/Panel/HBoxContainer/LeftScroll" unique_id=791673553]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 12
+theme_override_constants/v_separation = 12
+columns = 3
+
+[node name="DetailPanel" type="PanelContainer" parent="CenterContainer/Panel/HBoxContainer" unique_id=1524121096]
+custom_minimum_size = Vector2(380, 0)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/Panel/HBoxContainer/DetailPanel" unique_id=697996657]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="PortraitCenter" type="CenterContainer" parent="CenterContainer/Panel/HBoxContainer/DetailPanel/VBoxContainer" unique_id=1628631114]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+
+[node name="Portrait" type="TextureRect" parent="CenterContainer/Panel/HBoxContainer/DetailPanel/VBoxContainer/PortraitCenter" unique_id=409352784]
+custom_minimum_size = Vector2(96, 96)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("3_chick")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="NameLabel" type="Label" parent="CenterContainer/Panel/HBoxContainer/DetailPanel/VBoxContainer" unique_id=1209860870]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.3, 1)
+theme_override_font_sizes/font_size = 28
+text = "Normal Chick"
+horizontal_alignment = 1
+
+[node name="StatsLabel" type="Label" parent="CenterContainer/Panel/HBoxContainer/DetailPanel/VBoxContainer" unique_id=1342448542]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.95, 1, 1)
+theme_override_font_sizes/font_size = 18
+text = "HP: 100   DEF: 0   ATK: 15
+Cooldown: 4.0s   Speed: 180"
+horizontal_alignment = 1
+
+[node name="LoreLabel" type="Label" parent="CenterContainer/Panel/HBoxContainer/DetailPanel/VBoxContainer" unique_id=755346919]
+custom_minimum_size = Vector2(340, 90)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.75, 0.75, 0.75, 1)
+theme_override_font_sizes/font_size = 16
+text = "The brave, plucky adventurer who started it all. Well-balanced and reliable in any cave exploration."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="StatusLabel" type="Label" parent="CenterContainer/Panel/HBoxContainer/DetailPanel/VBoxContainer" unique_id=1389476847]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+horizontal_alignment = 1
+
+[node name="EquipButton" type="Button" parent="CenterContainer/Panel/HBoxContainer/DetailPanel/VBoxContainer" unique_id=584198474]
+custom_minimum_size = Vector2(220, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 24
+text = "EQUIP HERO"

@@ -1,0 +1,93 @@
+[gd_scene load_steps=16 format=3]
+
+[ext_resource type="Script" path="res://scripts/environment/level.gd" id="1_lvl"]
+[ext_resource type="Texture2D" path="res://graphic/map.jpg" id="2_bg"]
+[ext_resource type="PackedScene" path="res://scenes/environment/ExitPortal.tscn" id="3_portal"]
+[ext_resource type="Script" path="res://scripts/items/drop_manager.gd" id="4_drop_mgr"]
+[ext_resource type="Script" path="res://scripts/monsters/spawner.gd" id="5_spawner"]
+[ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="6_player"]
+[ext_resource type="PackedScene" path="res://scenes/ui/HUD.tscn" id="7_hud"]
+[ext_resource type="PackedScene" path="res://scenes/ui/BackpackUI.tscn" id="8_bp"]
+[ext_resource type="PackedScene" path="res://scenes/ui/WinDialog.tscn" id="9_win"]
+[ext_resource type="PackedScene" path="res://scenes/ui/GameOverDialog.tscn" id="10_over"]
+[ext_resource type="PackedScene" path="res://scenes/ui/PauseMenu.tscn" id="11_pause"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_top"]
+normal = Vector2(0, 1)
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_bottom"]
+normal = Vector2(0, -1)
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_left"]
+normal = Vector2(1, 0)
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_right"]
+normal = Vector2(-1, 0)
+
+[node name="Level" type="Node2D"]
+script = ExtResource("1_lvl")
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+color = Color(0.04, 0.04, 0.07, 1)
+
+[node name="Background" type="Sprite2D" parent="."]
+position = Vector2(800, 500)
+scale = Vector2(1.8, 1.45)
+texture = ExtResource("2_bg")
+
+[node name="Boundaries" type="StaticBody2D" parent="."]
+collision_layer = 1
+collision_mask = 3
+
+[node name="Top" type="CollisionShape2D" parent="Boundaries"]
+position = Vector2(800, 20)
+shape = SubResource("WorldBoundaryShape2D_top")
+
+[node name="Bottom" type="CollisionShape2D" parent="Boundaries"]
+position = Vector2(800, 980)
+shape = SubResource("WorldBoundaryShape2D_bottom")
+
+[node name="Left" type="CollisionShape2D" parent="Boundaries"]
+position = Vector2(20, 500)
+shape = SubResource("WorldBoundaryShape2D_left")
+
+[node name="Right" type="CollisionShape2D" parent="Boundaries"]
+position = Vector2(1580, 500)
+shape = SubResource("WorldBoundaryShape2D_right")
+
+[node name="ExitPortal" parent="." instance=ExtResource("3_portal")]
+position = Vector2(1480, 860)
+
+[node name="ObstaclesContainer" type="Node2D" parent="."]
+
+[node name="DropsContainer" type="Node2D" parent="."]
+
+[node name="DropManager" type="Node" parent="."]
+script = ExtResource("4_drop_mgr")
+
+[node name="MonstersContainer" type="Node2D" parent="."]
+
+[node name="Spawner" type="Node2D" parent="."]
+script = ExtResource("5_spawner")
+level_min_bound = Vector2(60, 60)
+level_max_bound = Vector2(1540, 940)
+
+[node name="Player" parent="." instance=ExtResource("6_player")]
+position = Vector2(160, 160)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="HUD" parent="CanvasLayer" instance=ExtResource("7_hud")]
+
+[node name="BackpackUI" parent="CanvasLayer" instance=ExtResource("8_bp")]
+visible = false
+
+[node name="WinDialog" parent="CanvasLayer" instance=ExtResource("9_win")]
+visible = false
+
+[node name="GameOverDialog" parent="CanvasLayer" instance=ExtResource("10_over")]
+visible = false
+
+[node name="PauseMenu" parent="CanvasLayer" instance=ExtResource("11_pause")]
+visible = false
+

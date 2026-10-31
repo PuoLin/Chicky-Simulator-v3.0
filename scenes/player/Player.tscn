@@ -1,0 +1,92 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://scripts/player/player.gd" id="1_player"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_player"]
+radius = 18.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_attack"]
+radius = 42.0
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_placeholder"]
+animations = [{
+"frames": [],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hp_bg"]
+bg_color = Color(0.6, 0.1, 0.1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hp_fg"]
+bg_color = Color(0.1, 0.8, 0.2, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_def_fg"]
+bg_color = Color(0.2, 0.5, 0.9, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cd_fg"]
+bg_color = Color(0.9, 0.9, 0.9, 1)
+
+[node name="Player" type="CharacterBody2D" groups=["player"]]
+collision_mask = 7
+script = ExtResource("1_player")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_placeholder")
+animation = &"walk"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_player")
+
+[node name="AttackArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
+shape = SubResource("CircleShape2D_attack")
+
+[node name="TorchLight" type="PointLight2D" parent="."]
+energy = 1.0
+
+[node name="Camera2D" type="Camera2D" parent="." groups=["player_camera"]]
+zoom = Vector2(1.15, 1.15)
+limit_left = 0
+limit_top = 0
+limit_right = 1600
+limit_bottom = 1000
+position_smoothing_enabled = true
+
+[node name="AttackCooldownTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="OverheadBars" type="Node2D" parent="."]
+position = Vector2(0, -28)
+
+[node name="HealthBar" type="ProgressBar" parent="OverheadBars"]
+offset_left = -20.0
+offset_top = -12.0
+offset_right = 20.0
+offset_bottom = -7.0
+theme_override_styles/background = SubResource("StyleBoxFlat_hp_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_hp_fg")
+value = 100.0
+show_percentage = false
+
+[node name="DefenseBar" type="ProgressBar" parent="OverheadBars"]
+offset_left = -20.0
+offset_top = -6.0
+offset_right = 20.0
+offset_bottom = -2.0
+theme_override_styles/fill = SubResource("StyleBoxFlat_def_fg")
+value = 100.0
+show_percentage = false
+
+[node name="CooldownBar" type="ProgressBar" parent="OverheadBars"]
+offset_left = -20.0
+offset_top = -1.0
+offset_right = 20.0
+offset_bottom = 2.0
+theme_override_styles/fill = SubResource("StyleBoxFlat_cd_fg")
+value = 100.0
+show_percentage = false

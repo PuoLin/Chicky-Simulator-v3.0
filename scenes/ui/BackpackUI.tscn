@@ -1,0 +1,254 @@
+[gd_scene format=3 uid="uid://dierqkv15jn3t"]
+
+[ext_resource type="Script" uid="uid://guysdbyk6psn" path="res://scripts/ui/backpack_ui.gd" id="1_bp"]
+[ext_resource type="FontFile" uid="uid://dto4tcyfjwbla" path="res://ThaleahFat/ThaleahFat.ttf" id="2_font"]
+
+[sub_resource type="Theme" id="Theme_bp"]
+default_font = ExtResource("2_font")
+default_font_size = 22
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.12, 0.12, 0.17, 0.98)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.35, 0.45, 0.65, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[node name="BackpackUI" type="Control" unique_id=137726685]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_bp")
+script = ExtResource("1_bp")
+
+[node name="BackgroundDarkness" type="ColorRect" parent="." unique_id=527162005]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.08, 0.08, 0.1, 0.95)
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=380840245]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="CenterContainer" unique_id=1102947995]
+custom_minimum_size = Vector2(880, 560)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="RootVBox" type="VBoxContainer" parent="CenterContainer/Panel" unique_id=1328806908]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 28.0
+offset_top = 16.0
+offset_right = -28.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 8
+
+[node name="TopBar" type="HBoxContainer" parent="CenterContainer/Panel/RootVBox" unique_id=1646476951]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="CenterContainer/Panel/RootVBox/TopBar" unique_id=1607894977]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 32
+text = "BACKPACK"
+
+[node name="CloseButton" type="Button" parent="CenterContainer/Panel/RootVBox/TopBar" unique_id=1338703754]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+text = "X"
+
+[node name="EquippedSection" type="VBoxContainer" parent="CenterContainer/Panel/RootVBox" unique_id=121534531]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="EquippedTitle" type="Label" parent="CenterContainer/Panel/RootVBox/EquippedSection" unique_id=1338387557]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Equipped Gear:"
+
+[node name="EquippedSlots" type="HBoxContainer" parent="CenterContainer/Panel/RootVBox/EquippedSection" unique_id=738449343]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="SlotWeapon" type="TextureButton" parent="CenterContainer/Panel/RootVBox/EquippedSection/EquippedSlots" unique_id=41378375]
+custom_minimum_size = Vector2(52, 52)
+layout_mode = 2
+stretch_mode = 5
+
+[node name="SlotShield" type="TextureButton" parent="CenterContainer/Panel/RootVBox/EquippedSection/EquippedSlots" unique_id=1078596257]
+custom_minimum_size = Vector2(52, 52)
+layout_mode = 2
+stretch_mode = 5
+
+[node name="SlotHelmet" type="TextureButton" parent="CenterContainer/Panel/RootVBox/EquippedSection/EquippedSlots" unique_id=1426845946]
+custom_minimum_size = Vector2(52, 52)
+layout_mode = 2
+stretch_mode = 5
+
+[node name="SlotArmor" type="TextureButton" parent="CenterContainer/Panel/RootVBox/EquippedSection/EquippedSlots" unique_id=652674215]
+custom_minimum_size = Vector2(52, 52)
+layout_mode = 2
+stretch_mode = 5
+
+[node name="SlotBoots" type="TextureButton" parent="CenterContainer/Panel/RootVBox/EquippedSection/EquippedSlots" unique_id=341042779]
+custom_minimum_size = Vector2(52, 52)
+layout_mode = 2
+stretch_mode = 5
+
+[node name="HSeparator" type="HSeparator" parent="CenterContainer/Panel/RootVBox" unique_id=1700520001]
+layout_mode = 2
+
+[node name="BottomSection" type="HBoxContainer" parent="CenterContainer/Panel/RootVBox" unique_id=36939008]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 18
+
+[node name="LeftPane" type="VBoxContainer" parent="CenterContainer/Panel/RootVBox/BottomSection" unique_id=326249233]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="CategoryBar" type="HBoxContainer" parent="CenterContainer/Panel/RootVBox/BottomSection/LeftPane" unique_id=393595214]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="AllBtn" type="Button" parent="CenterContainer/Panel/RootVBox/BottomSection/LeftPane/CategoryBar" unique_id=508013248]
+custom_minimum_size = Vector2(60, 34)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "All"
+
+[node name="WeaponsBtn" type="Button" parent="CenterContainer/Panel/RootVBox/BottomSection/LeftPane/CategoryBar" unique_id=673263220]
+custom_minimum_size = Vector2(76, 34)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Weapons"
+
+[node name="HelmetsBtn" type="Button" parent="CenterContainer/Panel/RootVBox/BottomSection/LeftPane/CategoryBar" unique_id=1588027323]
+custom_minimum_size = Vector2(76, 34)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Helmets"
+
+[node name="ArmorBtn" type="Button" parent="CenterContainer/Panel/RootVBox/BottomSection/LeftPane/CategoryBar" unique_id=110132301]
+custom_minimum_size = Vector2(66, 34)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Armor"
+
+[node name="ShieldsBtn" type="Button" parent="CenterContainer/Panel/RootVBox/BottomSection/LeftPane/CategoryBar" unique_id=343527580]
+custom_minimum_size = Vector2(70, 34)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Shields"
+
+[node name="BootsBtn" type="Button" parent="CenterContainer/Panel/RootVBox/BottomSection/LeftPane/CategoryBar" unique_id=573000535]
+custom_minimum_size = Vector2(60, 34)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Boots"
+
+[node name="ToolsBtn" type="Button" parent="CenterContainer/Panel/RootVBox/BottomSection/LeftPane/CategoryBar" unique_id=1557560533]
+custom_minimum_size = Vector2(60, 34)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Tools"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CenterContainer/Panel/RootVBox/BottomSection/LeftPane" unique_id=1154543312]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="InventoryGrid" type="GridContainer" parent="CenterContainer/Panel/RootVBox/BottomSection/LeftPane/ScrollContainer" unique_id=292596749]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
+columns = 6
+
+[node name="RightPane" type="PanelContainer" parent="CenterContainer/Panel/RootVBox/BottomSection" unique_id=662573801]
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 2
+
+[node name="DetailVBox" type="VBoxContainer" parent="CenterContainer/Panel/RootVBox/BottomSection/RightPane" unique_id=1843246449]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="IconCenter" type="CenterContainer" parent="CenterContainer/Panel/RootVBox/BottomSection/RightPane/DetailVBox" unique_id=464071358]
+custom_minimum_size = Vector2(0, 76)
+layout_mode = 2
+
+[node name="ItemIcon" type="TextureRect" parent="CenterContainer/Panel/RootVBox/BottomSection/RightPane/DetailVBox/IconCenter" unique_id=1410384692]
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ItemName" type="Label" parent="CenterContainer/Panel/RootVBox/BottomSection/RightPane/DetailVBox" unique_id=639578016]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.3, 1)
+theme_override_font_sizes/font_size = 24
+text = "Select an item"
+horizontal_alignment = 1
+
+[node name="ItemStats" type="Label" parent="CenterContainer/Panel/RootVBox/BottomSection/RightPane/DetailVBox" unique_id=1906278657]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.9, 0.5, 1)
+theme_override_font_sizes/font_size = 18
+horizontal_alignment = 1
+
+[node name="ItemDesc" type="Label" parent="CenterContainer/Panel/RootVBox/BottomSection/RightPane/DetailVBox" unique_id=1986966038]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
+theme_override_font_sizes/font_size = 16
+text = "Choose gear from inventory or equipped slots to inspect."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="ActionButton" type="Button" parent="CenterContainer/Panel/RootVBox/BottomSection/RightPane/DetailVBox" unique_id=1953032014]
+visible = false
+custom_minimum_size = Vector2(200, 42)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 20
+text = "EQUIP"
+
+[node name="UpgradeButton" type="Button" parent="CenterContainer/Panel/RootVBox/BottomSection/RightPane/DetailVBox" unique_id=1953032015]
+visible = false
+custom_minimum_size = Vector2(200, 42)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 18
+text = "UPGRADE"
+
+[node name="SellButton" type="Button" parent="CenterContainer/Panel/RootVBox/BottomSection/RightPane/DetailVBox" unique_id=1953032016]
+visible = false
+custom_minimum_size = Vector2(200, 42)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 18
+text = "SELL"
+

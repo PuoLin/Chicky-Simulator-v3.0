@@ -1,0 +1,193 @@
+[gd_scene format=3 uid="uid://d378hbf5aa21a"]
+
+[ext_resource type="Script" path="res://scripts/ui/blacksmith_ui.gd" id="1_bs"]
+[ext_resource type="FontFile" uid="uid://dto4tcyfjwbla" path="res://ThaleahFat/ThaleahFat.ttf" id="2_font"]
+
+[sub_resource type="Theme" id="Theme_bs"]
+default_font = ExtResource("2_font")
+default_font_size = 22
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.12, 0.12, 0.17, 0.98)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.85, 0.55, 0.2, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_detail"]
+bg_color = Color(0.08, 0.08, 0.12, 0.8)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="BlacksmithUI" type="Control"]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_bs")
+script = ExtResource("1_bs")
+
+[node name="BackgroundDarkness" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.08, 0.08, 0.1, 0.95)
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="CenterContainer"]
+custom_minimum_size = Vector2(880, 560)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="RootVBox" type="VBoxContainer" parent="CenterContainer/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 28.0
+offset_top = 16.0
+offset_right = -28.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 12
+
+[node name="TopBar" type="HBoxContainer" parent="CenterContainer/Panel/RootVBox"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="CenterContainer/Panel/RootVBox/TopBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 0.8, 0.25, 1)
+theme_override_font_sizes/font_size = 32
+text = "BLACKSMITH WORKSHOP"
+
+[node name="CoinsLabel" type="Label" parent="CenterContainer/Panel/RootVBox/TopBar"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.3, 1)
+theme_override_font_sizes/font_size = 24
+text = "500 🪙"
+
+[node name="CloseButton" type="Button" parent="CenterContainer/Panel/RootVBox/TopBar"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+text = "X"
+
+[node name="HSeparator" type="HSeparator" parent="CenterContainer/Panel/RootVBox"]
+layout_mode = 2
+
+[node name="ContentHBox" type="HBoxContainer" parent="CenterContainer/Panel/RootVBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 20
+
+[node name="LeftPane" type="VBoxContainer" parent="CenterContainer/Panel/RootVBox/ContentHBox"]
+custom_minimum_size = Vector2(360, 0)
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="LeftHeader" type="Label" parent="CenterContainer/Panel/RootVBox/ContentHBox/LeftPane"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.85, 0.9, 1)
+theme_override_font_sizes/font_size = 20
+text = "Owned Gear (Select to Upgrade):"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CenterContainer/Panel/RootVBox/ContentHBox/LeftPane"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ItemList" type="VBoxContainer" parent="CenterContainer/Panel/RootVBox/ContentHBox/LeftPane/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="RightPane" type="PanelContainer" parent="CenterContainer/Panel/RootVBox/ContentHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_detail")
+
+[node name="DetailVBox" type="VBoxContainer" parent="CenterContainer/Panel/RootVBox/ContentHBox/RightPane"]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="IconCenter" type="CenterContainer" parent="CenterContainer/Panel/RootVBox/ContentHBox/RightPane/DetailVBox"]
+custom_minimum_size = Vector2(0, 72)
+layout_mode = 2
+
+[node name="ItemIcon" type="TextureRect" parent="CenterContainer/Panel/RootVBox/ContentHBox/RightPane/DetailVBox/IconCenter"]
+custom_minimum_size = Vector2(68, 68)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ItemName" type="Label" parent="CenterContainer/Panel/RootVBox/ContentHBox/RightPane/DetailVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.88, 0.35, 1)
+theme_override_font_sizes/font_size = 26
+text = "Select an Equipment"
+horizontal_alignment = 1
+
+[node name="CurrentStats" type="Label" parent="CenterContainer/Panel/RootVBox/ContentHBox/RightPane/DetailVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.9, 0.6, 1)
+theme_override_font_sizes/font_size = 20
+horizontal_alignment = 1
+
+[node name="NextStats" type="Label" parent="CenterContainer/Panel/RootVBox/ContentHBox/RightPane/DetailVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.75, 0.4, 1)
+theme_override_font_sizes/font_size = 18
+text = "Select any weapon, shield, or armor to upgrade or sell."
+horizontal_alignment = 1
+
+[node name="CostLabel" type="Label" parent="CenterContainer/Panel/RootVBox/ContentHBox/RightPane/DetailVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.8, 1, 1)
+theme_override_font_sizes/font_size = 18
+horizontal_alignment = 1
+
+[node name="StatusLabel" type="Label" parent="CenterContainer/Panel/RootVBox/ContentHBox/RightPane/DetailVBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+horizontal_alignment = 1
+
+[node name="ButtonHBox" type="HBoxContainer" parent="CenterContainer/Panel/RootVBox/ContentHBox/RightPane/DetailVBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="UpgradeButton" type="Button" parent="CenterContainer/Panel/RootVBox/ContentHBox/RightPane/DetailVBox/ButtonHBox"]
+visible = false
+custom_minimum_size = Vector2(220, 46)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "UPGRADE"
+
+[node name="SellButton" type="Button" parent="CenterContainer/Panel/RootVBox/ContentHBox/RightPane/DetailVBox/ButtonHBox"]
+visible = false
+custom_minimum_size = Vector2(180, 46)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "SELL"
+

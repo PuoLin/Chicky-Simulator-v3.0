@@ -1,0 +1,240 @@
+[gd_scene load_steps=11 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/hud.gd" id="1_hud"]
+[ext_resource type="FontFile" path="res://ThaleahFat/ThaleahFat.ttf" id="2_font"]
+[ext_resource type="Texture2D" path="res://graphic/coin2.png" id="3_coin"]
+[ext_resource type="Texture2D" path="res://graphic/backpack3.png" id="4_bp"]
+[ext_resource type="PackedScene" path="res://scenes/ui/VirtualJoystick.tscn" id="5_joy"]
+
+[sub_resource type="Theme" id="Theme_hud"]
+default_font = ExtResource("2_font")
+default_font_size = 28
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hp_bg"]
+bg_color = Color(0.5, 0.1, 0.1, 0.8)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hp_fg"]
+bg_color = Color(0.1, 0.85, 0.2, 0.9)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_def_fg"]
+bg_color = Color(0.2, 0.5, 0.95, 0.9)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_torch_fuel"]
+bg_color = Color(0.95, 0.7, 0.2, 1)
+
+[node name="HUD" type="CanvasLayer"]
+script = ExtResource("1_hud")
+
+[node name="TopLeft" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 280.0
+offset_bottom = 140.0
+theme = SubResource("Theme_hud")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TopLeft"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="StageLabel" type="Label" parent="TopLeft/VBoxContainer"]
+layout_mode = 2
+text = "STAGE 1"
+
+[node name="KillLabel" type="Label" parent="TopLeft/VBoxContainer"]
+layout_mode = 2
+text = "Kills: 0 / 5"
+
+[node name="Bars" type="VBoxContainer" parent="TopLeft/VBoxContainer"]
+layout_mode = 2
+
+[node name="HealthBar" type="ProgressBar" parent="TopLeft/VBoxContainer/Bars"]
+custom_minimum_size = Vector2(180, 16)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_hp_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_hp_fg")
+value = 100.0
+show_percentage = false
+
+[node name="DefenseBar" type="ProgressBar" parent="TopLeft/VBoxContainer/Bars"]
+custom_minimum_size = Vector2(180, 12)
+layout_mode = 2
+theme_override_styles/fill = SubResource("StyleBoxFlat_def_fg")
+value = 100.0
+show_percentage = false
+
+[node name="TopCenter" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -120.0
+offset_top = 20.0
+offset_right = 120.0
+offset_bottom = 70.0
+grow_horizontal = 2
+theme = SubResource("Theme_hud")
+
+[node name="TimerLabel" type="Label" parent="TopCenter"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 40
+text = "00:00"
+horizontal_alignment = 1
+
+[node name="TopRight" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -320.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = 70.0
+grow_horizontal = 0
+theme = SubResource("Theme_hud")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TopRight"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 12
+alignment = 2
+
+[node name="CoinIcon" type="TextureRect" parent="TopRight/HBoxContainer"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+texture = ExtResource("3_coin")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CoinLabel" type="Label" parent="TopRight/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "x 500"
+
+[node name="PauseButton" type="Button" parent="TopRight/HBoxContainer"]
+custom_minimum_size = Vector2(48, 44)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "||"
+
+[node name="CenterAlert" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -250.0
+offset_top = 90.0
+offset_right = 250.0
+offset_bottom = 140.0
+grow_horizontal = 2
+theme = SubResource("Theme_hud")
+
+[node name="AlertLabel" type="Label" parent="CenterAlert"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.4, 1, 0.4, 1)
+theme_override_font_sizes/font_size = 36
+text = "EXIT PORTAL OPENED!"
+horizontal_alignment = 1
+
+[node name="BottomLeft" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = -240.0
+offset_right = 360.0
+offset_bottom = -20.0
+grow_vertical = 0
+theme = SubResource("Theme_hud")
+
+[node name="VirtualJoystick" parent="BottomLeft" instance=ExtResource("5_joy")]
+layout_mode = 1
+offset_top = -150.0
+offset_right = 150.0
+offset_bottom = 0.0
+
+[node name="TorchContainer" type="VBoxContainer" parent="BottomLeft"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -160.0
+offset_top = -90.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="TorchButton" type="Button" parent="BottomLeft/TorchContainer"]
+custom_minimum_size = Vector2(140, 42)
+layout_mode = 2
+text = "Torch (T)"
+
+[node name="StatusLabel" type="Label" parent="BottomLeft/TorchContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Torch: ON"
+
+[node name="FuelBar" type="ProgressBar" parent="BottomLeft/TorchContainer"]
+custom_minimum_size = Vector2(140, 10)
+layout_mode = 2
+theme_override_styles/fill = SubResource("StyleBoxFlat_torch_fuel")
+value = 100.0
+show_percentage = false
+
+[node name="BottomRight" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -280.0
+offset_top = -130.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 0
+grow_vertical = 0
+theme = SubResource("Theme_hud")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="BottomRight"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 16
+alignment = 2
+
+[node name="AttackButton" type="Button" parent="BottomRight/HBoxContainer"]
+custom_minimum_size = Vector2(85, 85)
+layout_mode = 2
+text = "ATK"
+
+[node name="BackpackButton" type="Button" parent="BottomRight/HBoxContainer"]
+custom_minimum_size = Vector2(85, 85)
+layout_mode = 2
+icon = ExtResource("4_bp")
+icon_alignment = 1
+expand_icon = true

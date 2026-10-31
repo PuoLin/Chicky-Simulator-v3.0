@@ -1,0 +1,93 @@
+[gd_scene format=3 uid="uid://bcr3egaol75oy"]
+
+[ext_resource type="Script" uid="uid://3y55a7lgiar1" path="res://scripts/ui/win_dialog.gd" id="1_win"]
+[ext_resource type="FontFile" uid="uid://dto4tcyfjwbla" path="res://ThaleahFat/ThaleahFat.ttf" id="2_font"]
+
+[sub_resource type="Theme" id="Theme_win"]
+default_font = ExtResource("2_font")
+default_font_size = 28
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.1, 0.12, 0.18, 0.95)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[node name="WinDialog" type="Control" unique_id=2140659966]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_win")
+script = ExtResource("1_win")
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=410657300]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="CenterContainer" unique_id=668123704]
+custom_minimum_size = Vector2(520, 360)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/Panel" unique_id=522021174]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = 24.0
+offset_right = -24.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 14
+alignment = 1
+
+[node name="TitleLabel" type="Label" parent="CenterContainer/Panel/VBoxContainer" unique_id=820256979]
+layout_mode = 2
+theme_override_font_sizes/font_size = 38
+text = "STAGE CLEARED!"
+horizontal_alignment = 1
+
+[node name="RewardLabel" type="Label" parent="CenterContainer/Panel/VBoxContainer" unique_id=317552595]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 30
+text = "Reward: +500 Coins"
+horizontal_alignment = 1
+
+[node name="DiamondBonusLabel" type="Label" parent="CenterContainer/Panel/VBoxContainer" unique_id=1103676322]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.35, 0.9, 1, 1)
+theme_override_font_sizes/font_size = 26
+text = "★ BOSS REWARD: +50 💎 DIAMONDS! ★"
+horizontal_alignment = 1
+
+[node name="TimeLabel" type="Label" parent="CenterContainer/Panel/VBoxContainer" unique_id=52030689]
+layout_mode = 2
+text = "Time: 00:00"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/Panel/VBoxContainer" unique_id=81669582]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="NextButton" type="Button" parent="CenterContainer/Panel/VBoxContainer/HBoxContainer" unique_id=1280386904]
+custom_minimum_size = Vector2(160, 48)
+layout_mode = 2
+text = "NEXT STAGE"
+
+[node name="MenuButton" type="Button" parent="CenterContainer/Panel/VBoxContainer/HBoxContainer" unique_id=953538663]
+custom_minimum_size = Vector2(160, 48)
+layout_mode = 2
+text = "REPLAY"

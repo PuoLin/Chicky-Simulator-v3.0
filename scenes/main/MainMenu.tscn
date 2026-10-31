@@ -1,0 +1,383 @@
+[gd_scene format=3 uid="uid://ba1dp06t6f2le"]
+
+[ext_resource type="Script" uid="uid://cqb31wuhp58m0" path="res://scripts/ui/main_menu.gd" id="1_menu"]
+[ext_resource type="Texture2D" uid="uid://gnsl0oht5ubv" path="res://graphic/bgimg.png" id="3_0aa8n"]
+[ext_resource type="FontFile" uid="uid://dto4tcyfjwbla" path="res://ThaleahFat/ThaleahFat.ttf" id="3_font"]
+[ext_resource type="PackedScene" path="res://scenes/ui/BackpackUI.tscn" id="4_bp"]
+[ext_resource type="Texture2D" uid="uid://sikp0juxqmew" path="res://graphic/character.png" id="5_0aa8n"]
+[ext_resource type="PackedScene" uid="uid://dxs5782kn7wjk" path="res://scenes/ui/ShopUI.tscn" id="5_shop"]
+[ext_resource type="PackedScene" path="res://scenes/ui/GachaUI.tscn" id="6_gacha"]
+[ext_resource type="PackedScene" uid="uid://mmer811571ov" path="res://scenes/ui/CollectionUI.tscn" id="7_col"]
+[ext_resource type="PackedScene" path="res://scenes/ui/MissionsUI.tscn" id="8_mis"]
+[ext_resource type="PackedScene" path="res://scenes/ui/AchievementsUI.tscn" id="9_ach"]
+[ext_resource type="PackedScene" path="res://scenes/ui/SettingsUI.tscn" id="10_set"]
+[ext_resource type="Texture2D" uid="uid://djj63oagm81bl" path="res://graphic/collection.png" id="11_tex_col"]
+[ext_resource type="Texture2D" uid="uid://d4nxbo2c08ogd" path="res://graphic/backpack3.png" id="12_tex_bp"]
+[ext_resource type="Texture2D" uid="uid://214lfwf5npp" path="res://graphic/achievement.png" id="14_tex_ach"]
+[ext_resource type="Texture2D" uid="uid://d12chqf5yx0nl" path="res://graphic/star.png" id="15_tex_star"]
+[ext_resource type="Texture2D" uid="uid://b3cmmc760m1q0" path="res://graphic/store5.png" id="16_tex_store"]
+[ext_resource type="PackedScene" path="res://scenes/ui/BlacksmithUI.tscn" id="17_bs"]
+[ext_resource type="Texture2D" path="res://graphic/hammer.png" id="18_tex_hammer"]
+
+[sub_resource type="Theme" id="Theme_menu"]
+default_font = ExtResource("3_font")
+default_font_size = 26
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nav"]
+
+[node name="MainMenu" type="Control" unique_id=1265376130]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_menu")
+script = ExtResource("1_menu")
+
+[node name="Background" type="TextureRect" parent="." unique_id=2114893022]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_0aa8n")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="TopBar" type="HBoxContainer" parent="." unique_id=695272275]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 32.0
+offset_top = 18.0
+offset_right = -32.0
+offset_bottom = 60.0
+grow_horizontal = 2
+theme_override_constants/separation = 20
+
+[node name="ProfileLabel" type="Label" parent="TopBar" unique_id=376308104]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 24
+text = "Hero: Normal Chick | Stage: 1"
+
+[node name="CurrencyLabel" type="Label" parent="TopBar" unique_id=2001383084]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.3, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 24
+text = "500 🪙  |  30 💎"
+
+[node name="SettingsButton" type="Button" parent="TopBar" unique_id=1898922837]
+custom_minimum_size = Vector2(100, 38)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "SETTINGS"
+
+[node name="Title" type="Label" parent="." unique_id=1604179396]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -380.0
+offset_top = 70.0
+offset_right = 380.0
+offset_bottom = 145.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.25, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.9)
+theme_override_constants/shadow_offset_x = 3
+theme_override_constants/shadow_offset_y = 3
+theme_override_font_sizes/font_size = 62
+text = "CHICKY SIMULATOR"
+horizontal_alignment = 1
+
+[node name="CenterVBox" type="VBoxContainer" parent="." unique_id=926565320]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -170.0
+offset_top = -100.0
+offset_right = 170.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 18
+alignment = 1
+
+[node name="PlayButton" type="Button" parent="CenterVBox" unique_id=582638498]
+custom_minimum_size = Vector2(340, 60)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(1, 0.95, 0.5, 1)
+theme_override_font_sizes/font_size = 32
+text = "CONTINUE"
+
+[node name="SelectButton" type="Button" parent="CenterVBox" unique_id=943222262]
+custom_minimum_size = Vector2(300, 52)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 26
+text = "LEVEL SELECT"
+
+[node name="QuitButton" type="Button" parent="CenterVBox" unique_id=946078903]
+custom_minimum_size = Vector2(220, 46)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 24
+text = "QUIT"
+
+[node name="LeftNav" type="VBoxContainer" parent="." unique_id=2023403121]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 50.0
+offset_top = -225.0
+offset_right = 150.0
+offset_bottom = 265.0
+grow_vertical = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="BackpackBox" type="VBoxContainer" parent="LeftNav" unique_id=1275531015]
+layout_mode = 2
+alignment = 1
+
+[node name="BackpackBtn" type="Button" parent="LeftNav/BackpackBox" unique_id=1135877788]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_horizontal = 4
+flat = true
+theme_override_styles/focus = SubResource("StyleBoxEmpty_nav")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_nav")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_nav")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_nav")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_nav")
+icon = ExtResource("12_tex_bp")
+icon_alignment = 1
+expand_icon = true
+
+[node name="Label" type="Label" parent="LeftNav/BackpackBox" unique_id=147851972]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 19
+text = "BACKPACK"
+horizontal_alignment = 1
+
+[node name="CollectionBox" type="VBoxContainer" parent="LeftNav" unique_id=34319386]
+layout_mode = 2
+alignment = 1
+
+[node name="CollectionBtn" type="Button" parent="LeftNav/CollectionBox" unique_id=423837611]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_horizontal = 4
+flat = true
+theme_override_styles/focus = SubResource("StyleBoxEmpty_nav")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_nav")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_nav")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_nav")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_nav")
+icon = ExtResource("5_0aa8n")
+icon_alignment = 1
+expand_icon = true
+
+[node name="Label" type="Label" parent="LeftNav/CollectionBox" unique_id=932902259]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 19
+text = "HEROES"
+horizontal_alignment = 1
+
+[node name="MissionsBox" type="VBoxContainer" parent="LeftNav" unique_id=1617073612]
+layout_mode = 2
+alignment = 1
+
+[node name="MissionsBtn" type="Button" parent="LeftNav/MissionsBox" unique_id=1766959243]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_horizontal = 4
+flat = true
+theme_override_styles/focus = SubResource("StyleBoxEmpty_nav")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_nav")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_nav")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_nav")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_nav")
+icon = ExtResource("11_tex_col")
+icon_alignment = 1
+expand_icon = true
+
+[node name="Label" type="Label" parent="LeftNav/MissionsBox" unique_id=358888694]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 19
+text = "MISSIONS"
+horizontal_alignment = 1
+
+[node name="BlacksmithBox" type="VBoxContainer" parent="LeftNav" unique_id=1849201842]
+layout_mode = 2
+alignment = 1
+
+[node name="BlacksmithBtn" type="Button" parent="LeftNav/BlacksmithBox" unique_id=1948201843]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_horizontal = 4
+flat = true
+theme_override_styles/focus = SubResource("StyleBoxEmpty_nav")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_nav")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_nav")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_nav")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_nav")
+icon = ExtResource("18_tex_hammer")
+icon_alignment = 1
+expand_icon = true
+
+[node name="Label" type="Label" parent="LeftNav/BlacksmithBox" unique_id=1848201844]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 19
+text = "BLACKSMITH"
+horizontal_alignment = 1
+
+
+[node name="RightNav" type="VBoxContainer" parent="." unique_id=646022000]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -140.0
+offset_right = -50.0
+offset_bottom = 220.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="AchievementsBox" type="VBoxContainer" parent="RightNav" unique_id=79030353]
+layout_mode = 2
+alignment = 1
+
+[node name="AchievementsBtn" type="Button" parent="RightNav/AchievementsBox" unique_id=1157395760]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_horizontal = 4
+flat = true
+theme_override_styles/focus = SubResource("StyleBoxEmpty_nav")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_nav")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_nav")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_nav")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_nav")
+icon = ExtResource("14_tex_ach")
+icon_alignment = 1
+expand_icon = true
+
+[node name="Label" type="Label" parent="RightNav/AchievementsBox" unique_id=1848266067]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 19
+text = "ACHIEVEMENTS"
+horizontal_alignment = 1
+
+[node name="GachaBox" type="VBoxContainer" parent="RightNav" unique_id=1397782812]
+layout_mode = 2
+alignment = 1
+
+[node name="GachaBtn" type="Button" parent="RightNav/GachaBox" unique_id=1946898144]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_horizontal = 4
+flat = true
+theme_override_styles/focus = SubResource("StyleBoxEmpty_nav")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_nav")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_nav")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_nav")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_nav")
+icon = ExtResource("15_tex_star")
+icon_alignment = 1
+expand_icon = true
+
+[node name="Label" type="Label" parent="RightNav/GachaBox" unique_id=1941574339]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 19
+text = "GACHA"
+horizontal_alignment = 1
+
+[node name="ShopBox" type="VBoxContainer" parent="RightNav" unique_id=1985235377]
+layout_mode = 2
+alignment = 1
+
+[node name="ShopBtn" type="Button" parent="RightNav/ShopBox" unique_id=684402240]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_horizontal = 4
+flat = true
+theme_override_styles/focus = SubResource("StyleBoxEmpty_nav")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_nav")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_nav")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_nav")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_nav")
+icon = ExtResource("16_tex_store")
+icon_alignment = 1
+expand_icon = true
+
+[node name="Label" type="Label" parent="RightNav/ShopBox" unique_id=1605730559]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 19
+text = "SHOP"
+horizontal_alignment = 1
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=192229862]
+
+[node name="BackpackUI" parent="CanvasLayer" unique_id=1997005845 instance=ExtResource("4_bp")]
+visible = false
+
+[node name="ShopUI" parent="CanvasLayer" unique_id=1287968311 instance=ExtResource("5_shop")]
+visible = false
+
+[node name="GachaUI" parent="CanvasLayer" unique_id=2087867951 instance=ExtResource("6_gacha")]
+visible = false
+
+[node name="CollectionUI" parent="CanvasLayer" unique_id=1702656865 instance=ExtResource("7_col")]
+visible = false
+
+[node name="MissionsUI" parent="CanvasLayer" unique_id=26175927 instance=ExtResource("8_mis")]
+visible = false
+
+[node name="AchievementsUI" parent="CanvasLayer" unique_id=828265434 instance=ExtResource("9_ach")]
+visible = false
+
+[node name="SettingsUI" parent="CanvasLayer" unique_id=1440745883 instance=ExtResource("10_set")]
+visible = false
+
+[node name="BlacksmithUI" parent="CanvasLayer" unique_id=1948201845 instance=ExtResource("17_bs")]
+visible = false

@@ -1,0 +1,183 @@
+[gd_scene format=3 uid="uid://fkwqm5cv6xm4"]
+
+[ext_resource type="Script" uid="uid://chhegq6v16nkp" path="res://scripts/ui/gacha_ui.gd" id="1_gacha"]
+[ext_resource type="FontFile" uid="uid://dto4tcyfjwbla" path="res://ThaleahFat/ThaleahFat.ttf" id="2_font"]
+[ext_resource type="Texture2D" uid="uid://bs1gjy0ptulxh" path="res://graphic/allchicky.png" id="3_banner"]
+
+[sub_resource type="Theme" id="Theme_gacha"]
+default_font = ExtResource("2_font")
+default_font_size = 24
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.12, 0.1, 0.2, 0.98)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.6, 0.35, 0.85, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_showcase"]
+bg_color = Color(0.08, 0.07, 0.14, 0.9)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.4, 0.25, 0.6, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="GachaUI" type="Control" unique_id=1184881839]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_gacha")
+script = ExtResource("1_gacha")
+
+[node name="BackgroundDarkness" type="ColorRect" parent="." unique_id=933361863]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.08, 0.08, 0.1, 0.95)
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=2072358091]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="CenterContainer" unique_id=1223797216]
+custom_minimum_size = Vector2(880, 560)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="TopBar" type="HBoxContainer" parent="CenterContainer/Panel" unique_id=1365781372]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 32.0
+offset_top = 16.0
+offset_right = -80.0
+offset_bottom = 56.0
+grow_horizontal = 2
+
+[node name="Title" type="Label" parent="CenterContainer/Panel/TopBar" unique_id=1206329758]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.9, 0.65, 1, 1)
+theme_override_font_sizes/font_size = 34
+text = "HERO GACHA"
+
+[node name="DiamondLabel" type="Label" parent="CenterContainer/Panel/TopBar" unique_id=2099311425]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.9, 1, 1)
+theme_override_font_sizes/font_size = 28
+text = "Diamonds: 30 💎"
+
+[node name="CloseButton" type="Button" parent="CenterContainer/Panel" unique_id=2043830180]
+custom_minimum_size = Vector2(44, 44)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -60.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = 60.0
+grow_horizontal = 0
+text = "X"
+
+[node name="MainVBox" type="VBoxContainer" parent="CenterContainer/Panel" unique_id=834262225]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 32.0
+offset_top = 66.0
+offset_right = -32.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 12
+
+[node name="BannerTexture" type="TextureRect" parent="CenterContainer/Panel/MainVBox" unique_id=1003795773]
+custom_minimum_size = Vector2(816, 95)
+layout_mode = 2
+texture = ExtResource("3_banner")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ShowcasePanel" type="PanelContainer" parent="CenterContainer/Panel/MainVBox" unique_id=260482392]
+custom_minimum_size = Vector2(816, 230)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_showcase")
+
+[node name="PlaceholderVBox" type="VBoxContainer" parent="CenterContainer/Panel/MainVBox/ShowcasePanel" unique_id=1921903794]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="Header" type="Label" parent="CenterContainer/Panel/MainVBox/ShowcasePanel/PlaceholderVBox" unique_id=1778678107]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.25, 1)
+theme_override_font_sizes/font_size = 26
+text = "SUMMON HERO CHICKS & BURIED TREASURES"
+horizontal_alignment = 1
+
+[node name="Rates" type="Label" parent="CenterContainer/Panel/MainVBox/ShowcasePanel/PlaceholderVBox" unique_id=2111584900]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
+theme_override_font_sizes/font_size = 18
+text = "Drop Rates: 40% Chick Heroes (Duplicates = +300 Coins) | 60% Coin Bundles (Up to 600 Coins!)"
+horizontal_alignment = 1
+
+[node name="Hint" type="Label" parent="CenterContainer/Panel/MainVBox/ShowcasePanel/PlaceholderVBox" unique_id=2065700481]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.6, 0.6, 1)
+theme_override_font_sizes/font_size = 16
+text = "Press 'Roll 1x' or 'Roll 5x' below to summon!"
+horizontal_alignment = 1
+
+[node name="ResultsHBox" type="HBoxContainer" parent="CenterContainer/Panel/MainVBox/ShowcasePanel" unique_id=1148674263]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 14
+alignment = 1
+
+[node name="StatusLabel" type="Label" parent="CenterContainer/Panel/MainVBox" unique_id=1312307752]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+horizontal_alignment = 1
+
+[node name="RollButtons" type="HBoxContainer" parent="CenterContainer/Panel/MainVBox" unique_id=194560261]
+layout_mode = 2
+size_flags_vertical = 10
+theme_override_constants/separation = 40
+alignment = 1
+
+[node name="Pull1Button" type="Button" parent="CenterContainer/Panel/MainVBox/RollButtons" unique_id=82036290]
+custom_minimum_size = Vector2(230, 54)
+layout_mode = 2
+theme_override_font_sizes/font_size = 26
+text = "Roll 1x (10 💎)"
+
+[node name="Pull5Button" type="Button" parent="CenterContainer/Panel/MainVBox/RollButtons" unique_id=1628779157]
+custom_minimum_size = Vector2(250, 54)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.3, 1)
+theme_override_font_sizes/font_size = 26
+text = "Roll 5x (45 💎)"

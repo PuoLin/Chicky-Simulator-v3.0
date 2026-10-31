@@ -1,0 +1,172 @@
+[gd_scene format=3 uid="uid://dxs5782kn7wjk"]
+
+[ext_resource type="Script" uid="uid://ddu1nco1vxwgv" path="res://scripts/ui/shop_ui.gd" id="1_shop"]
+[ext_resource type="FontFile" uid="uid://dto4tcyfjwbla" path="res://ThaleahFat/ThaleahFat.ttf" id="2_font"]
+
+[sub_resource type="Theme" id="Theme_shop"]
+default_font = ExtResource("2_font")
+default_font_size = 24
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.12, 0.11, 0.16, 0.98)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.65, 0.45, 0.2, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[node name="ShopUI" type="Control" unique_id=1034777319]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_shop")
+script = ExtResource("1_shop")
+
+[node name="BackgroundDarkness" type="ColorRect" parent="." unique_id=1458508357]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.08, 0.08, 0.1, 0.95)
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=684151730]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="CenterContainer" unique_id=1538960351]
+custom_minimum_size = Vector2(880, 560)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="TopBar" type="HBoxContainer" parent="CenterContainer/Panel" unique_id=627096287]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 32.0
+offset_top = 16.0
+offset_right = -80.0
+offset_bottom = 56.0
+grow_horizontal = 2
+
+[node name="Title" type="Label" parent="CenterContainer/Panel/TopBar" unique_id=1021195652]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 0.82, 0.25, 1)
+theme_override_font_sizes/font_size = 36
+text = "SHOP"
+
+[node name="CoinLabel" type="Label" parent="CenterContainer/Panel/TopBar" unique_id=70509119]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.4, 1)
+theme_override_font_sizes/font_size = 28
+text = "Coins: 0 🪙"
+
+[node name="CloseButton" type="Button" parent="CenterContainer/Panel" unique_id=765179707]
+custom_minimum_size = Vector2(44, 44)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -60.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = 60.0
+grow_horizontal = 0
+text = "X"
+
+[node name="CategoryBar" type="HBoxContainer" parent="CenterContainer/Panel" unique_id=1269790913]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 32.0
+offset_top = 62.0
+offset_right = -80.0
+offset_bottom = 98.0
+grow_horizontal = 2
+theme_override_constants/separation = 8
+
+[node name="AllBtn" type="Button" parent="CenterContainer/Panel/CategoryBar" unique_id=1791893232]
+custom_minimum_size = Vector2(64, 34)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "All"
+
+[node name="WeaponsBtn" type="Button" parent="CenterContainer/Panel/CategoryBar" unique_id=310976974]
+custom_minimum_size = Vector2(80, 34)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Weapons"
+
+[node name="HelmetsBtn" type="Button" parent="CenterContainer/Panel/CategoryBar" unique_id=1504125304]
+custom_minimum_size = Vector2(80, 34)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Helmets"
+
+[node name="ArmorBtn" type="Button" parent="CenterContainer/Panel/CategoryBar" unique_id=867016213]
+custom_minimum_size = Vector2(70, 34)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Armor"
+
+[node name="ShieldsBtn" type="Button" parent="CenterContainer/Panel/CategoryBar" unique_id=931838542]
+custom_minimum_size = Vector2(76, 34)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Shields"
+
+[node name="BootsBtn" type="Button" parent="CenterContainer/Panel/CategoryBar" unique_id=2020507712]
+custom_minimum_size = Vector2(64, 34)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Boots"
+
+[node name="ToolsBtn" type="Button" parent="CenterContainer/Panel/CategoryBar" unique_id=2119319807]
+custom_minimum_size = Vector2(64, 34)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Tools"
+
+[node name="FeedbackLabel" type="Label" parent="CenterContainer/Panel" unique_id=119178335]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 32.0
+offset_top = 102.0
+offset_right = -80.0
+offset_bottom = 126.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 20
+horizontal_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CenterContainer/Panel" unique_id=1620505421]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 28.0
+offset_top = 130.0
+offset_right = -28.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ItemGrid" type="GridContainer" parent="CenterContainer/Panel/ScrollContainer" unique_id=1425220921]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 14
+theme_override_constants/v_separation = 14
+columns = 4

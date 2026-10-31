@@ -1,0 +1,25 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/environment/exit_portal.gd" id="1_portal"]
+[ext_resource type="Texture2D" path="res://graphic/bananacat.png" id="2_cat"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_portal"]
+radius = 24.0
+
+[node name="ExitPortal" type="Area2D"]
+collision_layer = 4
+collision_mask = 1
+script = ExtResource("1_portal")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.9, 0.9)
+texture = ExtResource("2_cat")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_portal")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+enabled = false
+energy = 1.2
+texture_scale = 1.8
+
