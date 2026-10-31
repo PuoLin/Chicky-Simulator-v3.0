@@ -165,10 +165,10 @@ theme_override_font_sizes/font_size = 48
 text = "LEVEL SELECT"
 
 [node name="QuitButton" type="Button" parent="CenterVBox" unique_id=946078903]
-custom_minimum_size = Vector2(280, 60)
+custom_minimum_size = Vector2(360, 80)
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_font_sizes/font_size = 44
+theme_override_font_sizes/font_size = 48
 text = "QUIT"
 
 [node name="LeftNav" type="VBoxContainer" parent="." unique_id=2023403121]
