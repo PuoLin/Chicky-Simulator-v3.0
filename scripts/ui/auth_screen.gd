@@ -113,13 +113,52 @@ func _on_signup_pressed() -> void:
 func _set_status(msg: String, col: Color) -> void:
 	status_label.text = msg
 	status_label.add_theme_color_override("font_color", col)
+	
 
+# --- HTML BRIDGE WORKAROUND FOR HUAWEI QUICK APP KEYBOARD ---
+func spawn_html_input(input_type: String, field_id: String) -> void:
+	var js_code = """
+		var old_box = document.getElementById('godot_temp_input');
+		if (old_box) old_box.remove();
+		
+		var box = document.createElement('input');
+		box.id = 'godot_temp_input';
+		box.type = '%s';
+		box.placeholder = 'Enter %s...';
+		box.style.position = 'fixed';
+		box.style.top = '10px';
+		box.style.left = '50%';
+		box.style.transform = 'translateX(-50%)';
+		box.style.fontSize = '20px';
+		box.style.padding = '10px';
+		box.style.zIndex = '9999';
+		document.body.appendChild(box);
+		box.focus();
+		
+		box.onblur = function() {
+			window.godotHtmlCallback([box.value, '%s']);
+			box.remove();
+		};
+		box.onkeydown = function(e) {
+			if (e.key === 'Enter') box.blur();
+		};
+	""" % [input_type, field_id, field_id]
+	
+	JavaScriptBridge.eval(js_code)
 
-#func _on_username_input_focus_entered() -> void:
-	## Forces the keyboard to open when the Username box is tapped
-	#DisplayServer.virtual_keyboard_show("")
-#
-#
-#func _on_password_input_focus_entered() -> void:
-## Forces the keyboard to open when the Password box is tapped
-	#DisplayServer.virtual_keyboard_show("")
+func _on_html_input(args) -> void:
+	var typed_text = args[0]
+	var field = args[1]
+	
+	if field == "username":
+		username_input.text = typed_text
+	elif field == "password":
+		password_input.text = typed_text
+
+func _on_username_button_pressed() -> void:
+	if OS.has_feature("web"):
+		spawn_html_input("text", "username")
+
+func _on_password_button_pressed() -> void:
+	if OS.has_feature("web"):
+		spawn_html_input("password", "password")

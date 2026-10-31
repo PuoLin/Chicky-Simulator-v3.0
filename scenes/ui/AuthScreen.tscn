@@ -119,9 +119,16 @@ text = "Username:"
 custom_minimum_size = Vector2(0, 42)
 layout_mode = 2
 size_flags_horizontal = 3
+focus_mode = 0
 theme_override_font_sizes/font_size = 22
 placeholder_text = "Enter username..."
 clear_button_enabled = true
+
+[node name="UsernameButton" type="Button" parent="CenterContainer/Panel/VBoxContainer/UsernameRow/UsernameInput" unique_id=1710496909]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_right = 284.0
+offset_bottom = 43.0
 
 [node name="PasswordRow" type="HBoxContainer" parent="CenterContainer/Panel/VBoxContainer" unique_id=409993807]
 layout_mode = 2
@@ -136,11 +143,19 @@ text = "Password:"
 custom_minimum_size = Vector2(0, 42)
 layout_mode = 2
 size_flags_horizontal = 3
+focus_mode = 0
 theme_override_font_sizes/font_size = 22
 placeholder_text = "Enter password..."
 clear_button_enabled = true
 virtual_keyboard_type = 6
 secret = true
+
+[node name="PasswordButton" type="Button" parent="CenterContainer/Panel/VBoxContainer/PasswordRow/PasswordInput" unique_id=1229283533]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_top = 1.0
+offset_right = 284.0
+offset_bottom = 45.0
 
 [node name="StatusLabel" type="Label" parent="CenterContainer/Panel/VBoxContainer" unique_id=1132876040]
 custom_minimum_size = Vector2(0, 24)
@@ -167,6 +182,5 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 22
 text = "SIGN UP"
 
-[connection signal="focus_entered" from="CenterContainer/Panel/VBoxContainer/UsernameRow" to="." method="_on_username_row_focus_entered"]
-[connection signal="focus_entered" from="CenterContainer/Panel/VBoxContainer/UsernameRow/UsernameInput" to="." method="_on_username_input_focus_entered"]
-[connection signal="focus_entered" from="CenterContainer/Panel/VBoxContainer/PasswordRow/PasswordInput" to="." method="_on_password_input_focus_entered"]
+[connection signal="pressed" from="CenterContainer/Panel/VBoxContainer/UsernameRow/UsernameInput/UsernameButton" to="." method="_on_username_button_pressed"]
+[connection signal="pressed" from="CenterContainer/Panel/VBoxContainer/PasswordRow/PasswordInput/PasswordButton" to="." method="_on_password_button_pressed"]
