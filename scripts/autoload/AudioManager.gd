@@ -15,6 +15,7 @@ var tracks: Dictionary = {
 }
 
 var master_volume: float = 0.8
+var visibility_cb: JavaScriptObject
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -35,16 +36,16 @@ func _ready() -> void:
 
 	set_master_volume(master_volume)
 
-func _notification(what: int) -> void:
+	if OS.has_feature("web"):
+		visibility_cb = JavaScriptBridge.create_callback(_on_visibility_change)
+		var doc = JavaScriptBridge.get_interface("document")
+		if doc:
+			doc.addEventListener("visibilitychange", visibility_cb)
+
+func _on_visibility_change(args) -> void:
+	var is_hidden = JavaScriptBridge.eval("document.hidden")
 	var master_idx = AudioServer.get_bus_index("Master")
-	
-	# App sent to background
-	if what == NOTIFICATION_WM_WINDOW_FOCUS_OUT or what == NOTIFICATION_APPLICATION_PAUSED:
-		AudioServer.set_bus_mute(master_idx, true)
-		
-	# App brought back to foreground
-	elif what == NOTIFICATION_WM_WINDOW_FOCUS_IN or what == NOTIFICATION_APPLICATION_RESUMED:
-		AudioServer.set_bus_mute(master_idx, false)
+	AudioServer.set_bus_mute(master_idx, is_hidden == true)
 
 func _on_music_finished() -> void:
 	if is_music_enabled and not current_track_name.is_empty():
