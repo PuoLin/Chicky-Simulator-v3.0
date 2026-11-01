@@ -24,6 +24,7 @@ class_name BackpackUI
 @onready var category_bar: HBoxContainer = $CenterContainer/Panel/RootVBox/BottomSection/LeftPane/CategoryBar
 
 var selected_item_id: String = ""
+var selected_inv_index: int = -1
 var selected_is_equipped: bool = false
 var selected_slot_type: String = ""
 var active_category: String = "all"
@@ -80,9 +81,11 @@ func _highlight_active_category() -> void:
 
 func _connect_slot(btn: TextureButton, slot_key: String) -> void:
 	btn.pressed.connect(func():
-		var eq_id: String = Global.equipped.get(slot_key, "no")
-		if eq_id != "no" and not eq_id.is_empty():
-			_select_item(eq_id, true, slot_key)
+		var eq = Global.equipped.get(slot_key, "no")
+		if typeof(eq) == TYPE_DICTIONARY and not eq.is_empty():
+			_select_item(eq.get("id", ""), true, slot_key, -1, eq)
+		elif typeof(eq) == TYPE_STRING and eq != "no" and not eq.is_empty():
+			_select_item(eq, true, slot_key, -1)
 	)
 
 func refresh_ui() -> void:
@@ -98,10 +101,15 @@ func _update_equipped_slots() -> void:
 	_update_slot_icon(slot_armor, Global.equipped.get("a", "no"))
 	_update_slot_icon(slot_boots, Global.equipped.get("sho", "no"))
 
-func _update_slot_icon(btn: TextureButton, item_id: String) -> void:
+func _update_slot_icon(btn: TextureButton, item_val) -> void:
 	if btn == null:
 		return
-	var clean_id: String = item_id.strip_edges()
+	var clean_id := ""
+	if typeof(item_val) == TYPE_DICTIONARY:
+		clean_id = item_val.get("id", "")
+	elif typeof(item_val) == TYPE_STRING:
+		clean_id = item_val.strip_edges()
+
 	if clean_id != "no" and not clean_id.is_empty():
 		var item_data: Dictionary = ItemDatabase.get_item(clean_id)
 		var tex_path: String = item_data.get("texture_path", "")
@@ -115,8 +123,9 @@ func _update_inventory_grid() -> void:
 		grid_container.remove_child(child)
 		child.queue_free()
 
-	for item_id in Global.inventory:
-		var clean_id: String = String(item_id).strip_edges()
+	for i in range(Global.inventory.size()):
+		var itm = Global.inventory[i]
+		var clean_id: String = itm.get("id", "") if typeof(itm) == TYPE_DICTIONARY else String(itm).strip_edges()
 		var item_data: Dictionary = ItemDatabase.get_item(clean_id)
 		if item_data.is_empty():
 			continue
@@ -137,10 +146,12 @@ func _update_inventory_grid() -> void:
 		else:
 			slot_btn.text = item_data.get("name", clean_id)
 
+		var captured_idx: int = i
 		var captured_id: String = clean_id
 		var captured_slot: String = slot
+		var captured_dict = itm if typeof(itm) == TYPE_DICTIONARY else null
 		slot_btn.pressed.connect(func():
-			_select_item(captured_id, false, captured_slot)
+			_select_item(captured_id, false, captured_slot, captured_idx, captured_dict)
 		)
 		grid_container.add_child(slot_btn)
 
@@ -157,12 +168,13 @@ func _matches_category(slot: String, item_id: String) -> bool:
 		return true
 	if active_category == "boots" and slot == "sho":
 		return true
-	if active_category == "tools" and (slot == "tool" or item_id == "torch"):
+	if active_category == "tools" and (slot == "tool" or slot == "acc" or item_id == "torch"):
 		return true
 	return false
 
-func _select_item(id: String, is_eq: bool, slot_key: String) -> void:
+func _select_item(id: String, is_eq: bool, slot_key: String, inv_idx: int = -1, item_dict: Variant = null) -> void:
 	selected_item_id = id
+	selected_inv_index = inv_idx
 	selected_is_equipped = is_eq
 	selected_slot_type = slot_key
 	
@@ -178,10 +190,17 @@ func _select_item(id: String, is_eq: bool, slot_key: String) -> void:
 	else:
 		item_icon.visible = false
 
-	item_name_label.text = ItemDatabase.get_item_display_name(id)
+	var lvl: int = 1
+	if item_dict and typeof(item_dict) == TYPE_DICTIONARY:
+		lvl = item_dict.get("level", 1)
+	elif inv_idx >= 0 and inv_idx < Global.inventory.size() and typeof(Global.inventory[inv_idx]) == TYPE_DICTIONARY:
+		lvl = Global.inventory[inv_idx].get("level", 1)
+
+	var base_name: String = data.get("name", id)
+	item_name_label.text = ("%s  (+%d)" % [base_name, lvl]) if lvl > 1 else base_name
 	item_desc_label.text = data.get("desc", "")
 	
-	var up_stats := ItemDatabase.get_upgraded_stats(id)
+	var up_stats := ItemDatabase.get_upgraded_stats(item_dict if item_dict else id, lvl)
 	var stats_str := ""
 	if up_stats.get("atk", 0.0) > 0:
 		stats_str += "ATK: +%d  " % int(up_stats["atk"])
@@ -201,6 +220,7 @@ func _select_item(id: String, is_eq: bool, slot_key: String) -> void:
 
 func _clear_selection() -> void:
 	selected_item_id = ""
+	selected_inv_index = -1
 	item_icon.texture = null
 	item_icon.visible = false
 	item_name_label.text = "Select an item"
@@ -219,6 +239,9 @@ func _on_action_button_pressed() -> void:
 		if players.size() > 0:
 			players[0].refuel_torch_from_inventory()
 	else:
-		Global.equip_item(selected_item_id)
+		if selected_inv_index >= 0 and selected_inv_index < Global.inventory.size():
+			Global.equip_item(selected_inv_index)
+		else:
+			Global.equip_item(selected_item_id)
 
 	refresh_ui()

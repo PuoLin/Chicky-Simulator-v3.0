@@ -3,6 +3,8 @@
 [ext_resource type="Script" uid="uid://ddu1nco1vxwgv" path="res://scripts/ui/shop_ui.gd" id="1_shop"]
 [ext_resource type="FontFile" uid="uid://dto4tcyfjwbla" path="res://ThaleahFat/ThaleahFat.ttf" id="2_font"]
 [ext_resource type="Texture2D" path="res://graphic/coin.png" id="3_coin"]
+[ext_resource type="Texture2D" uid="uid://xok5bh52555g" path="res://graphic/diamond.svg" id="4_diamond"]
+[ext_resource type="Texture2D" uid="uid://hx2sel6718ag" path="res://graphic/button2.png" id="5_button2"]
 
 [sub_resource type="Theme" id="Theme_shop"]
 default_font = ExtResource("2_font")
@@ -19,6 +21,19 @@ corner_radius_top_left = 12
 corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iap_panel"]
+bg_color = Color(0.1, 0.1, 0.14, 0.98)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.85, 0.2, 0.2, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
 
 [node name="ShopUI" type="Control" unique_id=1034777319]
 layout_mode = 3
@@ -61,6 +76,7 @@ offset_top = 20.0
 offset_right = -120.0
 offset_bottom = 80.0
 grow_horizontal = 2
+theme_override_constants/separation = 16
 
 [node name="Title" type="Label" parent="CenterContainer/Panel/TopBar" unique_id=1021195652]
 layout_mode = 2
@@ -86,6 +102,30 @@ layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.9, 0.4, 1)
 theme_override_font_sizes/font_size = 32
 text = "0"
+
+[node name="DiamondBox" type="HBoxContainer" parent="CenterContainer/Panel/TopBar" unique_id=98712345]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="DiamondIcon" type="TextureRect" parent="CenterContainer/Panel/TopBar/DiamondBox"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+texture = ExtResource("4_diamond")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="DiamondLabel" type="Label" parent="CenterContainer/Panel/TopBar/DiamondBox" unique_id=98712346]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.9, 1, 1)
+theme_override_font_sizes/font_size = 32
+text = "0"
+
+[node name="BuyDiamondsButton" type="Button" parent="CenterContainer/Panel/TopBar" unique_id=98712347]
+custom_minimum_size = Vector2(170, 46)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Buy Diamonds"
 
 [node name="CloseButton" type="Button" parent="CenterContainer/Panel" unique_id=765179707]
 custom_minimum_size = Vector2(90, 80)
@@ -184,3 +224,121 @@ size_flags_horizontal = 3
 theme_override_constants/h_separation = 14
 theme_override_constants/v_separation = 14
 columns = 4
+
+[node name="MockPaymentGateway" type="ColorRect" parent="." unique_id=2000000001]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.75)
+
+[node name="CenterContainer" type="CenterContainer" parent="MockPaymentGateway" unique_id=2000000002]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="MockPaymentGateway/CenterContainer" unique_id=2000000003]
+custom_minimum_size = Vector2(680, 420)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_iap_panel")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MockPaymentGateway/CenterContainer/Panel" unique_id=2000000004]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 32.0
+offset_top = 28.0
+offset_right = -32.0
+offset_bottom = -28.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 28
+alignment = 1
+
+[node name="TitleLabel" type="Label" parent="MockPaymentGateway/CenterContainer/Panel/VBoxContainer" unique_id=2000000005]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 48
+text = "HUAWEI IAP Sandbox"
+horizontal_alignment = 1
+
+[node name="ItemRow" type="HBoxContainer" parent="MockPaymentGateway/CenterContainer/Panel/VBoxContainer" unique_id=2000000006]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="DiamondIcon" type="TextureRect" parent="MockPaymentGateway/CenterContainer/Panel/VBoxContainer/ItemRow" unique_id=2000000007]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture = ExtResource("4_diamond")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="PriceLabel" type="Label" parent="MockPaymentGateway/CenterContainer/Panel/VBoxContainer/ItemRow" unique_id=2000000008]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.9, 1, 1)
+theme_override_font_sizes/font_size = 36
+text = "1000 Diamonds - RM 3.90"
+horizontal_alignment = 1
+
+[node name="ButtonRow" type="HBoxContainer" parent="MockPaymentGateway/CenterContainer/Panel/VBoxContainer" unique_id=2000000009]
+layout_mode = 2
+theme_override_constants/separation = 24
+alignment = 1
+
+[node name="ConfirmButton" type="TextureButton" parent="MockPaymentGateway/CenterContainer/Panel/VBoxContainer/ButtonRow" unique_id=2000000010]
+custom_minimum_size = Vector2(270, 84)
+layout_mode = 2
+texture_normal = ExtResource("5_button2")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="MockPaymentGateway/CenterContainer/Panel/VBoxContainer/ButtonRow/ConfirmButton" unique_id=2000000012]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 32
+theme_override_colors/font_color = Color(1, 0.95, 0.5, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+text = "CONFIRM PAYMENT"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CancelButton" type="TextureButton" parent="MockPaymentGateway/CenterContainer/Panel/VBoxContainer/ButtonRow" unique_id=2000000011]
+custom_minimum_size = Vector2(270, 84)
+layout_mode = 2
+texture_normal = ExtResource("5_button2")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="MockPaymentGateway/CenterContainer/Panel/VBoxContainer/ButtonRow/CancelButton" unique_id=2000000013]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 32
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+text = "CANCEL"
+horizontal_alignment = 1
+vertical_alignment = 1

@@ -8,6 +8,9 @@ class_name ShopUI
 @onready var grid: GridContainer = $CenterContainer/Panel/ScrollContainer/ItemGrid
 @onready var close_btn: Button = $CenterContainer/Panel/CloseButton
 @onready var coin_label: Label = get_node_or_null("CenterContainer/Panel/TopBar/CoinBox/CoinLabel") if get_node_or_null("CenterContainer/Panel/TopBar/CoinBox/CoinLabel") else get_node_or_null("CenterContainer/Panel/TopBar/CoinLabel")
+@onready var diamond_label: Label = get_node_or_null("CenterContainer/Panel/TopBar/DiamondBox/DiamondLabel") if get_node_or_null("CenterContainer/Panel/TopBar/DiamondBox/DiamondLabel") else get_node_or_null("CenterContainer/Panel/TopBar/DiamondLabel")
+@onready var buy_diamonds_btn: Button = get_node_or_null("CenterContainer/Panel/TopBar/BuyDiamondsButton") if get_node_or_null("CenterContainer/Panel/TopBar/BuyDiamondsButton") else get_node_or_null("CenterContainer/Panel/TopBar/BuyDiamondsBtn")
+@onready var mock_payment_gateway: Control = get_node_or_null("MockPaymentGateway")
 @onready var feedback_label: Label = $CenterContainer/Panel/FeedbackLabel
 @onready var category_bar: HBoxContainer = $CenterContainer/Panel/CategoryBar
 
@@ -36,8 +39,29 @@ func _ready() -> void:
 	visible = false
 	close_btn.pressed.connect(toggle)
 	Global.coins_changed.connect(_on_coins_changed)
+	Global.diamonds_changed.connect(_on_diamonds_changed)
 	_setup_categories()
+	_setup_iap_gateway()
 	_on_coins_changed(Global.coins)
+	_on_diamonds_changed(Global.diamonds)
+
+func _setup_iap_gateway() -> void:
+	if buy_diamonds_btn and not buy_diamonds_btn.pressed.is_connected(_on_buy_diamonds_pressed):
+		buy_diamonds_btn.pressed.connect(_on_buy_diamonds_pressed)
+	
+	if mock_payment_gateway:
+		mock_payment_gateway.visible = false
+		var confirm_btn: BaseButton = mock_payment_gateway.find_child("ConfirmButton", true, false) as BaseButton
+		if not confirm_btn:
+			confirm_btn = mock_payment_gateway.find_child("ConfirmPayment", true, false) as BaseButton
+		if confirm_btn and not confirm_btn.pressed.is_connected(_on_confirm_payment_pressed):
+			confirm_btn.pressed.connect(_on_confirm_payment_pressed)
+			
+		var cancel_btn: BaseButton = mock_payment_gateway.find_child("CancelButton", true, false) as BaseButton
+		if not cancel_btn:
+			cancel_btn = mock_payment_gateway.find_child("Cancel", true, false) as BaseButton
+		if cancel_btn and not cancel_btn.pressed.is_connected(_on_cancel_payment_pressed):
+			cancel_btn.pressed.connect(_on_cancel_payment_pressed)
 
 func _setup_categories() -> void:
 	for child in category_bar.get_children():
@@ -65,13 +89,39 @@ func toggle() -> void:
 		feedback_label.text = ""
 		_highlight_active_category()
 		refresh_shop()
+	else:
+		if mock_payment_gateway:
+			mock_payment_gateway.hide()
 
 func _on_coins_changed(amount: int) -> void:
 	if coin_label:
 		coin_label.text = str(amount)
 
+func _on_diamonds_changed(amount: int) -> void:
+	if diamond_label:
+		diamond_label.text = str(amount)
+
+func _on_buy_diamonds_pressed() -> void:
+	if mock_payment_gateway:
+		mock_payment_gateway.show()
+
+func _on_cancel_payment_pressed() -> void:
+	if mock_payment_gateway:
+		mock_payment_gateway.hide()
+
+func _on_confirm_payment_pressed() -> void:
+	if mock_payment_gateway:
+		mock_payment_gateway.hide()
+	Global.diamonds += 1000
+	Global.save_player_data()
+	Global.emit_signal("diamonds_changed", Global.diamonds)
+	if diamond_label:
+		diamond_label.text = str(Global.diamonds)
+	_show_feedback("Purchased 1000 Diamonds!", Color(0.4, 1.0, 0.4, 1.0))
+
 func refresh_shop() -> void:
 	_on_coins_changed(Global.coins)
+	_on_diamonds_changed(Global.diamonds)
 	for child in grid.get_children():
 		child.queue_free()
 
@@ -146,7 +196,9 @@ func _matches_category(slot: String, item_id: String) -> bool:
 
 func _buy_item(item_id: String, price: int, item_name: String) -> void:
 	if Global.spend_coins(price):
-		Global.add_inventory_item(item_id)
+		var item_data := ItemDatabase.get_item(item_id).duplicate(true)
+		item_data["level"] = 1
+		Global.add_inventory_item(item_data)
 		_show_feedback("Purchased %s!" % item_name, Color(0.4, 1.0, 0.4, 1.0))
 	else:
 		_show_feedback("Not enough coins for %s!" % item_name, Color(1.0, 0.4, 0.4, 1.0))

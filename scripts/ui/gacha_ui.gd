@@ -27,28 +27,32 @@ const SINGLE_COST := 10
 const FIVE_COST := 45
 const DUPLICATE_COIN_PAYOUT := 300
 
-# Gacha Pools: exactly 5% Chick Hero Drop Rate (roughly 1 in 20 pulls), 95% Coin Bundles
-const HERO_POOL := [
-	{"type": "chick", "id": "kitty", "weight": 1, "rarity": "Rare"},
-	{"type": "chick", "id": "magnet", "weight": 1, "rarity": "Rare"},
-	{"type": "chick", "id": "speedy", "weight": 1, "rarity": "Rare"},
-	{"type": "chick", "id": "worrier", "weight": 1, "rarity": "Epic"},
-	{"type": "chick", "id": "tanker", "weight": 1, "rarity": "Epic"}
+# Probability weights for rarity tiers (Hero-based shared rates: Rare: 3, Epic: 2)
+const TIER_WEIGHTS := {
+	"Rare": 3,
+	"Epic": 2
+}
+
+# Rare Pool: Heroes + Diamond Equipment
+const RARE_POOL := [
+	{"type": "chick", "id": "kitty", "rarity": "Rare"},
+	{"type": "chick", "id": "magnet", "rarity": "Rare"},
+	{"type": "chick", "id": "speedy", "rarity": "Rare"},
+	{"type": "equipment", "id": "shield5", "name": "Diamond Shield", "rarity": "Rare"},
+	{"type": "equipment", "id": "helmet5", "name": "Diamond Helmet", "rarity": "Rare"},
+	{"type": "equipment", "id": "shoe5", "name": "Diamond Boots", "rarity": "Rare"}
+]
+
+# Epic Pool: Heroes + Diamond Equipment
+const EPIC_POOL := [
+	{"type": "chick", "id": "worrier", "rarity": "Epic"},
+	{"type": "chick", "id": "tanker", "rarity": "Epic"},
+	{"type": "equipment", "id": "sword", "name": "Diamond Sword", "rarity": "Epic"},
+	{"type": "equipment", "id": "armor5", "name": "Diamond Armor", "rarity": "Epic"},
+	{"type": "equipment", "id": "diamond_amulet", "name": "Diamond Amulet", "rarity": "Epic"}
 ]
 
 const COIN_POOL := [
-	{"type": "coins", "id": "coin_50", "amount": 50, "name": "Coin Pouch", "icon": "res://graphic/coin.png", "weight": 40, "rarity": "Common"},
-	{"type": "coins", "id": "coin_150", "amount": 150, "name": "Coin Sack", "icon": "res://graphic/coin2.png", "weight": 30, "rarity": "Uncommon"},
-	{"type": "coins", "id": "coin_300", "amount": 300, "name": "Treasure Chest", "icon": "res://graphic/itemcoin.png", "weight": 15, "rarity": "Rare"},
-	{"type": "coins", "id": "coin_600", "amount": 600, "name": "Jackpot Stash", "icon": "res://graphic/manycoin.png", "weight": 10, "rarity": "Epic"}
-]
-
-const MIXED_POOL := [
-	{"type": "chick", "id": "kitty", "weight": 1, "rarity": "Rare"},
-	{"type": "chick", "id": "magnet", "weight": 1, "rarity": "Rare"},
-	{"type": "chick", "id": "speedy", "weight": 1, "rarity": "Rare"},
-	{"type": "chick", "id": "worrier", "weight": 1, "rarity": "Epic"},
-	{"type": "chick", "id": "tanker", "weight": 1, "rarity": "Epic"},
 	{"type": "coins", "id": "coin_50", "amount": 50, "name": "Coin Pouch", "icon": "res://graphic/coin.png", "weight": 40, "rarity": "Common"},
 	{"type": "coins", "id": "coin_150", "amount": 150, "name": "Coin Sack", "icon": "res://graphic/coin2.png", "weight": 30, "rarity": "Uncommon"},
 	{"type": "coins", "id": "coin_300", "amount": 300, "name": "Treasure Chest", "icon": "res://graphic/itemcoin.png", "weight": 15, "rarity": "Rare"},
@@ -183,12 +187,12 @@ func _do_pull(count: int, cost: int) -> void:
 
 	# 1. Pre-calculate the results of the pull(s) in memory
 	var pulled_results: Array = []
-	var has_hero: bool = false
+	var has_high_tier: bool = false
 	
 	for i in range(count):
 		var rolled_entry := _pick_random_item()
 		if rolled_entry["type"] == "chick":
-			has_hero = true
+			has_high_tier = true
 			var chick_id: String = rolled_entry["id"]
 			var was_new := Global.unlock_character(chick_id)
 			if not was_new:
@@ -198,6 +202,22 @@ func _do_pull(count: int, cost: int) -> void:
 				"id": chick_id,
 				"is_new": was_new,
 				"rarity": rolled_entry["rarity"]
+			})
+		elif rolled_entry["type"] == "equipment":
+			has_high_tier = true
+			var eq_id: String = rolled_entry["id"]
+			# Deep copy fix: Apply .duplicate(true) and level = 1 before awarding pulled equipment
+			var base_item := ItemDatabase.get_item(eq_id)
+			var new_item: Dictionary = base_item.duplicate(true)
+			new_item["level"] = 1
+			Global.add_inventory_item(new_item)
+			pulled_results.append({
+				"type": "equipment",
+				"id": eq_id,
+				"name": new_item.get("name", rolled_entry.get("name", eq_id)),
+				"icon": new_item.get("texture_path", ""),
+				"rarity": rolled_entry["rarity"],
+				"item_data": new_item
 			})
 		else: # coins
 			var coin_amt: int = rolled_entry["amount"]
@@ -212,13 +232,13 @@ func _do_pull(count: int, cost: int) -> void:
 			})
 
 	# Determine the Rarity of the pull:
-	# Gold (High Rarity): If the pull (or any of the 5 pulls) results in a Hero Character
+	# Gold (High Rarity): If the pull (or any of the 5 pulls) results in a Hero Character or Diamond Equipment
 	# Purple (Common): If the pull (or all 5 pulls) results in only Coin bundles
 	var anim_name: String = ""
 	if count == 1:
-		anim_name = "onegold" if has_hero else "onepurple"
+		anim_name = "onegold" if has_high_tier else "onepurple"
 	else:
-		anim_name = "fivegold" if has_hero else "fivepurple"
+		anim_name = "fivegold" if has_high_tier else "fivepurple"
 
 	# 2. Audio Override Logic: dynamically mute or pause background music before playing video
 	if AudioManager:
@@ -265,11 +285,22 @@ func _do_pull(count: int, cost: int) -> void:
 	_display_results(pulled_results)
 
 func _pick_random_item() -> Dictionary:
-	# Exactly 5% chance of pulling a character hero (randf() <= 0.05), 95% chance of coin bundle
+	# Exactly 5% chance of pulling high-tier rewards (Chick Heroes or Diamond Equipment), 95% coin bundles
 	if randf() <= 0.05:
-		return _pick_from_weighted_array(HERO_POOL)
+		return _pick_premium_item()
 	else:
 		return _pick_from_weighted_array(COIN_POOL)
+
+func _pick_premium_item() -> Dictionary:
+	# 1. Determine rarity tier based on the exact same probability weights (Rare: 3, Epic: 2)
+	var total_tier_weight: int = TIER_WEIGHTS["Rare"] + TIER_WEIGHTS["Epic"] # 3 + 2 = 5
+	var roll: int = randi_range(1, total_tier_weight)
+	var chosen_tier: String = "Rare" if roll <= TIER_WEIGHTS["Rare"] else "Epic"
+	
+	# 2. Randomly select an item from that tier (Hero or Diamond Equipment)
+	var tier_pool: Array = RARE_POOL if chosen_tier == "Rare" else EPIC_POOL
+	var picked: Dictionary = tier_pool.pick_random()
+	return picked.duplicate(true)
 
 func _pick_from_weighted_array(pool: Array) -> Dictionary:
 	var total_weight := 0
@@ -294,34 +325,41 @@ func _display_results(results: Array) -> void:
 	
 	for res in results:
 		var card := PanelContainer.new()
-		card.custom_minimum_size = Vector2(140, 210)
+		card.custom_minimum_size = Vector2(140, 230)
 		card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		
 		var vbox := VBoxContainer.new()
 		vbox.alignment = BoxContainer.ALIGNMENT_CENTER
-		vbox.add_theme_constant_override("separation", 6)
+		vbox.add_theme_constant_override("separation", 4)
+		
+		# Category badge
+		var category_lbl := Label.new()
+		category_lbl.add_theme_font_size_override("font_size", 14)
+		category_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		
 		var icon := TextureRect.new()
-		icon.custom_minimum_size = Vector2(76, 76)
+		icon.custom_minimum_size = Vector2(72, 72)
 		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		
 		var name_lbl := Label.new()
-		name_lbl.add_theme_font_size_override("font_size", 22)
+		name_lbl.add_theme_font_size_override("font_size", 20)
 		name_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		
 		var rarity_lbl := Label.new()
 		var rarity_str: String = res.get("rarity", "Common")
 		rarity_lbl.text = rarity_str
-		rarity_lbl.add_theme_font_size_override("font_size", 18)
+		rarity_lbl.add_theme_font_size_override("font_size", 16)
 		rarity_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		_apply_rarity_color(rarity_lbl, rarity_str)
 		
 		var tag_lbl := Label.new()
-		tag_lbl.add_theme_font_size_override("font_size", 20)
+		tag_lbl.add_theme_font_size_override("font_size", 18)
 		tag_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		
 		if res["type"] == "chick":
+			category_lbl.text = "[ HERO ]"
+			category_lbl.add_theme_color_override("font_color", Color(1.0, 0.85, 0.25, 1.0))
 			var chick_id: String = res["id"]
 			var info: Dictionary = Global.CHICK_STATS.get(chick_id, Global.CHICK_STATS["normal"])
 			name_lbl.text = info.get("name", chick_id)
@@ -334,7 +372,18 @@ func _display_results(results: Array) -> void:
 			else:
 				tag_lbl.text = "+%d Coins" % DUPLICATE_COIN_PAYOUT
 				tag_lbl.add_theme_color_override("font_color", Color(0.4, 1.0, 0.4, 1.0))
-		else:
+		elif res["type"] == "equipment":
+			category_lbl.text = "[ EQUIPMENT ]"
+			category_lbl.add_theme_color_override("font_color", Color(0.2, 0.85, 1.0, 1.0))
+			name_lbl.text = res.get("name", "Diamond Gear")
+			var eq_icon_path: String = res.get("icon", "")
+			if ResourceLoader.exists(eq_icon_path):
+				icon.texture = load(eq_icon_path)
+			tag_lbl.text = "Lv.1 GEAR"
+			tag_lbl.add_theme_color_override("font_color", Color(0.4, 1.0, 0.5, 1.0))
+		else: # coins
+			category_lbl.text = "[ COINS ]"
+			category_lbl.add_theme_color_override("font_color", Color(0.8, 0.8, 0.8, 1.0))
 			name_lbl.text = res["name"]
 			var coin_icon_path: String = res["icon"]
 			if ResourceLoader.exists(coin_icon_path):
@@ -342,6 +391,7 @@ func _display_results(results: Array) -> void:
 			tag_lbl.text = "+%d Coins" % res["amount"]
 			tag_lbl.add_theme_color_override("font_color", Color(1.0, 0.85, 0.2, 1.0))
 			
+		vbox.add_child(category_lbl)
 		vbox.add_child(icon)
 		vbox.add_child(name_lbl)
 		vbox.add_child(rarity_lbl)

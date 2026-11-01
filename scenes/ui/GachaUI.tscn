@@ -203,7 +203,7 @@ horizontal_alignment = 1
 layout_mode = 2
 theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
 theme_override_font_sizes/font_size = 22
-text = "Drop Rates: 40% Chick Heroes (Duplicates = +300 Coins) | 60% Coin Bundles (Up to 600 Coins!)"
+text = "Summon Chick Heroes & Legendary Diamond Equipment (Rare & Epic) | Coin Bundles"
 horizontal_alignment = 1
 
 [node name="Hint" type="Label" parent="CenterContainer/Panel/MainVBox/ShowcasePanel/PlaceholderVBox" unique_id=2065700481]

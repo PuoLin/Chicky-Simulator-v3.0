@@ -74,9 +74,11 @@ func _collect() -> void:
 		return
 
 	is_picked = true
-	Global.add_inventory_item(item_id)
+	# Deep copy base item dictionary and force level to 1 for unique instancing
+	var item_data := ItemDatabase.get_item(item_id).duplicate(true)
+	item_data["level"] = 1
+	Global.add_inventory_item(item_data)
 	
-	var item_data := ItemDatabase.get_item(item_id)
 	var item_name: String = item_data.get("name", item_id)
 	print("[ItemDrop] Player picked up: ", item_name)
 

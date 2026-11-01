@@ -19,6 +19,7 @@ class_name BlacksmithUI
 @onready var sell_btn: Button = $CenterContainer/Panel/RootVBox/ContentHBox/RightPane/DetailVBox/ButtonHBox/SellButton
 
 var selected_item_id: String = ""
+var selected_inventory_index: int = -1
 var _status_timer_token: int = 0
 
 func _ready() -> void:
@@ -68,7 +69,9 @@ func _get_all_owned_equipment_ids() -> Array[String]:
 func refresh_ui() -> void:
 	_update_coins_display()
 	_populate_item_list()
-	if not selected_item_id.is_empty():
+	if selected_inventory_index >= 0 and selected_inventory_index < Global.inventory.size():
+		_select_inventory_item(selected_inventory_index)
+	elif not selected_item_id.is_empty():
 		_select_item(selected_item_id)
 	else:
 		_clear_detail()
@@ -78,25 +81,32 @@ func _populate_item_list() -> void:
 		item_list_container.remove_child(child)
 		child.queue_free()
 
-	var equipment_ids := _get_all_owned_equipment_ids()
-	if equipment_ids.is_empty():
+	var upgradeable_indices: Array[int] = []
+	for i in range(Global.inventory.size()):
+		var itm = Global.inventory[i]
+		var itm_id: String = itm.get("id", "") if typeof(itm) == TYPE_DICTIONARY else str(itm).strip_edges()
+		if ItemDatabase.is_upgradeable(itm_id):
+			upgradeable_indices.append(i)
+
+	if upgradeable_indices.is_empty():
 		var empty_lbl := Label.new()
-		empty_lbl.text = "No equipment found.\nCollect gear from stages or Shop!"
+		empty_lbl.text = "No equipment found.\nCollect gear from stages, Gacha, or Shop!"
 		empty_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		empty_lbl.add_theme_color_override("font_color", Color(0.7, 0.7, 0.7, 1.0))
 		item_list_container.add_child(empty_lbl)
 		return
 
-	for itm_id in equipment_ids:
+	for idx in upgradeable_indices:
+		var itm = Global.inventory[idx]
+		var itm_id: String = itm.get("id", "") if typeof(itm) == TYPE_DICTIONARY else str(itm).strip_edges()
 		var itm_data := ItemDatabase.get_item(itm_id)
 		if itm_data.is_empty():
 			continue
 
-		var display_title: String = ItemDatabase.get_item_display_name(itm_id)
-		var is_eq: bool = Global.is_item_equipped(itm_id)
-		var inv_count: int = Global.count_inventory_item(itm_id)
-		var total_owned: int = (1 if is_eq else 0) + inv_count
-		
+		var current_lvl: int = itm.get("level", 1) if typeof(itm) == TYPE_DICTIONARY else 1
+		var base_name: String = itm_data.get("name", itm_id)
+		var display_title: String = "%s (+%d/15)" % [base_name, current_lvl]
+
 		# Row button container
 		var btn := Button.new()
 		btn.custom_minimum_size = Vector2(0, 64)
@@ -124,7 +134,7 @@ func _populate_item_list() -> void:
 			icon_rect.texture = load(tex_path)
 		hbox.add_child(icon_rect)
 
-		# 2. Item Name in the center with text_overrun_behavior
+		# 2. Item Name & Level in the center
 		var name_label := Label.new()
 		name_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		name_label.text = display_title
@@ -132,41 +142,42 @@ func _populate_item_list() -> void:
 		name_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		name_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		name_label.add_theme_font_size_override("font_size", 24)
-		if itm_id == selected_item_id:
+		if idx == selected_inventory_index:
 			name_label.add_theme_color_override("font_color", Color(1.0, 0.85, 0.2, 1.0))
 		else:
 			name_label.add_theme_color_override("font_color", Color(0.95, 0.95, 0.95, 1.0))
 		hbox.add_child(name_label)
 
-		# 3. Owned Quantity aligned to the right (e.g. Owned: 2)
+		# 3. Item index in inventory
 		var qty_label := Label.new()
 		qty_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		qty_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		qty_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		qty_label.add_theme_font_size_override("font_size", 22)
-		if is_eq and inv_count > 0:
-			qty_label.text = "Owned: %d (Eq)" % total_owned
-			qty_label.add_theme_color_override("font_color", Color(0.4, 0.95, 0.5, 1.0))
-		elif is_eq:
-			qty_label.text = "Equipped"
-			qty_label.add_theme_color_override("font_color", Color(0.4, 0.95, 0.5, 1.0))
-		else:
-			qty_label.text = "Owned: %d" % total_owned
-			qty_label.add_theme_color_override("font_color", Color(0.75, 0.85, 0.95, 1.0))
+		qty_label.text = "Bag #%d" % (idx + 1)
+		qty_label.add_theme_color_override("font_color", Color(0.6, 0.8, 1.0, 1.0))
 		hbox.add_child(qty_label)
 
 		btn.add_child(hbox)
 
-		var captured_id := itm_id
-		btn.pressed.connect(func(): _on_item_selected(captured_id))
+		var captured_idx := idx
+		btn.pressed.connect(func(): _on_inventory_item_selected(captured_idx))
 		item_list_container.add_child(btn)
 
-func _on_item_selected(itm_id: String) -> void:
+func _on_inventory_item_selected(idx: int) -> void:
 	status_label.text = ""
-	_select_item(itm_id)
+	_select_inventory_item(idx)
 
-func _select_item(itm_id: String) -> void:
+func _select_inventory_item(idx: int) -> void:
+	if idx < 0 or idx >= Global.inventory.size():
+		_clear_detail()
+		return
+		
+	selected_inventory_index = idx
+	var itm_entry = Global.inventory[idx]
+	var itm_id: String = itm_entry.get("id", "") if typeof(itm_entry) == TYPE_DICTIONARY else str(itm_entry).strip_edges()
 	selected_item_id = itm_id
+	
 	var itm_data := ItemDatabase.get_item(itm_id)
 	if itm_data.is_empty():
 		_clear_detail()
@@ -179,11 +190,11 @@ func _select_item(itm_id: String) -> void:
 	else:
 		item_icon.visible = false
 
-	var current_lvl := Global.get_item_upgrade_level(itm_id)
+	var current_lvl: int = itm_entry.get("level", 1) if typeof(itm_entry) == TYPE_DICTIONARY else 1
 	item_name_label.text = "%s  (+%d / 15)" % [itm_data.get("name", itm_id), current_lvl]
 	
-	var cur_stats := ItemDatabase.get_upgraded_stats(itm_id, current_lvl)
-	var next_stats := ItemDatabase.get_upgraded_stats(itm_id, min(15, current_lvl + 1))
+	var cur_stats := ItemDatabase.get_upgraded_stats(itm_entry, current_lvl)
+	var next_stats := ItemDatabase.get_upgraded_stats(itm_entry, min(15, current_lvl + 1))
 	
 	stats_current_label.text = "Current:  ATK +%d  |  DEF +%d  |  CD -%.1fs" % [
 		int(cur_stats.get("atk", 0.0)),
@@ -201,14 +212,13 @@ func _select_item(itm_id: String) -> void:
 	else:
 		stats_next_label.text = "★ Maximum Upgrade Level (+15) Reached! ★"
 
-	var info := Global.get_upgrade_info(itm_id)
+	var info := Global.get_upgrade_info_for_index(idx)
 	upgrade_btn.visible = true
 	sell_btn.visible = true
 	
 	var sell_price := ItemDatabase.get_sell_price(itm_id)
-	var bag_count := Global.count_inventory_item(itm_id)
 	sell_btn.text = "SELL (1x for %d Coins)" % sell_price
-	sell_btn.disabled = bag_count <= 0
+	sell_btn.disabled = false
 
 	if info.get("max_reached", false):
 		upgrade_btn.disabled = true
@@ -226,8 +236,18 @@ func _select_item(itm_id: String) -> void:
 			upgrade_btn.text = "NEED DUPLICATE"
 			upgrade_btn.disabled = true
 
+func _select_item(itm_id: String) -> void:
+	for i in range(Global.inventory.size()):
+		var itm = Global.inventory[i]
+		var cur_id: String = itm.get("id", "") if typeof(itm) == TYPE_DICTIONARY else str(itm).strip_edges()
+		if cur_id == itm_id:
+			_select_inventory_item(i)
+			return
+	_clear_detail()
+
 func _clear_detail() -> void:
 	selected_item_id = ""
+	selected_inventory_index = -1
 	item_icon.texture = null
 	item_icon.visible = false
 	item_name_label.text = "Select an Equipment"
@@ -239,10 +259,16 @@ func _clear_detail() -> void:
 	sell_btn.visible = false
 
 func _on_upgrade_pressed() -> void:
-	if selected_item_id.is_empty():
-		return
-	var res := Global.upgrade_item(selected_item_id)
+	if selected_inventory_index < 0 or selected_inventory_index >= Global.inventory.size():
+		if selected_item_id.is_empty():
+			return
+		_select_item(selected_item_id)
+		if selected_inventory_index < 0:
+			return
+
+	var res := Global.upgrade_inventory_item(selected_inventory_index)
 	if res.get("success", false):
+		selected_inventory_index = res.get("target_index", selected_inventory_index)
 		status_label.text = "Success! %s (1 duplicate consumed)" % res.get("reason", "")
 		status_label.add_theme_color_override("font_color", Color(0.4, 1.0, 0.4, 1.0))
 		refresh_ui()
@@ -255,12 +281,13 @@ func _on_upgrade_pressed() -> void:
 		status_label.text = "Upgrade Failed: %s" % res.get("reason", "")
 		status_label.add_theme_color_override("font_color", Color(1.0, 0.4, 0.4, 1.0))
 
-
 func _on_sell_pressed() -> void:
-	if selected_item_id.is_empty():
+	if selected_inventory_index < 0 or selected_inventory_index >= Global.inventory.size():
 		return
-	var res := Global.sell_item(selected_item_id)
+	var res := Global.sell_inventory_item(selected_inventory_index)
 	if res.get("success", false):
+		selected_inventory_index = -1
+		selected_item_id = ""
 		status_label.text = "Item sold! %s" % res.get("reason", "")
 		status_label.add_theme_color_override("font_color", Color(1.0, 0.9, 0.3, 1.0))
 		refresh_ui()
