@@ -103,9 +103,9 @@ theme_override_font_sizes/font_size = 32
 text = "500"
 
 [node name="CloseButton" type="Button" parent="CenterContainer/Panel/RootVBox/TopBar"]
-custom_minimum_size = Vector2(90, 80)
+custom_minimum_size = Vector2(70, 64)
 layout_mode = 2
-theme_override_font_sizes/font_size = 48
+theme_override_font_sizes/font_size = 38
 text = "X"
 
 [node name="HSeparator" type="HSeparator" parent="CenterContainer/Panel/RootVBox"]

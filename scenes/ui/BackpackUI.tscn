@@ -76,9 +76,9 @@ theme_override_font_sizes/font_size = 52
 text = "BACKPACK"
 
 [node name="CloseButton" type="Button" parent="CenterContainer/Panel/RootVBox/TopBar" unique_id=1338703754]
-custom_minimum_size = Vector2(90, 80)
+custom_minimum_size = Vector2(70, 64)
 layout_mode = 2
-theme_override_font_sizes/font_size = 48
+theme_override_font_sizes/font_size = 38
 text = "X"
 
 [node name="EquippedSection" type="VBoxContainer" parent="CenterContainer/Panel/RootVBox" unique_id=121534531]

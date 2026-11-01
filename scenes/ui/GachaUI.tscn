@@ -148,17 +148,17 @@ theme_override_font_sizes/font_size = 32
 text = "30"
 
 [node name="CloseButton" type="Button" parent="CenterContainer/Panel" unique_id=2043830180]
-custom_minimum_size = Vector2(90, 80)
+custom_minimum_size = Vector2(70, 64)
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -105.0
+offset_left = -86.0
 offset_top = 16.0
-offset_right = -15.0
-offset_bottom = 96.0
+offset_right = -16.0
+offset_bottom = 80.0
 grow_horizontal = 0
-theme_override_font_sizes/font_size = 48
+theme_override_font_sizes/font_size = 38
 text = "X"
 
 [node name="MainVBox" type="VBoxContainer" parent="CenterContainer/Panel" unique_id=834262225]

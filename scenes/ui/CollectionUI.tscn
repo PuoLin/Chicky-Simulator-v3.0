@@ -20,6 +20,22 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_detail"]
+bg_color = Color(0.08, 0.1, 0.15, 0.9)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.2, 0.45, 0.65, 0.7)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+content_margin_left = 28.0
+content_margin_top = 20.0
+content_margin_right = 28.0
+content_margin_bottom = 20.0
+
 [node name="CollectionUI" type="Control" unique_id=1637324536]
 layout_mode = 3
 anchors_preset = 15
@@ -70,17 +86,17 @@ theme_override_font_sizes/font_size = 52
 text = "HERO COLLECTION"
 
 [node name="CloseButton" type="Button" parent="CenterContainer/Panel" unique_id=573576385]
-custom_minimum_size = Vector2(90, 80)
+custom_minimum_size = Vector2(70, 64)
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -105.0
+offset_left = -86.0
 offset_top = 16.0
-offset_right = -15.0
-offset_bottom = 96.0
+offset_right = -16.0
+offset_bottom = 80.0
 grow_horizontal = 0
-theme_override_font_sizes/font_size = 48
+theme_override_font_sizes/font_size = 38
 text = "X"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/Panel" unique_id=730742512]
@@ -88,18 +104,17 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 32.0
+offset_left = 36.0
 offset_top = 90.0
-offset_right = -32.0
+offset_right = -36.0
 offset_bottom = -24.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 24
+theme_override_constants/separation = 50
 
 [node name="LeftScroll" type="ScrollContainer" parent="CenterContainer/Panel/HBoxContainer" unique_id=960304531]
-custom_minimum_size = Vector2(440, 0)
+custom_minimum_size = Vector2(460, 0)
 layout_mode = 2
-size_flags_horizontal = 3
 
 [node name="ChickGrid" type="GridContainer" parent="CenterContainer/Panel/HBoxContainer/LeftScroll" unique_id=791673553]
 layout_mode = 2
@@ -109,8 +124,10 @@ theme_override_constants/v_separation = 14
 columns = 3
 
 [node name="DetailPanel" type="PanelContainer" parent="CenterContainer/Panel/HBoxContainer" unique_id=1524121096]
-custom_minimum_size = Vector2(460, 0)
+custom_minimum_size = Vector2(520, 0)
 layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_detail")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/Panel/HBoxContainer/DetailPanel" unique_id=697996657]
 layout_mode = 2
@@ -145,7 +162,7 @@ Cooldown: 4.0s   Speed: 180"
 horizontal_alignment = 1
 
 [node name="LoreLabel" type="Label" parent="CenterContainer/Panel/HBoxContainer/DetailPanel/VBoxContainer" unique_id=755346919]
-custom_minimum_size = Vector2(400, 90)
+custom_minimum_size = Vector2(460, 90)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.75, 0.75, 0.75, 1)
 theme_override_font_sizes/font_size = 22

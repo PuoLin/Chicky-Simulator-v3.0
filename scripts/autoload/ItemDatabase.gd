@@ -8,7 +8,7 @@ var items: Dictionary = {}
 var tiers: Dictionary = {
 	1: ["axe", "shield3", "helmet3", "armor3", "shoe3", "torch"],
 	2: ["hammer", "shield4", "helmet4", "armor4", "shoe4", "torch"],
-	3: ["sword", "shield5", "helmet5", "armor5", "shoe5", "diamond_amulet", "torch"]
+	3: ["sword", "shield5", "helmet5", "armor5", "shoe5", "torch"]
 }
 
 func _ready() -> void:
@@ -44,7 +44,7 @@ func _init_default_database() -> void:
 		},
 		"sword": {
 			"id": "sword",
-			"name": "Diamond Sword",
+			"name": "Sword",
 			"desc": "Attack +40",
 			"slot": "w",
 			"atk": 40.0,
@@ -209,18 +209,6 @@ func _init_default_database() -> void:
 			"tier": 1,
 			"price": 50,
 			"texture_path": "res://graphic/star.png"
-		},
-		"diamond_amulet": {
-			"id": "diamond_amulet",
-			"name": "Diamond Amulet",
-			"desc": "Attack +15, Defence +15, CD -0.5s",
-			"slot": "acc",
-			"atk": 15.0,
-			"def": 15.0,
-			"cd": 0.5,
-			"tier": 3,
-			"price": 2500,
-			"texture_path": "res://graphic/diamond.svg"
 		}
 	}
 
@@ -240,8 +228,6 @@ func _load_from_equipment_details() -> void:
 			var id := parts[0].strip_edges()
 			var img := "res://" + parts[1].strip_edges()
 			var item_name := parts[2].strip_edges()
-			if id == "sword":
-				item_name = "Diamond Sword"
 			var desc := parts[3].strip_edges()
 			var stats := parts[4].strip_edges().split("/")
 			var slot := parts[5].strip_edges()
@@ -279,21 +265,6 @@ func _load_from_equipment_details() -> void:
 				"texture_path": img
 			}
 
-	# Ensure Diamond Amulet is always present
-	if not items.has("diamond_amulet"):
-		items["diamond_amulet"] = {
-			"id": "diamond_amulet",
-			"name": "Diamond Amulet",
-			"desc": "Attack +15, Defence +15, CD -0.5s",
-			"slot": "acc",
-			"atk": 15.0,
-			"def": 15.0,
-			"cd": 0.5,
-			"tier": 3,
-			"price": 2500,
-			"texture_path": "res://graphic/diamond.svg"
-		}
-
 func get_buy_price(id: String) -> int:
 	var itm := get_item(id)
 	if itm.has("price"):
@@ -303,18 +274,7 @@ func get_buy_price(id: String) -> int:
 func get_item(id: String) -> Dictionary:
 	var clean_id: String = id.strip_edges()
 	if items.has(clean_id):
-		return items[clean_id].duplicate(true)
-	# Check Diamond equipment aliases
-	if (clean_id == "diamond_sword" or clean_id == "dsword") and items.has("sword"):
-		return items["sword"].duplicate(true)
-	if (clean_id == "diamond_armor" or clean_id == "darmor") and items.has("armor5"):
-		return items["armor5"].duplicate(true)
-	if (clean_id == "diamond_shield" or clean_id == "dshield") and items.has("shield5"):
-		return items["shield5"].duplicate(true)
-	if (clean_id == "diamond_helmet" or clean_id == "dhelmet") and items.has("helmet5"):
-		return items["helmet5"].duplicate(true)
-	if (clean_id == "diamond_boots" or clean_id == "dboots" or clean_id == "diamond_shoes") and items.has("shoe5"):
-		return items["shoe5"].duplicate(true)
+		return items[clean_id]
 	return {}
 
 func get_items_by_tier(tier: int) -> Array:
@@ -339,48 +299,31 @@ func is_upgradeable(id: String) -> bool:
 	if itm.is_empty():
 		return false
 	var slot: String = itm.get("slot", "")
-	return slot in ["w", "shi", "h", "a", "sho", "acc", "accessory"]
+	return slot in ["w", "shi", "h", "a", "sho"]
 
-func get_item_display_name(item_input) -> String:
-	var itm: Dictionary = {}
-	var itm_id: String = ""
-	var lvl: int = 1
-	if typeof(item_input) == TYPE_DICTIONARY:
-		itm = item_input
-		itm_id = itm.get("id", "")
-		lvl = itm.get("level", 1)
-	elif typeof(item_input) == TYPE_STRING:
-		itm_id = str(item_input).strip_edges()
-		itm = get_item(itm_id)
-		if get_node_or_null("/root/Global"):
-			lvl = Global.get_item_upgrade_level(itm_id)
+func get_item_display_name(id: String) -> String:
+	var itm := get_item(id)
 	if itm.is_empty():
-		return itm_id
-	var base_name: String = itm.get("name", itm_id)
-	if is_upgradeable(itm_id) and lvl > 1:
-		return "%s +%d" % [base_name, lvl - 1]
+		return id
+	var base_name: String = itm.get("name", id)
+	if is_upgradeable(id) and get_node_or_null("/root/Global"):
+		var lvl: int = Global.get_item_upgrade_level(id)
+		if lvl > 0:
+			return "%s +%d" % [base_name, lvl]
 	return base_name
 
-func get_upgraded_stats(item_input, level: int = -1) -> Dictionary:
-	var itm: Dictionary = {}
-	if typeof(item_input) == TYPE_DICTIONARY:
-		itm = item_input
-		if level < 0:
-			level = itm.get("level", 1)
-	elif typeof(item_input) == TYPE_STRING:
-		itm = get_item(str(item_input))
-		if level < 0:
-			if get_node_or_null("/root/Global"):
-				level = Global.get_item_upgrade_level(str(item_input))
-			else:
-				level = 1
+func get_upgraded_stats(id: String, level: int = -1) -> Dictionary:
+	var itm := get_item(id)
 	if itm.is_empty():
 		return {}
-	level = clampi(level, 1, 15)
-	# Explicit base level: level 1 guarantees 100% exact base stats (0% bonus).
-	# Each upgrade level above 1 adds +12% bonus stats.
-	var bonus_levels: int = max(0, level - 1)
-	var mult: float = 1.0 + 0.12 * float(bonus_levels)
+	if level < 0:
+		if get_node_or_null("/root/Global"):
+			level = Global.get_item_upgrade_level(id)
+		else:
+			level = 0
+	level = clampi(level, 0, 15)
+	# High-impact upgrade scaling: +12% per upgrade level (+180% at max +15)
+	var mult: float = 1.0 + 0.12 * float(level)
 	return {
 		"atk": itm.get("atk", 0.0) * mult,
 		"def": itm.get("def", 0.0) * mult,

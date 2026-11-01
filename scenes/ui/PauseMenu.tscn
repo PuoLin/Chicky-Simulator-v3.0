@@ -104,18 +104,18 @@ theme_override_font_sizes/font_size = 48
 text = "MAIN MENU"
 
 [node name="CloseButton" type="Button" parent="CenterContainer/Panel"]
-custom_minimum_size = Vector2(90, 80)
+custom_minimum_size = Vector2(70, 64)
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -110.0
+offset_left = -90.0
 offset_top = 20.0
 offset_right = -20.0
-offset_bottom = 100.0
+offset_bottom = 84.0
 grow_horizontal = 0
 mouse_filter = 0
-theme_override_font_sizes/font_size = 48
+theme_override_font_sizes/font_size = 38
 text = "X"
 
 [node name="SettingsUI" parent="." instance=ExtResource("3_settings")]

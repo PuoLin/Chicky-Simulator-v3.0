@@ -47,9 +47,8 @@ const RARE_POOL := [
 const EPIC_POOL := [
 	{"type": "chick", "id": "worrier", "rarity": "Epic"},
 	{"type": "chick", "id": "tanker", "rarity": "Epic"},
-	{"type": "equipment", "id": "sword", "name": "Diamond Sword", "rarity": "Epic"},
-	{"type": "equipment", "id": "armor5", "name": "Diamond Armor", "rarity": "Epic"},
-	{"type": "equipment", "id": "diamond_amulet", "name": "Diamond Amulet", "rarity": "Epic"}
+	{"type": "equipment", "id": "sword", "name": "Sword", "rarity": "Epic"},
+	{"type": "equipment", "id": "armor5", "name": "Diamond Armor", "rarity": "Epic"}
 ]
 
 const COIN_POOL := [
@@ -206,18 +205,14 @@ func _do_pull(count: int, cost: int) -> void:
 		elif rolled_entry["type"] == "equipment":
 			has_high_tier = true
 			var eq_id: String = rolled_entry["id"]
-			# Deep copy fix: Apply .duplicate(true) and level = 1 before awarding pulled equipment
+			Global.add_inventory_item(eq_id)
 			var base_item := ItemDatabase.get_item(eq_id)
-			var new_item: Dictionary = base_item.duplicate(true)
-			new_item["level"] = 1
-			Global.add_inventory_item(new_item)
 			pulled_results.append({
 				"type": "equipment",
 				"id": eq_id,
-				"name": new_item.get("name", rolled_entry.get("name", eq_id)),
-				"icon": new_item.get("texture_path", ""),
-				"rarity": rolled_entry["rarity"],
-				"item_data": new_item
+				"name": base_item.get("name", rolled_entry.get("name", eq_id)),
+				"icon": base_item.get("texture_path", ""),
+				"rarity": rolled_entry["rarity"]
 			})
 		else: # coins
 			var coin_amt: int = rolled_entry["amount"]
@@ -379,7 +374,7 @@ func _display_results(results: Array) -> void:
 			var eq_icon_path: String = res.get("icon", "")
 			if ResourceLoader.exists(eq_icon_path):
 				icon.texture = load(eq_icon_path)
-			tag_lbl.text = "Lv.1 GEAR"
+			tag_lbl.text = "EQUIPMENT"
 			tag_lbl.add_theme_color_override("font_color", Color(0.4, 1.0, 0.5, 1.0))
 		else: # coins
 			category_lbl.text = "[ COINS ]"

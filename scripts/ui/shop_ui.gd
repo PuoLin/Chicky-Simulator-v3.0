@@ -51,15 +51,15 @@ func _setup_iap_gateway() -> void:
 	
 	if mock_payment_gateway:
 		mock_payment_gateway.visible = false
-		var confirm_btn: BaseButton = mock_payment_gateway.find_child("ConfirmButton", true, false) as BaseButton
+		var confirm_btn: Button = mock_payment_gateway.find_child("ConfirmButton", true, false) as Button
 		if not confirm_btn:
-			confirm_btn = mock_payment_gateway.find_child("ConfirmPayment", true, false) as BaseButton
+			confirm_btn = mock_payment_gateway.find_child("ConfirmPayment", true, false) as Button
 		if confirm_btn and not confirm_btn.pressed.is_connected(_on_confirm_payment_pressed):
 			confirm_btn.pressed.connect(_on_confirm_payment_pressed)
 			
-		var cancel_btn: BaseButton = mock_payment_gateway.find_child("CancelButton", true, false) as BaseButton
+		var cancel_btn: Button = mock_payment_gateway.find_child("CancelButton", true, false) as Button
 		if not cancel_btn:
-			cancel_btn = mock_payment_gateway.find_child("Cancel", true, false) as BaseButton
+			cancel_btn = mock_payment_gateway.find_child("Cancel", true, false) as Button
 		if cancel_btn and not cancel_btn.pressed.is_connected(_on_cancel_payment_pressed):
 			cancel_btn.pressed.connect(_on_cancel_payment_pressed)
 
@@ -196,9 +196,7 @@ func _matches_category(slot: String, item_id: String) -> bool:
 
 func _buy_item(item_id: String, price: int, item_name: String) -> void:
 	if Global.spend_coins(price):
-		var item_data := ItemDatabase.get_item(item_id).duplicate(true)
-		item_data["level"] = 1
-		Global.add_inventory_item(item_data)
+		Global.add_inventory_item(item_id)
 		_show_feedback("Purchased %s!" % item_name, Color(0.4, 1.0, 0.4, 1.0))
 	else:
 		_show_feedback("Not enough coins for %s!" % item_name, Color(1.0, 0.4, 0.4, 1.0))

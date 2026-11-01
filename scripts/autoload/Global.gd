@@ -151,38 +151,35 @@ func load_player_data() -> void:
 	})
 	equipped = {}
 	if raw_eq is Dictionary:
-		for slot in raw_eq.keys():
-			var eq_val = raw_eq[slot]
-			if typeof(eq_val) == TYPE_DICTIONARY:
-				var inst = eq_val.duplicate(true)
-				if not inst.has("level"):
-					inst["level"] = 1
-				equipped[slot] = inst
-			elif typeof(eq_val) == TYPE_STRING:
-				if eq_val != "no" and not eq_val.is_empty():
-					var base_data := ItemDatabase.get_item(eq_val)
-					var inst: Dictionary = base_data.duplicate(true) if not base_data.is_empty() else {"id": eq_val, "name": eq_val}
-					inst["level"] = 1
-					equipped[slot] = inst
-				else:
-					equipped[slot] = "no"
+		for slot in ["w", "shi", "h", "a", "sho"]:
+			var val = raw_eq.get(slot, "no")
+			if val is Dictionary:
+				equipped[slot] = str(val.get("id", "no")).strip_edges()
+			elif val is String:
+				equipped[slot] = val.strip_edges()
 			else:
 				equipped[slot] = "no"
+	else:
+		equipped = {"w": "axe", "shi": "no", "h": "no", "a": "no", "sho": "no"}
 
 	var raw_inv = data.get("inventory", ["axe", "torch", "torch"])
 	inventory = []
 	if raw_inv is Array:
 		for itm in raw_inv:
-			if typeof(itm) == TYPE_DICTIONARY:
-				var inst: Dictionary = itm.duplicate(true)
-				if not inst.has("level"):
-					inst["level"] = 1
-				inventory.append(inst)
-			elif typeof(itm) == TYPE_STRING:
-				var base_data := ItemDatabase.get_item(itm)
-				var inst: Dictionary = base_data.duplicate(true) if not base_data.is_empty() else {"id": itm, "name": itm}
-				inst["level"] = 1
-				inventory.append(inst)
+			if itm is Dictionary:
+				var itm_id: String = str(itm.get("id", "")).strip_edges()
+				if not itm_id.is_empty() and itm_id != "no":
+					inventory.append(itm_id)
+			elif itm is String:
+				var itm_id: String = itm.strip_edges()
+				if not itm_id.is_empty() and itm_id != "no":
+					inventory.append(itm_id)
+			else:
+				var itm_id: String = str(itm).strip_edges()
+				if not itm_id.is_empty() and itm_id != "no":
+					inventory.append(itm_id)
+	else:
+		inventory = ["axe", "torch", "torch"]
 	item_upgrades = {}
 	var raw_upgrades = data.get("item_upgrades", {})
 	if raw_upgrades is Dictionary:
@@ -381,93 +378,59 @@ func check_achievements() -> void:
 			PlatformManager.unlock_achievement(entry["id"])
 			save_player_data()
 
-func add_inventory_item(item_data_or_id) -> bool:
-	var item_dict: Dictionary = {}
-	if typeof(item_data_or_id) == TYPE_DICTIONARY:
-		item_dict = item_data_or_id.duplicate(true)
-	elif typeof(item_data_or_id) == TYPE_STRING:
-		var base := ItemDatabase.get_item(item_data_or_id)
-		if not base.is_empty():
-			item_dict = base.duplicate(true)
-		else:
-			item_dict = {"id": item_data_or_id, "name": item_data_or_id}
-	else:
-		return false
+func _extract_clean_id(item_data_or_id) -> String:
+	if item_data_or_id is Dictionary:
+		return str(item_data_or_id.get("id", "")).strip_edges()
+	elif item_data_or_id is String:
+		return item_data_or_id.strip_edges()
+	return str(item_data_or_id).strip_edges()
 
-	# Explicit base level: force to 1 during creation to guarantee base stats
-	item_dict["level"] = 1
-	inventory.append(item_dict)
-	save_player_data()
+func add_inventory_item(item_data_or_id) -> bool:
+	var clean_id := _extract_clean_id(item_data_or_id)
+	if clean_id.is_empty():
+		return false
+	inventory.append(clean_id)
 	emit_signal("inventory_updated")
+	save_player_data()
 	return true
 
-func remove_inventory_item(item_id: String) -> bool:
-	var clean_id := item_id.strip_edges()
+func remove_inventory_item(item_data_or_id) -> bool:
+	var clean_id := _extract_clean_id(item_data_or_id)
 	for i in range(inventory.size()):
 		var itm = inventory[i]
-		var itm_id: String = itm.get("id", "") if typeof(itm) == TYPE_DICTIONARY else str(itm)
+		var itm_id: String = str(itm.get("id", "")) if itm is Dictionary else str(itm).strip_edges()
 		if itm_id == clean_id:
 			inventory.remove_at(i)
-			save_player_data()
 			emit_signal("inventory_updated")
+			save_player_data()
 			return true
 	return false
 
-func count_inventory_item(item_id: String) -> int:
-	var clean_id := item_id.strip_edges()
+func count_inventory_item(item_data_or_id) -> int:
+	var clean_id := _extract_clean_id(item_data_or_id)
 	var count := 0
 	for itm in inventory:
-		var itm_id: String = itm.get("id", "") if typeof(itm) == TYPE_DICTIONARY else str(itm)
+		var itm_id: String = str(itm.get("id", "")) if itm is Dictionary else str(itm).strip_edges()
 		if itm_id == clean_id:
 			count += 1
 	return count
 
 func equip_item(item_data_or_id) -> void:
-	var target_dict: Dictionary = {}
-	var slot: String = ""
-	var inv_index: int = -1
-	
-	if typeof(item_data_or_id) == TYPE_INT:
-		inv_index = item_data_or_id
-		if inv_index >= 0 and inv_index < inventory.size():
-			var entry = inventory[inv_index]
-			target_dict = entry.duplicate(true) if typeof(entry) == TYPE_DICTIONARY else ItemDatabase.get_item(str(entry)).duplicate(true)
-			slot = target_dict.get("slot", "")
-	elif typeof(item_data_or_id) == TYPE_DICTIONARY:
-		target_dict = item_data_or_id.duplicate(true)
-		slot = target_dict.get("slot", "")
-		inv_index = inventory.find(item_data_or_id)
-	elif typeof(item_data_or_id) == TYPE_STRING:
-		var clean_id = item_data_or_id.strip_edges()
-		for i in range(inventory.size()):
-			var itm = inventory[i]
-			var itm_id: String = itm.get("id", "") if typeof(itm) == TYPE_DICTIONARY else str(itm)
-			if itm_id == clean_id:
-				target_dict = itm.duplicate(true) if typeof(itm) == TYPE_DICTIONARY else ItemDatabase.get_item(clean_id).duplicate(true)
-				slot = target_dict.get("slot", "")
-				inv_index = i
-				break
-				
-	if target_dict.is_empty() or not equipped.has(slot):
+	var item_id := _extract_clean_id(item_data_or_id)
+	var item_data := ItemDatabase.get_item(item_id)
+	if item_data.is_empty():
 		return
-
-	if not target_dict.has("level"):
-		target_dict["level"] = 1
-
+	var slot: String = item_data.get("slot", "")
+	if not equipped.has(slot):
+		return
+		
 	var currently_equipped = equipped[slot]
-	if typeof(currently_equipped) == TYPE_DICTIONARY and not currently_equipped.is_empty():
-		inventory.append(currently_equipped)
-	elif typeof(currently_equipped) == TYPE_STRING and currently_equipped != "no" and not currently_equipped.is_empty():
-		var unequipped_inst := ItemDatabase.get_item(currently_equipped).duplicate(true)
-		unequipped_inst["level"] = 1
-		inventory.append(unequipped_inst)
-
-	if inv_index != -1 and inv_index < inventory.size():
-		inventory.remove_at(inv_index)
-	else:
-		remove_inventory_item(target_dict.get("id", ""))
-
-	equipped[slot] = target_dict
+	var cur_id: String = str(currently_equipped.get("id", "")) if currently_equipped is Dictionary else str(currently_equipped).strip_edges()
+	if cur_id != "no" and not cur_id.is_empty():
+		inventory.append(cur_id)
+		
+	remove_inventory_item(item_id)
+	equipped[slot] = item_id
 	save_player_data()
 	emit_signal("inventory_updated")
 
@@ -475,15 +438,9 @@ func unequip_item(slot: String) -> void:
 	if not equipped.has(slot):
 		return
 	var currently_equipped = equipped[slot]
-	if typeof(currently_equipped) == TYPE_DICTIONARY and not currently_equipped.is_empty():
-		inventory.append(currently_equipped)
-		equipped[slot] = "no"
-		save_player_data()
-		emit_signal("inventory_updated")
-	elif typeof(currently_equipped) == TYPE_STRING and currently_equipped != "no" and not currently_equipped.is_empty():
-		var inst := ItemDatabase.get_item(currently_equipped).duplicate(true)
-		inst["level"] = 1
-		inventory.append(inst)
+	var cur_id: String = str(currently_equipped.get("id", "")) if currently_equipped is Dictionary else str(currently_equipped).strip_edges()
+	if cur_id != "no" and not cur_id.is_empty():
+		inventory.append(cur_id)
 		equipped[slot] = "no"
 		save_player_data()
 		emit_signal("inventory_updated")
@@ -497,22 +454,16 @@ func get_player_stats() -> Dictionary:
 	var speed: float = base["speed"]
 
 	for slot in equipped.keys():
-		var eq = equipped[slot]
-		var itm: Dictionary = {}
-		var up_lvl: int = 1
-		if typeof(eq) == TYPE_DICTIONARY:
-			itm = eq
-			up_lvl = itm.get("level", 1)
-		elif typeof(eq) == TYPE_STRING and eq != "no" and not eq.is_empty():
-			itm = ItemDatabase.get_item(eq)
-			up_lvl = itm.get("level", 1)
-			
-		if not itm.is_empty():
-			var bonus_lvl: int = max(0, up_lvl - 1)
-			var mult: float = 1.0 + 0.12 * float(bonus_lvl)
-			total_atk += itm.get("atk", 0.0) * mult
-			total_def += itm.get("def", 0.0) * mult
-			total_cd = max(0.5, total_cd - (itm.get("cd", 0.0) * mult))
+		var eq_val = equipped[slot]
+		var eq_id: String = str(eq_val.get("id", "")) if eq_val is Dictionary else str(eq_val).strip_edges()
+		if eq_id != "no" and not eq_id.is_empty():
+			var itm: Dictionary = ItemDatabase.get_item(eq_id)
+			if not itm.is_empty():
+				var up_lvl: int = get_item_upgrade_level(eq_id)
+				var mult: float = 1.0 + 0.12 * float(up_lvl)
+				total_atk += itm.get("atk", 0.0) * mult
+				total_def += itm.get("def", 0.0) * mult
+				total_cd = max(0.5, total_cd - (itm.get("cd", 0.0) * mult))
 
 	return {
 		"max_hp": total_hp,
@@ -523,40 +474,26 @@ func get_player_stats() -> Dictionary:
 		"magnet": base["mag"]
 	}
 
-func get_item_upgrade_level(item_input) -> int:
-	if typeof(item_input) == TYPE_DICTIONARY:
-		return clampi(int(item_input.get("level", 1)), 1, 15)
-	var clean_id: String = str(item_input).strip_edges()
-	for itm in inventory:
-		if typeof(itm) == TYPE_DICTIONARY and itm.get("id", "") == clean_id:
-			return clampi(int(itm.get("level", 1)), 1, 15)
-	for slot in equipped.keys():
-		var eq = equipped[slot]
-		if typeof(eq) == TYPE_DICTIONARY and eq.get("id", "") == clean_id:
-			return clampi(int(eq.get("level", 1)), 1, 15)
-	return 1
-
-func is_item_equipped(item_id: String) -> bool:
+func get_item_upgrade_level(item_id: String) -> int:
 	var clean_id: String = item_id.strip_edges()
+	return clampi(int(item_upgrades.get(clean_id, 0)), 0, 15)
+
+func is_item_equipped(item_data_or_id) -> bool:
+	var clean_id := _extract_clean_id(item_data_or_id)
 	for slot in equipped.keys():
-		var eq = equipped[slot]
-		var eq_id: String = eq.get("id", "") if typeof(eq) == TYPE_DICTIONARY else str(eq)
+		var eq_val = equipped[slot]
+		var eq_id: String = str(eq_val.get("id", "")) if eq_val is Dictionary else str(eq_val).strip_edges()
 		if eq_id == clean_id:
 			return true
 	return false
 
-func get_upgrade_info_for_index(target_index: int) -> Dictionary:
-	if target_index < 0 or target_index >= inventory.size():
-		return {"can_upgrade": false, "reason": "Invalid item index"}
-	
-	var itm_entry = inventory[target_index]
-	var itm_dict: Dictionary = itm_entry if typeof(itm_entry) == TYPE_DICTIONARY else ItemDatabase.get_item(str(itm_entry))
-	var clean_id: String = itm_dict.get("id", str(itm_entry)).strip_edges()
-	
-	if itm_dict.is_empty() or not ItemDatabase.is_upgradeable(clean_id):
+func get_upgrade_info(item_id: String) -> Dictionary:
+	var clean_id: String = item_id.strip_edges()
+	var itm: Dictionary = ItemDatabase.get_item(clean_id)
+	if itm.is_empty() or not ItemDatabase.is_upgradeable(clean_id):
 		return {"can_upgrade": false, "reason": "Not upgradeable"}
 	
-	var current_lvl: int = itm_dict.get("level", 1)
+	var current_lvl: int = get_item_upgrade_level(clean_id)
 	if current_lvl >= 15:
 		return {
 			"can_upgrade": false,
@@ -568,26 +505,22 @@ func get_upgrade_info_for_index(target_index: int) -> Dictionary:
 			"coin_cost": 0,
 			"max_reached": true
 		}
-		
-	var next_lvl: int = current_lvl + 1
-	var coin_cost: int = 50 * next_lvl
 	
-	var duplicate_count := 0
-	for i in range(inventory.size()):
-		if i == target_index:
-			continue
-		var other = inventory[i]
-		var other_id: String = other.get("id", "") if typeof(other) == TYPE_DICTIONARY else str(other)
-		if other_id == clean_id:
-			duplicate_count += 1
-			
+	var next_lvl: int = current_lvl + 1
+	var inv_count: int = count_inventory_item(clean_id)
+	var is_eq: bool = is_item_equipped(clean_id)
+	var duplicate_count: int = inv_count if is_eq else max(0, inv_count - 1)
 	var has_duplicate: bool = duplicate_count > 0
+	
+	# Upgrade cost formula:
+	# Requires 1 duplicate copy + 50 * next_lvl Coins
+	var coin_cost: int = 50 * next_lvl
 	var can_afford: bool = coins >= coin_cost
 	var can_upgrade: bool = has_duplicate and can_afford
 	
 	var reason: String = "Ready to upgrade"
 	if not has_duplicate:
-		reason = "Requires 1 spare duplicate in inventory"
+		reason = "Requires 1 unequipped duplicate in inventory"
 	elif not can_afford:
 		reason = "Need %d coins" % coin_cost
 		
@@ -602,87 +535,37 @@ func get_upgrade_info_for_index(target_index: int) -> Dictionary:
 		"max_reached": false
 	}
 
-func get_upgrade_info(item_id: String) -> Dictionary:
-	var clean_id := item_id.strip_edges()
-	for i in range(inventory.size()):
-		var itm = inventory[i]
-		var itm_id: String = itm.get("id", "") if typeof(itm) == TYPE_DICTIONARY else str(itm)
-		if itm_id == clean_id:
-			return get_upgrade_info_for_index(i)
-	return {"can_upgrade": false, "reason": "Item not found in inventory"}
+func upgrade_item(item_id: String) -> Dictionary:
+	var clean_id: String = item_id.strip_edges()
+	var info: Dictionary = get_upgrade_info(clean_id)
+	if not info.get("can_upgrade", false):
+		return {"success": false, "reason": info.get("reason", "Cannot upgrade")}
+	
+	# Explicitly verify unequipped duplicate in inventory
+	var inv_idx := inventory.find(clean_id)
+	if inv_idx == -1:
+		return {"success": false, "reason": "No unequipped duplicate found in inventory"}
 
-func upgrade_inventory_item(target_index: int) -> Dictionary:
-	if target_index < 0 or target_index >= inventory.size():
-		return {"success": false, "reason": "Invalid inventory item index"}
-	
-	var item_entry = inventory[target_index]
-	var item_dict: Dictionary = {}
-	if typeof(item_entry) == TYPE_DICTIONARY:
-		item_dict = item_entry
-	elif typeof(item_entry) == TYPE_STRING:
-		item_dict = ItemDatabase.get_item(item_entry).duplicate(true)
-		item_dict["level"] = 1
-		inventory[target_index] = item_dict
-	else:
-		return {"success": false, "reason": "Invalid item format"}
-	
-	var item_id: String = item_dict.get("id", "")
-	if not ItemDatabase.is_upgradeable(item_id):
-		return {"success": false, "reason": "This equipment type cannot be upgraded"}
-		
-	var current_lvl: int = item_dict.get("level", 1)
-	if current_lvl >= 15:
-		return {"success": false, "reason": "Maximum upgrade level (+15) reached"}
-		
-	var next_lvl: int = current_lvl + 1
-	var coin_cost: int = 50 * next_lvl
-	
-	var dup_idx := -1
-	for i in range(inventory.size()):
-		if i == target_index:
-			continue
-		var other = inventory[i]
-		var other_id: String = other.get("id", "") if typeof(other) == TYPE_DICTIONARY else str(other)
-		if other_id == item_id:
-			dup_idx = i
-			break
-			
-	if dup_idx == -1:
-		return {"success": false, "reason": "Requires 1 spare duplicate in inventory"}
-		
+	var is_eq: bool = is_item_equipped(clean_id)
+	if not is_eq and count_inventory_item(clean_id) < 2:
+		return {"success": false, "reason": "Requires at least 1 spare duplicate in inventory"}
+
+	var coin_cost: int = info["coin_cost"]
 	if not spend_coins(coin_cost):
-		return {"success": false, "reason": "Need %d coins" % coin_cost}
+		return {"success": false, "reason": "Not enough coins"}
 		
-	inventory.remove_at(dup_idx)
-	if dup_idx < target_index:
-		target_index -= 1
-		
-	# Target and modify ONLY the specific index in the player's local inventory array
-	inventory[target_index]["level"] = next_lvl
+	# Explicitly remove/consume one instance of that duplicate item from inventory
+	inventory.remove_at(inv_idx)
 	
-	var base_data: Dictionary = ItemDatabase.get_item(item_id)
-	var mult: float = 1.0 + 0.12 * float(next_lvl - 1)
-	inventory[target_index]["atk"] = base_data.get("atk", 0.0) * mult
-	inventory[target_index]["def"] = base_data.get("def", 0.0) * mult
-	inventory[target_index]["cd"] = base_data.get("cd", 0.0) * mult
-	
+	var current_lvl: int = info["current_level"]
+	item_upgrades[clean_id] = current_lvl + 1
 	save_player_data()
 	emit_signal("inventory_updated")
 	return {
 		"success": true,
-		"new_level": next_lvl,
-		"target_index": target_index,
-		"reason": "Upgraded to +%d!" % next_lvl
+		"new_level": current_lvl + 1,
+		"reason": "Upgraded to +%d!" % (current_lvl + 1)
 	}
-
-func upgrade_item(item_id: String) -> Dictionary:
-	var clean_id := item_id.strip_edges()
-	for i in range(inventory.size()):
-		var itm = inventory[i]
-		var itm_id: String = itm.get("id", "") if typeof(itm) == TYPE_DICTIONARY else str(itm)
-		if itm_id == clean_id:
-			return upgrade_inventory_item(i)
-	return {"success": false, "reason": "Item not found in inventory"}
 
 func clear_session() -> void:
 	username = "Player"
@@ -743,13 +626,14 @@ func apply_god_mode() -> void:
 	emit_signal("diamonds_changed", diamonds)
 
 
-func sell_inventory_item(target_index: int) -> Dictionary:
-	if target_index < 0 or target_index >= inventory.size():
-		return {"success": false, "reason": "Invalid item index"}
-	var itm = inventory[target_index]
-	var clean_id: String = itm.get("id", "") if typeof(itm) == TYPE_DICTIONARY else str(itm)
+func sell_item(item_id: String) -> Dictionary:
+	var clean_id: String = item_id.strip_edges()
+	var inv_count: int = count_inventory_item(clean_id)
+	if inv_count <= 0:
+		return {"success": false, "reason": "No copies in backpack to sell"}
+		
 	var price: int = ItemDatabase.get_sell_price(clean_id)
-	inventory.remove_at(target_index)
+	remove_inventory_item(clean_id)
 	add_coins(price)
 	save_player_data()
 	emit_signal("inventory_updated")
@@ -758,12 +642,3 @@ func sell_inventory_item(target_index: int) -> Dictionary:
 		"earned_coins": price,
 		"reason": "Sold for %d Coins" % price
 	}
-
-func sell_item(item_id: String) -> Dictionary:
-	var clean_id: String = item_id.strip_edges()
-	for i in range(inventory.size()):
-		var itm = inventory[i]
-		var itm_id: String = itm.get("id", "") if typeof(itm) == TYPE_DICTIONARY else str(itm)
-		if itm_id == clean_id:
-			return sell_inventory_item(i)
-	return {"success": false, "reason": "No copies in backpack to sell"}
